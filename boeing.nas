@@ -218,9 +218,9 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
+setprop("/instrumentation/cdu/LATorBRG", 0);
 var LATorBRG = func(){
-	setprop("/instrumentation/cdu/input/LATorBRG",0);
-	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return "LAT/LON>";
 	}
 	else{
@@ -228,7 +228,7 @@ var LATorBRG = func(){
 	}
 }
 var echoLatBrg = func(){
-	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return getGpsPos();
 	}
 	else{
@@ -458,7 +458,7 @@ var key = func(v) {
 					}
 				}
 				if (cduDisplay == "POS_REF_0"){
-					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
+					cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/gpsposlat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/gpsposlon"));
 					}
 			}
 			if (v == "LSK4R"){
@@ -541,13 +541,13 @@ var key = func(v) {
 					cduDisplay = "MAINT";
 				}
 				else if (cduDisplay == "POS_REF_0"){
-					if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
-						setprop("/instrumentation/cdu/input/LATorBRG",1)
+					if (getprop("/instrumentation/cdu/cdu/LATorBRG") == 0){
+						setprop("/instrumentation/cdu/LATorBRG", 1);
 					}
 					else{
-					setprop("/instrumentation/cdu/input/LATorBRG",0)
+						setprop("/instrumentation/cdu/LATorBRG", 0);
 					}
-			}
+				}
 			
 			setprop("/instrumentation/cdu/display",cduDisplay);
 			if (eicasDisplay != nil){
