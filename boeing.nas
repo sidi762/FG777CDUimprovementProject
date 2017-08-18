@@ -30,6 +30,31 @@ var echoSids = func(page,selectedRwy = ""){
 		return ["", "", "", "", ""];
 	}
 }
+var echoRwys = func(pageRwys){
+	if(getprop("/autopilot/route-manager/departure/airport") != ""){
+		var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
+		var allRwys = keys(apt.runways);
+		var echoedRwys = [];
+		var rwysCount = size(allRwys);
+	
+		    var countStart = (pageRwys - 1) * 5;
+			var count = countStart;
+			var i = 0;
+			while(i <= 5){
+				if(count < rwysCount){
+					append(echoedRwys, allRwys[count]);
+					i = i + 1;
+					count = count + 1;
+				}else{
+						append(echoedRwys, "");
+						i = i + 1;
+				}
+			}
+				return echoedRwys;
+		}else{
+			return ["", "", "", "", ""];
+		}
+}
 var inputPosLatConversion = func(inputedPos){
 	var isNorth = 1;
 	
@@ -198,7 +223,6 @@ var londeg2lonDMM = func(inLonDeg){
 	var lonresults_INIT = isEW_INIT~outlondegree_INIT~"*"~lonmin_INIT;
 	return lonresults_INIT;
 }
-
 var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
 	}
@@ -218,9 +242,9 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
-setprop("/instrumentation/cdu/LATorBRG", 0);
+setprop("/instrumentation/cdu/input/LATorBRG",0);
 var LATorBRG = func(){
-	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
+	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
 		return "LAT/LON>";
 	}
 	else{
@@ -228,13 +252,14 @@ var LATorBRG = func(){
 	}
 }
 var echoLatBrg = func(){
-	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
+	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
 		return getGpsPos();
 	}
 	else{
 		return "000*/0.0NM";
 	}
 }
+	
 var key = func(v) {
 		var cduDisplay = getprop("/instrumentation/cdu/display");
 		var serviceable = getprop("/instrumentation/cdu/serviceable");
@@ -458,8 +483,9 @@ var key = func(v) {
 					}
 				}
 				if (cduDisplay == "POS_REF_0"){
-					cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/gpsposlat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/gpsposlon"));
-					}
+					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
+				}
+				
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "POS_INIT"){
@@ -541,13 +567,13 @@ var key = func(v) {
 					cduDisplay = "MAINT";
 				}
 				else if (cduDisplay == "POS_REF_0"){
-					if (getprop("/instrumentation/cdu/cdu/LATorBRG") == 0){
-						setprop("/instrumentation/cdu/LATorBRG", 1);
-					}
-					else{
-						setprop("/instrumentation/cdu/LATorBRG", 0);
+					if(getprop("instrumentation/cdu/input/LATorBRG") != 0){
+						setprop("instrumentation/cdu/input/LATorBRG", 0);
+					}else{
+						setprop("instrumentation/cdu/input/LATorBRG", 1);
 					}
 				}
+			}
 			
 			setprop("/instrumentation/cdu/display",cduDisplay);
 			if (eicasDisplay != nil){
@@ -805,21 +831,22 @@ var cdu = func{
 			page = "2/3";
 			line1lt = "FMC(GPS)";
 			line1ct = "ACTUAL";
-			line1l = echoLatBrg();
 			line2lt = "IRS(3)";
 			line2ct = "ACTUAL";
-			line2l = echoLatBrg();
 			line3lt = "GPS";
 			line3ct = "ACTUAL";
-			line3l = echoLatBrg();
 			line4lt = "RADIO";
 			line4ct = "ACTUAL";
-			line4l = echoLatBrg();
 			line5lt = "RNP/ACTUAL";
 			line5l = "1.00/0.10";
+			line1l = echoLatBrg();
+			line2l = echoLatBrg();
+			line3l = echoLatBrg();
+			line4l = echoLatBrg();
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
 			line6r = LATorBRG();
+			
 		}
 		if (display == "POS_REF") {
 			title = "POS REF";
@@ -917,11 +944,17 @@ var cdu = func{
 			line3l = echoSids(getprop("/instrumentation/cdu/sids/page"))[2];
 			line4l = echoSids(getprop("/instrumentation/cdu/sids/page"))[3];
 			line5l = echoSids(getprop("/instrumentation/cdu/sids/page"))[4];
+			
+			line1r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[0];
+			line2r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[1];
+			line3r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[2];
+			line4r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[3];
+			line5r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[4];
 			line6ct = "----------------------------------------";
 			line1rt = "RUNWAYS";
-			if (getprop("/autopilot/route-manager/departure/runway") != nil){
-				line1r = getprop("/autopilot/route-manager/departure/runway");
-			}
+			#if (getprop("/autopilot/route-manager/departure/runway") != nil){
+			#	line1r = getprop("/autopilot/route-manager/departure/runway");
+			#}
 			#line2lt = "TRANS";
 			line6l = "<ERASE";
 			line6r = "ROUTE>";
