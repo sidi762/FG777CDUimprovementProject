@@ -1,7 +1,11 @@
-var echoSids = func(page){
+var echoSids = func(page,selectedRwy = ""){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
-		var allSids = apt.sids();
+		if(selectedRwy != ""){
+			var allSids = apt.sids(selectedRwy);
+		}else{
+			var allSids = apt.sids();
+		}
 		var echoedSids = [];
 		var i = 0;
 		var sidsNum = size(apt.sids());
