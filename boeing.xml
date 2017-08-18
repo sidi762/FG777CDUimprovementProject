@@ -1241,7 +1241,7 @@
                 </equals>
             </condition>
             <command>nasal</command>
-            <script>cdu.sidNextPge();</script>
+            <script>cdu.sidPrevPge();</script>
         </binding>
     </action>
 </animation>
@@ -1301,7 +1301,7 @@
                 </equals>
             </condition>
             <command>nasal</command>
-            <script>cdu.sidPrevPge();</script>
+            <script>cdu.sidNextPge();</script>
         </binding>
     </action>
 </animation>
