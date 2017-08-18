@@ -119,14 +119,14 @@ var getIRSPos = func(cduInputedPos){
  
  	call(func inputPosLatConversion(cduInputedPos), nil, var err = []);
 	if(size(err)){
-		setprop("/instrumentation/cdu/input", "INVALID");
+		setprop("/instrumentation/cdu/input", "INVALID ENTRY");
 	}else{
 		setprop("/instrumentation/fmc/inertialposlat", inputPosLatConversion(cduInputedPos));
 	}
 	
 	call(func inputPosLonConversion(cduInputedPos), nil, var err1 = []);
 	if(size(err1)){
-		setprop("/instrumentation/cdu/input", "INVALID");
+		setprop("/instrumentation/cdu/input", "INVALID ENTRY");
 	}else{
 		setprop("/instrumentation/fmc/inertialposlon", inputPosLonConversion(cduInputedPos));
 	}
@@ -135,6 +135,8 @@ var getIRSPos = func(cduInputedPos){
 var getGpsPos = func(){
 	var gpsPosGot = latdeg2latDMM(getprop("/position/latitude-deg"))~" "~londeg2lonDMM(getprop("/position/longitude-deg"));
 	setprop("/instrumentation/fmc/gpspos", gpsPosGot);
+	setprop("/instrumentation/fmc/gpsposlat", getprop("/position/latitude-deg"));
+	setprop("/instrumentation/fmc/gpsposlon", getprop("/position/longitude-deg"));
 	return gpsPosGot;
 	}
 var getLastPos = func(){
@@ -437,10 +439,7 @@ var key = func(v) {
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "POS_INIT"){
-					setprop("/instrumentation/fmc/gpspos", " ");
-					setprop("/instrumentation/fmc/gpsposlat", " ");
-					setprop("/instrumentation/fmc/gpsposlon", " ");
-					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
+					cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/gpsposlat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/gpsposlon"));
 				}
 				if (cduDisplay == "RTE1_LEGS"){
 					setprop("/autopilot/route-manager/route/wp[4]/altitude-ft",cduInput);
@@ -473,9 +472,9 @@ var key = func(v) {
 					cduInput = "";
 				}
 				if (cduDisplay == "POS_INIT"){
-				call(func getIRSPos(cduInput), var err = []);
-				if (size(err)){
-					setprop("/instrumentation/cdu/input", "INVALID");
+				call(func getIRSPos(cduInput), nil, var err2 = []);
+				if (size(err2)){
+					setprop("/instrumentation/cdu/input", "INVALID ENTRY");
 				}else{
 					cduInput = "";
 					}
