@@ -192,6 +192,7 @@ var londeg2lonDMM = func(inLonDeg){
 	var lonresults_INIT = isEW_INIT~outlondegree_INIT~"*"~lonmin_INIT;
 	return lonresults_INIT;
 }
+
 var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
 	}
@@ -211,7 +212,23 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
-	
+var LATorBRG = func(){
+	setprop("/instrumentation/cdu/input/LATorBRG",0);
+	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+		return "LAT/LON>";
+	}
+	else{
+		return "BRG/DIST>";
+	}
+}
+var echoLatBrg = func(){
+	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+		return getGpsPos();
+	}
+	else{
+		return "000*/0.0NM";
+	}
+}
 var key = func(v) {
 		var cduDisplay = getprop("/instrumentation/cdu/display");
 		var serviceable = getprop("/instrumentation/cdu/serviceable");
@@ -434,6 +451,9 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/input","@INSERT5:"~cduInput);
 					}
 				}
+				if (cduDisplay == "POS_REF_0"){
+					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
+					}
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "POS_INIT"){
@@ -517,6 +537,13 @@ var key = func(v) {
 				else if (cduDisplay == "INIT_REF"){
 					cduDisplay = "MAINT";
 				}
+				else if (cduDisplay == "POS_REF_0"){
+					if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+						setprop("/instrumentation/cdu/input/LATorBRG",1)
+					}
+					else{
+					setprop("/instrumentation/cdu/input/LATorBRG",0)
+					}
 			}
 			
 			setprop("/instrumentation/cdu/display",cduDisplay);
@@ -773,14 +800,23 @@ var cdu = func{
 		if (display == "POS_REF_0") {
 			title = "POS REF";
 			page = "2/3";
-			line1lt = "FMC(GPS)        ACTUAL";
-			line1l = getGpsPos();
-			line2lt = "IRS(3)        ACTUAL";
-			line2l = getGpsPos();
-			line3lt = "GPS        ACTUAL";
-			line3l = getGpsPos();
+			line1lt = "FMC(GPS)";
+			line1ct = "ACTUAL";
+			line1l = echoLatBrg();
+			line2lt = "IRS(3)";
+			line2ct = "ACTUAL";
+			line2l = echoLatBrg();
+			line3lt = "GPS";
+			line3ct = "ACTUAL";
+			line3l = echoLatBrg();
+			line4lt = "RADIO";
+			line4ct = "ACTUAL";
+			line4l = echoLatBrg();
+			line5lt = "RNP/ACTUAL";
+			line5l = "1.00/0.10";
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
+			line6r = LATorBRG();
 		}
 		if (display == "POS_REF") {
 			title = "POS REF";
