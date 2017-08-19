@@ -516,6 +516,8 @@ var key = func(v) {
 				}
 				if (cduDisplay == "POS_REF_0"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
+				}if (cduDisplay == "POS_REF"){
+					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
 				
 			}
@@ -599,14 +601,24 @@ var key = func(v) {
 					cduDisplay = "MAINT";
 				}
 				else if (cduDisplay == "POS_REF_0"){
-						if(getprop("/instrumentation/cdu/LATorBRG") == 1)
-						{
-							setprop("/instrumentation/cdu/LATorBRG",0);
-						}
-						else if(getprop("/instrumentation/cdu/LATorBRG") == 0)
-						{
-							setprop("/instrumentation/cdu/LATorBRG",1);
-						}
+					if(getprop("/instrumentation/cdu/LATorBRG") == 1)
+					{
+						setprop("/instrumentation/cdu/LATorBRG",0);
+					}
+					else if(getprop("/instrumentation/cdu/LATorBRG") == 0)
+					{
+						setprop("/instrumentation/cdu/LATorBRG",1);
+					}
+				}
+				else if (cduDisplay == "POS_REF"){
+					if(getprop("/instrumentation/cdu/LATorBRG") == 1)
+					{
+						setprop("/instrumentation/cdu/LATorBRG",0);
+					}
+					else if(getprop("/instrumentation/cdu/LATorBRG") == 0)
+					{
+						setprop("/instrumentation/cdu/LATorBRG",1);
+					}
 				}
 			}
 			
@@ -895,22 +907,25 @@ var cdu = func{
 		if (display == "POS_REF") {
 			title = "POS REF";
 			page = "3/3";
-			line1lt = "IRS L";
+			line1lt = "GPS L";
 			line1rt = "GS";	
-			line1l = getGpsPos();
+			line1l = echoLatBrg();
 			line1r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
-			line2lt = "IRS C";
+			line2lt = "GPS C";
 			line2rt = "GS";	
-			line2l = getGpsPos();
+			line2l = echoLatBrg();
 			line2r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
-			line3lt = "IRS R";
+			line3lt = "FMC L (PRI)";
 			line3rt = "GS";	
-			line3l = getGpsPos();
 			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
-			line5l = "<PURGE";
-			line5r = "INHIBIT>";
+			line4lt = "FMC R";
+			line4rt = "GS";	
+			line4r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
+			line3l = echoLatBrg();
+			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
+			line6ct = "------------------------------------------";
 			line6l = "<INDEX";
-			line6r = "BRG/DIST>";
+			line6r = DisplayLATorBRG();
 		}
 		if (display == "RTE1_1") {
 			title = "RTE 1";
