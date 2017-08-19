@@ -242,9 +242,9 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
-setprop("/instrumentation/cdu/input/LATorBRG",0);
-var LATorBRG = func(){
-	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
+setprop("/instrumentation/cdu/LATorBRG",0);
+var DisplayLATorBRG = func(){
+	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return "LAT/LON>";
 	}
 	else{
@@ -252,14 +252,15 @@ var LATorBRG = func(){
 	}
 }
 var echoLatBrg = func(){
-	if (getprop("/instrumentation/cdu/input/LATorBRG") == 0){
-		return getGpsPos();
-	}
-	else{
+	if(getprop("/instrumentation/cdu/LATorBRG") == 1){
 		return "000*/0.0NM";
 	}
+	else if(getprop("/instrumentation/cdu/LATorBRG") == 0){
+		setprop("/instrumentation/cdu/LATorBRG",0);
+		return getGpsPos();
+	}
 }
-	
+
 var key = func(v) {
 		var cduDisplay = getprop("/instrumentation/cdu/display");
 		var serviceable = getprop("/instrumentation/cdu/serviceable");
@@ -567,11 +568,14 @@ var key = func(v) {
 					cduDisplay = "MAINT";
 				}
 				else if (cduDisplay == "POS_REF_0"){
-					if(getprop("instrumentation/cdu/input/LATorBRG") != 0){
-						setprop("instrumentation/cdu/input/LATorBRG", 0);
-					}else{
-						setprop("instrumentation/cdu/input/LATorBRG", 1);
-					}
+						if(getprop("/instrumentation/cdu/LATorBRG") == 1)
+						{
+							setprop("/instrumentation/cdu/LATorBRG",0);
+						}
+						else if(getprop("/instrumentation/cdu/LATorBRG") == 0)
+						{
+							setprop("/instrumentation/cdu/LATorBRG",1);
+						}
 				}
 			}
 			
@@ -845,7 +849,7 @@ var cdu = func{
 			line4l = echoLatBrg();
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
-			line6r = LATorBRG();
+			line6r = DisplayLATorBRG();
 			
 		}
 		if (display == "POS_REF") {
