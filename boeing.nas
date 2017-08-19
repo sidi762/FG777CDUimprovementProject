@@ -257,7 +257,6 @@ var echoLatBrg = func(){
 		return "000*/0.0NM";
 	}
 	else if(getprop("/instrumentation/cdu/LATorBRG") == 0){
-		setprop("/instrumentation/cdu/LATorBRG",0);
 		return getGpsPos();
 	}
 }
