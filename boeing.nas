@@ -243,6 +243,7 @@ var sidPrevPge = func(){
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
 setprop("/instrumentation/cdu/LATorBRG",0);
+setprop("/instrumentation/cdu/isARMED",0);
 var DisplayLATorBRG = func(){
 	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return "LAT/LON>";
@@ -258,6 +259,28 @@ var echoLatBrg = func(){
 	else if(getprop("/instrumentation/cdu/LATorBRG") == 0){
 		setprop("/instrumentation/cdu/LATorBRG",0);
 		return getGpsPos();
+	}
+}
+var isUpdateArm = func()
+{
+	if (getprop("/instrumentation/cdu/isARMED") == 0)
+	{
+		return "ARM";
+	}
+	else if(getprop("/instrumentation/cdu/isARMED") == 1)
+	{
+		return "ARMED";
+	}
+}
+var echoUpdateArmed = func()
+{
+	if (getprop("/instrumentation/cdu/isARMED") == 0)
+	{
+		return " ";
+	}
+	else if (getprop("/instrumentation/cdu/isARMED") == 1)
+	{
+		return "NOW>"
 	}
 }
 
@@ -320,8 +343,6 @@ var key = func(v) {
 					eicasDisplay = "HYD";
 				}
 				if (cduDisplay == "POS_INIT"){
-					#setprop("/instrumentation/fmc/lastposlat", " ");
-					#setprop("/instrumentation/fmc/lastposlon", " ");
 					cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/lastposlat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/lastposlon"));
 				}
 				if (cduDisplay == "NAV_RAD"){
@@ -340,6 +361,16 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/route/wp[1]/altitude-ft",substr(cduInput,2)*100);
 					}
 					cduInput = "";
+				}
+				if (cduDisplay == "POS_REF_0"){
+					if (getprop("/instrumentation/cdu/isARMED") == 0)
+					{
+						setprop("/instrumentation/cdu/isARMED",1);
+					}
+					else if(getprop("/instrumentation/cdu/isARMED") == 1)
+					{
+						setprop("/instrumentation/cdu/isARMED",0);
+					}
 				}
 			}
 			if (v == "LSK2L"){
@@ -835,18 +866,27 @@ var cdu = func{
 			page = "2/3";
 			line1lt = "FMC(GPS)";
 			line1ct = "ACTUAL";
+			line1rt = "UPDATE";
+			line1r = isUpdateArm();
 			line2lt = "IRS(3)";
 			line2ct = "ACTUAL";
+			line2rt = "INERTIAL";
 			line3lt = "GPS";
 			line3ct = "ACTUAL";
+			line3rt = "GPS";
 			line4lt = "RADIO";
 			line4ct = "ACTUAL";
+			lien4rt = "RADIO";
 			line5lt = "RNP/ACTUAL";
 			line5l = "1.00/0.10";
+			line5rt = "DME DME";
 			line1l = echoLatBrg();
 			line2l = echoLatBrg();
 			line3l = echoLatBrg();
 			line4l = echoLatBrg();
+			line2r = echoUpdateArmed();
+			line3r = echoUpdateArmed();
+			line4r = echoUpdateArmed();
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
 			line6r = DisplayLATorBRG();
