@@ -1,3 +1,16 @@
+var getRwyOfSids = func(sidID){
+	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
+	var allRwys = keys(apt.runways);
+	var rwysCount = size(allRwys);
+	for(var i = 0; i < rwysCount; i+=1){
+		var allSids = apt.sids(allRwys[i]);
+		for(var j = 0; j < size(allSids); j+=1){
+			if(sidID == allSids[j]){
+				return allRwys[i];
+			}
+		}
+	}
+}
 var echoSids = func(page,selectedRwy = ""){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
@@ -31,6 +44,7 @@ var echoSids = func(page,selectedRwy = ""){
 	}
 }
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
+setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 var echoRwys = func(pageRwys){
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
 		var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
@@ -292,6 +306,14 @@ var key = func(v) {
 		
 		if (serviceable == 1){
 			if (v == "LSK1L"){
+				if (cduDisplay == "RTE1_DEP"){
+					if (getprop("/instrumentation/cdu/output/line1/left") != ""){
+						setprop("/autopilot/route-manager/departure/sid", getprop("/instrumentation/cdu/output/line1/left"));
+						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line1/left")));
+						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "DEP_ARR_INDEX"){
 					cduDisplay = "RTE1_DEP";
 					setprop("/instrumentation/cdu/sids/page", 1);
@@ -337,7 +359,7 @@ var key = func(v) {
 			}
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
-					if (getprop("/instrumentation/cdu/output/line1") != ""){
+					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
 						setprop("/autopilot/route-manager/departure/runway", getprop("/instrumentation/cdu/output/line1/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 					}
@@ -381,6 +403,14 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK2L"){
+				if (cduDisplay == "RTE1_DEP"){
+					if (getprop("/instrumentation/cdu/output/line2/left") != ""){
+						setprop("/autopilot/route-manager/departure/sid", getprop("/instrumentation/cdu/output/line2/left"));
+						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line2/left")));
+						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "EICAS_MODES"){
 					eicasDisplay = "STAT";
 				}
@@ -470,6 +500,14 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK3L"){
+				if (cduDisplay == "RTE1_DEP"){
+					if (getprop("/instrumentation/cdu/output/line3/left") != ""){
+						setprop("/autopilot/route-manager/departure/sid", getprop("/instrumentation/cdu/output/line3/left"));
+						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line3/left")));
+						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "PERF_INIT";
 				}
@@ -521,6 +559,14 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK4L"){
+				if (cduDisplay == "RTE1_DEP"){
+					if (getprop("/instrumentation/cdu/output/line4/left") != ""){
+						setprop("/autopilot/route-manager/departure/sid", getprop("/instrumentation/cdu/output/line4/left"));
+						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line4/left")));
+						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "THR_LIM";
 				}
@@ -559,6 +605,14 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK5L"){
+				if (cduDisplay == "RTE1_DEP"){
+					if (getprop("/instrumentation/cdu/output/line5/left") != ""){
+						setprop("/autopilot/route-manager/departure/sid", getprop("/instrumentation/cdu/output/line5/left"));
+						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line5/left")));
+						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "TO_REF";
 				}
@@ -1030,19 +1084,29 @@ var cdu = func{
 			}
 			line1ctl = "RTE 1";
 			line1lt = "SIDS";
-			line1cl = "<SEL>";
-			if(getprop("/instrumentation/cdu/sids/rwyIsSelected") == 0){
-				line1l = echoSids(getprop("/instrumentation/cdu/sids/page"))[0];
-				line2l = echoSids(getprop("/instrumentation/cdu/sids/page"))[1];
-				line3l = echoSids(getprop("/instrumentation/cdu/sids/page"))[2];
-				line4l = echoSids(getprop("/instrumentation/cdu/sids/page"))[3];
-				line5l = echoSids(getprop("/instrumentation/cdu/sids/page"))[4];
+			
+			if(getprop("/instrumentation/cdu/sids/sidIsSelected") == 0){
+				line1cl = "";
+				if(getprop("/instrumentation/cdu/sids/rwyIsSelected") == 0){
+					line1l = echoSids(getprop("/instrumentation/cdu/sids/page"))[0];
+					line2l = echoSids(getprop("/instrumentation/cdu/sids/page"))[1];
+					line3l = echoSids(getprop("/instrumentation/cdu/sids/page"))[2];
+					line4l = echoSids(getprop("/instrumentation/cdu/sids/page"))[3];
+					line5l = echoSids(getprop("/instrumentation/cdu/sids/page"))[4];
+				}else{
+					line1l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[0];
+					line2l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[1];
+					line3l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[2];
+					line4l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[3];
+					line5l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[4];
+				}
 			}else{
-				line1l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[0];
-				line2l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[1];
-				line3l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[2];
-				line4l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[3];
-				line5l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[4];
+				line1cl = "<SEL>";
+				line1l = getprop("/autopilot/route-manager/departure/sid"); 
+				line2l = "";
+				line3l = "";
+				line4l = "";
+				line5l = "";
 			}
 			
 			if (getprop("/autopilot/route-manager/departure/runway") == nil){
