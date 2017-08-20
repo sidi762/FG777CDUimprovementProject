@@ -312,6 +312,7 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line1/left")));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line1/left"));
 					}
 				}
 				if (cduDisplay == "DEP_ARR_INDEX"){
@@ -409,6 +410,7 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line2/left")));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line2/left"));
 					}
 				}
 				if (cduDisplay == "EICAS_MODES"){
@@ -506,6 +508,7 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line3/left")));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line3/left"));
 					}
 				}
 				if (cduDisplay == "INIT_REF"){
@@ -565,6 +568,7 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line4/left")));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line4/left"));
 					}
 				}
 				if (cduDisplay == "INIT_REF"){
@@ -611,6 +615,7 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/runway", getRwyOfSids(getprop("/instrumentation/cdu/output/line5/left")));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line5/left"));
 					}
 				}
 				if (cduDisplay == "INIT_REF"){
@@ -1102,7 +1107,7 @@ var cdu = func{
 				}
 			}else{
 				line1cl = "<SEL>";
-				line1l = getprop("/autopilot/route-manager/departure/sid"); 
+				line1l = getprop("/autopilot/route-manager/departure/sidID"); 
 				line2l = "";
 				line3l = "";
 				line4l = "";
@@ -1111,6 +1116,9 @@ var cdu = func{
 			
 			if (getprop("/autopilot/route-manager/departure/runway") == nil){
 				setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
+				setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
+				setprop("/autopilot/route-manager/departure/sidID", "");
+				setprop("/autopilot/route-manager/departure/sid", "");
 			}
 			
 			if(getprop("/instrumentation/cdu/sids/rwyIsSelected") == 0){
