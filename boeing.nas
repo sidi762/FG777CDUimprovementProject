@@ -1,3 +1,22 @@
+var feet2FL = func(feet)
+{
+	var tmp = "";
+	var FL = "";
+	var offset = 0;
+	tmp = "FL"~feet;
+		if (feet < 10000){offset = 4}
+		else{offset = 5}
+		FL = left(tmp,offset);
+	return FL;
+}
+var FL2feet = func(FL)
+{
+	var tmp = "";
+	var feet = 0;
+	tmp = right(FL,3);
+	feet = int(tmp~"00");
+	return feet;
+}
 var getRwyOfSids = func(sidID){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	var allRwys = keys(apt.runways);
@@ -43,8 +62,6 @@ var echoSids = func(page,selectedRwy = ""){
 		return ["", "", "", "", ""];
 	}
 }
-setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
-setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 var echoRwys = func(pageRwys){
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
 		var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
@@ -257,8 +274,6 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
-setprop("/instrumentation/cdu/LATorBRG",0);
-setprop("/instrumentation/cdu/isARMED",0);
 var DisplayLATorBRG = func(){
 	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return "LAT/LON>";
@@ -297,6 +312,13 @@ var echoUpdateArmed = func()
 		return "NOW>"
 	}
 }
+#Format The "prop" here 
+setprop("/instrumentation/cdu/LATorBRG",0);
+setprop("/instrumentation/cdu/isARMED",0);
+setprop("/autopilot/route-manager/cruise/altitude-ft",0);
+setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
+setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
+#Format aera end
 
 var key = func(v) {
 		var cduDisplay = getprop("/instrumentation/cdu/display");
@@ -402,6 +424,44 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/isARMED",0);
 					}
 				}
+				if (cduDisplay == "PERF_INIT"){
+					if(find("FL", cduInput) != -1){
+						if (size(cduInput) <=5 ){
+							if(num(substr(cduInput,2,size(cduInput))) != nil){
+								if (substr(cduInput,2,size(cduInput)) >= 100){
+									if(substr(cduInput,2,size(cduInput)) <= 412){
+										setprop("/autopilot/route-manager/cruise/altitude-FL",cduInput);
+										setprop("/autopilot/route-manager/cruise/altitude-ft",FL2feet(cduInput));
+										cduInput = "";
+									}else{cduInput = "INVALID ENTRY";}
+								}else{cduInput = "INVALID ENTRY";}
+							}
+						}else{cduInput = "INVALID ENTRY";}
+					}else if(find("FL", cduInput) == -1){
+						if (num(cduInput) != nil){
+							if (cduInput >= 1000){
+								if (cduInput < 10000){
+									setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
+									setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+									cduInput = "";
+								}
+							}else if(cduInput >= 10000){
+								if(cduInput <= 41200){
+									setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
+									setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+									cduInput = "";
+									}else{cduInput = "INVALID ENTRY";}
+							}else if(cduInput >= 10){
+									if(cduInput <= 412){
+										setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
+										setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
+									  	cduInput = "";
+								}else{cduInput = "INVALID ENTRY";}
+								}else{cduInput = "INVALID ENTRY";}
+							}
+						}
+						
+					}
 			}
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -886,7 +946,7 @@ var cdu = func{
 			title = "PERF INIT";
 			line1lt = "GR WT";
 			line1rt = "CRZ ALT";
-			line1r = getprop("/autopilot/route-manager/cruise/altitude-ft");
+			line1r = getprop("/autopilot/route-manager/cruise/altitude-FL") or " ";
 			line2lt = "FUEL";
 			line3lt = "ZFW";
 			line4lt = "RESERVES";
