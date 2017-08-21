@@ -497,7 +497,7 @@ var key = func(v) {
 					cduInput = "";
 				}
 				else if (cduDisplay = "RTE1_1"){
-					setprop("/instrumentation/fmc/FLT_NO",cduInput);
+					setprop("/instrumentation/fmc/flight-number",cduInput);
 					cduInput = "";
 				}
 			}
@@ -1034,6 +1034,7 @@ var cdu = func{
 				line2l = getprop("/autopilot/route-manager/departure/runway");
 			}
 			line2rt = "FLT NO";
+			line2r = getprop("/instrumentation/fmc/flight-number") or " ";
 			line3rt = "CO ROUTE";
 			line5l = "<RTE COPY";
 			line6l = "<RTE 2";
