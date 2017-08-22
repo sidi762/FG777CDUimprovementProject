@@ -328,6 +328,7 @@ setprop("/instrumentation/cdu/isARMED",0);
 setprop("/autopilot/route-manager/cruise/altitude-ft",0);
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
+setprop("instrumentation/cdu/StepSize","RVSM");
 #Format aera end
 
 var key = func(v) {
@@ -454,21 +455,21 @@ var key = func(v) {
 									setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
 									setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
 									cduInput = "";
+								}else if(cduInput >= 10000){
+									if(cduInput <= 41200){
+										setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
+										setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+										cduInput = "";
+									}else if(cduInput >= 10){
+										if(cduInput <= 412){
+											setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
+											setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
+											cduInput = "";
+											}else{cduInput = "INVALID ENTRY";}
+										}else{cduInput = "INVALID ENTRY";}
+									}
 								}
-							}else if(cduInput >= 10000){
-								if(cduInput <= 41200){
-									setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
-									setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
-									cduInput = "";
-									}else{cduInput = "INVALID ENTRY";}
-							}else if(cduInput >= 10){
-									if(cduInput <= 412){
-										setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
-										setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
-									  	cduInput = "";
-								}else{cduInput = "INVALID ENTRY";}
-								}else{cduInput = "INVALID ENTRY";}
-							}
+							}else{cduInput = "INVALID ENTRY";}
 						}else{cduInput = "INVALID ENTRY";}
 						
 					}
@@ -566,14 +567,18 @@ var key = func(v) {
 					}
 					cduInput = "";
 				}
-				else if (cduDisplay = "RTE1_1"){
+				else if (cduDisplay == "RTE1_1"){
 					setprop("/instrumentation/fmc/flight-number",cduInput);
 					cduInput = "";
-				}
-				else if (cduDisplay == PERF_INIT)
-				{
-					setprop("/instrumentation/fmc/COST_INDEX",cduInput);
-					cduInput = "";
+				}else if (cduDisplay == "PERF_INIT"){
+					if (num(cduInput) != nil){
+						if(cduInput >= 0){
+							if(cduInput <= 1000){
+								setprop("/instrumentation/fmc/COST_INDEX",cduInput);
+								cduInput = "";
+							}else{cduInput = "INVALID ENTRY"}
+						}else{cduInput = "INVALID ENTRY"}
+					}else{cduInput = "INVALID ENTRY"}
 				}
 			}
 			if (v == "LSK3L"){
@@ -728,8 +733,37 @@ var key = func(v) {
 				call(func getIRSPos(cduInput), nil, var err2 = []);
 				if (size(err2)){
 					setprop("/instrumentation/cdu/input", "INVALID ENTRY");
-				}else{
+				}
+				else{
 					cduInput = "";
+					}
+				}
+				if (cduDisplay == PERF_INIT)
+				{
+					if (cduInput == "0")
+					{
+						setprop("instrumentation/cdu/StepSize","inhibit");
+						cduInput = "";
+					}
+					else if(cduInput == "R")
+					{
+						setprop("instrumentation/cdu/StepSize","RVSM");
+						cduInput = "";
+					}
+					else if(cduInput == "RVSM")
+					{
+						setprop("instrumentation/cdu/StepSize","RVSM");
+						cduInput = "";
+					}
+					else if(cduInput == "I")
+					{
+						setprop("instrumentation/cdu/StepSize","ICAO");
+						cduInput = "";
+					}
+					else if(cduInput == "ICAO")
+					{
+						setprop("instrumentation/cdu/StepSize","ICAO");
+						cduInput = "";
 					}
 				}
 			}
@@ -788,6 +822,10 @@ var key = func(v) {
 					{
 						setprop("/instrumentation/cdu/LATorBRG",1);
 					}
+				}
+				else if(cduDisplay == "PERF_INIT")
+				{
+					cduDisplay = "THR_LIM";
 				}
 			}
 			
@@ -967,6 +1005,7 @@ var cdu = func{
 			line1rt = "CRZ ALT";
 			line1r = getprop("/autopilot/route-manager/cruise/altitude-FL") or " ";
 			line2rt = "COST INDEX";
+			line2r = getprop("instrumentation/fmc/COST_INDEX") or " ";
 			line2lt = "FUEL";
 			line3lt = "ZFW";
 			line3rt = "MIN FUEL TEMP";
@@ -974,19 +1013,21 @@ var cdu = func{
 			line4lt = "RESERVES";
 			line4l = getprop("/instrumentation/cdu/RESERVES") or " ";
 			line4rt = "CRZ CG";	
-			line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
 			line5rt = "STEP SIZE";
+			line5r =  getprop("instrumentation/cdu/StepSize");
+			line6ct = "------------------------------------";
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";	
 			if (getprop("/sim/flight-model") == "jsb") {
 				line1l = sprintf("%3.1f", (getprop("/fdm/jsbsim/inertia/weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/fdm/jsbsim/propulsion/total-fuel-lbs")/1000));
 				line3l = sprintf("%3.1f", (getprop("/fdm/jsbsim/inertia/empty-weight-lbs")/1000));
+				
 			}
-			elsif (getprop("/sim/flight-model") == "yasim") {
+			else if (getprop("/sim/flight-model") == "yasim") {
 				line1l = sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/consumables/fuel/total-fuel-lbs")/1000));
-
+				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
 				yasim_emptyweight = getprop("/yasim/gross-weight-lbs");
 				yasim_emptyweight -= getprop("/consumables/fuel/total-fuel-lbs");
 				yasim_weights = props.globals.getNode("/sim").getChildren("weight");
