@@ -1174,7 +1174,7 @@
         <binding>
             <command>property-assign</command>
             <property>/instrumentation/cdu/display</property>
-            <value type="string">INIT_REF</value>
+            <value type="string">PERF_INIT</value>
         </binding>
     </action>
 </animation>
