@@ -329,6 +329,8 @@ setprop("/autopilot/route-manager/cruise/altitude-ft",0);
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 setprop("instrumentation/cdu/StepSize","RVSM");
+setprop("/instrumentation/fmc/THRLIM","TOGA");
+setprop("/instrumentation/fmc/CLB_LIM","CLB");
 #Format aera end
 
 var key = func(v) {
@@ -530,6 +532,9 @@ var key = func(v) {
 				if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
+				if (cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/THRLIM","TOGA");
+				}
 			}
 			if (v == "LSK2R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -580,6 +585,9 @@ var key = func(v) {
 						}else{cduInput = "INVALID ENTRY"}
 					}else{cduInput = "INVALID ENTRY"}
 				}
+				else if(cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/CLB_LIM","CLB");
+				}
 			}
 			if (v == "LSK3L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -619,6 +627,9 @@ var key = func(v) {
 				if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
+				if (cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/THRLIM","TO-1");
+				}
 			}
 			if (v == "LSK3R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -639,6 +650,9 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/route/wp[3]/altitude-ft",substr(cduInput,2)*100);
 					}
 					cduInput = "";
+				}
+				else if(cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/CLB_LIM","CLB-1");
 				}
 			}
 			if (v == "LSK4L"){
@@ -668,10 +682,12 @@ var key = func(v) {
 				}if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
-				if (cduDisplay == "PERF_INIT")
-				{
+				if (cduDisplay == "PERF_INIT"){
 					setprop("/instrumentation/cdu/RESERVES",cduInput);
 					cduInput = "";
+				}
+				if (cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/THRLIM","TO-2");
 				}
 			}
 			if (v == "LSK4R"){
@@ -690,6 +706,9 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/route/wp[4]/altitude-ft",substr(cduInput,2)*100);
 					}
 					cduInput = "";
+				}
+				if(cduDisplay == "THR_LIM"){
+					setprop("/instrumentation/fmc/CLB_LIM","CLB-2");
 				}
 			}
 			if (v == "LSK5L"){
@@ -873,6 +892,11 @@ var cdu = func{
 		line1r = "";	line2r = "";	line3r = "";	line4r = "";	line5r = "";	line6r = "";
 		line1rt = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
 		line1ctl = "";	line1cl = ""; line1cr = "";
+		line2ctl = "";	line2cl = ""; line2cr = "";
+		line3ctl = "";	line3cl = ""; line3cr = "";
+		line4ctl = "";	line4cl = ""; line4cr = "";
+		line5ctl = "";	line5cl = ""; line5cr = "";
+		line6ctl = "";	line6cl = ""; line6cr = "";
 		
 		if (display == "MENU") {
 			title = "MENU";
@@ -1347,19 +1371,24 @@ var cdu = func{
 			title = "THRUST LIM";
 			line1lt = "SEL";
 			line1ct = "OAT";
-			line1c = sprintf("%2.0f", getprop("/environment/temperature-degc"))~" °C";
+			line1c = sprintf("%2.0f", getprop("/environment/temperature-degc"))~"*c";
 			line1rt = "TO 1 N1";
 			line2l = "<TO";
 			line2r = "CLB>";
 			line3lt = "TO 1";
 			line3l = "<-10%";
-			line3c = "<SEL> <ARM>";
 			line3r = "CLB 1>";
 			line4lt = "TO 2";
 			line4l = "<-20%";
 			line4r = "CLB 2>";
 			line6l = "<INDEX";
 			line6r = "TAKEOFF>";
+			if (getprop("/instrumentation/fmc/THRLIM") == "TOGA"){line2cl = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/THRLIM") == "TO-1"){line3cl = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/THRLIM") == "TO-2"){line4cl = "<SEL>";}
+			if (getprop("/instrumentation/fmc/CLB_LIM") == "CLB"){line2cr = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/CLB_LIM") == "CLB-1"){line3cr = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/CLB_LIM") == "CLB-2"){line4cr = "<SEL>";}
 		}
 		if (display == "TO_REF") {
 			title = "TAKEOFF REF";
@@ -1394,7 +1423,9 @@ var cdu = func{
 			line1ct = "";	line2ct = "";	line3ct = "";	line4ct = "";	line5ct = "";	line6ct = "";
 			line1r = "";	line2r = "";	line3r = "";	line4r = "";	line5r = "";	line6r = "";
 			line1rt = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
-			line1ctl = "";	line1cl = ""; line1cr = "";
+			line1ctl = "";
+			line1cl = ""; 
+			line1cr = "";
 		}
 		
 		setprop("/instrumentation/cdu/output/title",title);
@@ -1418,7 +1449,17 @@ var cdu = func{
 		setprop("/instrumentation/cdu/output/line5/center",line5c);
 		setprop("/instrumentation/cdu/output/line6/center",line6c);
 		setprop("/instrumentation/cdu/output/line1/center-left",line1cl);
+		setprop("/instrumentation/cdu/output/line2/center-left",line2cl);
+		setprop("/instrumentation/cdu/output/line3/center-left",line3cl);
+		setprop("/instrumentation/cdu/output/line4/center-left",line4cl);
+		setprop("/instrumentation/cdu/output/line5/center-left",line5cl);
+		setprop("/instrumentation/cdu/output/line6/center-left",line6cl);
 		setprop("/instrumentation/cdu/output/line1/center-right",line1cr);
+		setprop("/instrumentation/cdu/output/line2/center-right",line2cr);
+		setprop("/instrumentation/cdu/output/line3/center-right",line3cr);
+		setprop("/instrumentation/cdu/output/line4/center-right",line4cr);
+		setprop("/instrumentation/cdu/output/line5/center-right",line5cr);
+		setprop("/instrumentation/cdu/output/line6/center-right",line6cr);
 		setprop("/instrumentation/cdu/output/line1/center-title",line1ct);
 		setprop("/instrumentation/cdu/output/line2/center-title",line2ct);
 		setprop("/instrumentation/cdu/output/line3/center-title",line3ct);
@@ -1438,6 +1479,11 @@ var cdu = func{
 		setprop("/instrumentation/cdu/output/line5/right-title",line5rt);
 		setprop("/instrumentation/cdu/output/line6/right-title",line6rt);
 		setprop("/instrumentation/cdu/output/line1/center-title-large",line1ctl);
+		setprop("/instrumentation/cdu/output/line2/center-title-large",line3ctl);
+		setprop("/instrumentation/cdu/output/line3/center-title-large",line3ctl);
+		setprop("/instrumentation/cdu/output/line4/center-title-large",line4ctl);
+		setprop("/instrumentation/cdu/output/line5/center-title-large",line5ctl);
+		setprop("/instrumentation/cdu/output/line6/center-title-large",line6ctl);
 		settimer(cdu,0.2);
     }
 _setlistener("/sim/signals/fdm-initialized", cdu); 
