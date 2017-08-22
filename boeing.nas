@@ -1,3 +1,10 @@
+var decimal2percentage = func(decimal)
+{
+	var TMP = decimal * 100;
+	var tmp = " "~TMP;#convert to string
+	var percentage = substr(tmp,0,4)~"%";
+	return percentage;
+}
 var feet2FL = func(feet)
 {
 	var tmp = "";
@@ -13,7 +20,10 @@ var FL2feet = func(FL)
 {
 	var tmp = "";
 	var feet = 0;
-	tmp = right(FL,3);
+	var offset = 0;
+	if (size(FL) == 4){tmp = 2}
+	else{offset = 3}
+	tmp = right(FL,offset);
 	feet = int(tmp~"00");
 	return feet;
 }
@@ -459,7 +469,7 @@ var key = func(v) {
 								}else{cduInput = "INVALID ENTRY";}
 								}else{cduInput = "INVALID ENTRY";}
 							}
-						}
+						}else{cduInput = "INVALID ENTRY";}
 						
 					}
 			}
@@ -560,6 +570,11 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/flight-number",cduInput);
 					cduInput = "";
 				}
+				else if (cduDisplay == PERF_INIT)
+				{
+					setprop("/instrumentation/fmc/COST_INDEX",cduInput);
+					cduInput = "";
+				}
 			}
 			if (v == "LSK3L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -648,7 +663,11 @@ var key = func(v) {
 				}if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
-				
+				if (cduDisplay == "PERF_INIT")
+				{
+					setprop("/instrumentation/cdu/RESERVES",cduInput);
+					cduInput = "";
+				}
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -947,11 +966,15 @@ var cdu = func{
 			line1lt = "GR WT";
 			line1rt = "CRZ ALT";
 			line1r = getprop("/autopilot/route-manager/cruise/altitude-FL") or " ";
+			line2rt = "COST INDEX";
 			line2lt = "FUEL";
 			line3lt = "ZFW";
+			line3rt = "MIN FUEL TEMP";
+			line3r = "-37*C";
 			line4lt = "RESERVES";
-			line4rt = "CRZ CG";
-			line5lt = "COST INDEX";
+			line4l = getprop("/instrumentation/cdu/RESERVES") or " ";
+			line4rt = "CRZ CG";	
+			line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
 			line5rt = "STEP SIZE";
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";	
