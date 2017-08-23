@@ -772,15 +772,15 @@ var key = func(v) {
 					cduInput = "";
 				}
 				if (cduDisplay == "POS_INIT"){
-				call(func getIRSPos(cduInput), nil, var err2 = []);
-				if (size(err2)){
-					setprop("/instrumentation/cdu/input", "INVALID ENTRY");
-				}
-				else{
-					cduInput = "";
+					call(func getIRSPos(cduInput), nil, var err2 = []);
+					if (size(err2)){
+						setprop("/instrumentation/cdu/input", "INVALID ENTRY");
+					}else{
+						cduInput = "";
 					}
 				}
-				if (cduDisplay == PERF_INIT)
+				
+				if (cduDisplay == "PERF_INIT")
 				{
 					if (cduInput == "0")
 					{
