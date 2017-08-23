@@ -331,6 +331,8 @@ setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 setprop("instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
+setprop("/instrumentation/fmc/isCustomizeFlaps",0);
+setprop("/instrumentation/fmc/isUplink",0);
 #Format aera end
 
 var key = func(v) {
@@ -384,6 +386,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "TO_REF"){
 					setprop("/instrumentation/fmc/to-flap",cduInput);
+					setprop("/instrumentation/fmc/isCustomizeFlaps",1);
 					cduInput = "";
 				}
 				if (cduDisplay == "POS_REF_0"){
@@ -588,6 +591,14 @@ var key = func(v) {
 				else if(cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/CLB_LIM","CLB");
 				}
+				else if (cduDisplay == "TO_REF"){
+					if(cduInput == ""){setprop("/instrumentation/fmc/V1checked",1);}
+					else if(num(cduInput) != nil){
+							setprop("/instrumentation/fmc/vspeeds/V1");
+							setprop("/instrumentation/fmc/V1checked",1);
+							cduInput = "";
+					}else{setprop("/instrumentation/fmc/V1checked",1);}
+				}
 			}
 			if (v == "LSK3L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -654,6 +665,14 @@ var key = func(v) {
 				else if(cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/CLB_LIM","CLB-1");
 				}
+				else if (cduDisplay == "TO_REF"){
+					if(cduInput == ""){setprop("/instrumentation/fmc/VRchecked",1);}
+					else if(num(cduInput) != nil){
+							setprop("/instrumentation/fmc/vspeeds/VR");
+							setprop("/instrumentation/fmc/VRchecked",1);
+							cduInput = "";
+					}else{setprop("/instrumentation/fmc/VRchecked",1);}
+				}
 			}
 			if (v == "LSK4L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -710,6 +729,14 @@ var key = func(v) {
 				if(cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/CLB_LIM","CLB-2");
 				}
+				if (cduDisplay == "TO_REF"){
+					if(cduInput == ""){setprop("/instrumentation/fmc/V2checked",1);}
+					else if(num(cduInput) != nil){
+							setprop("/instrumentation/fmc/vspeeds/V2");
+							setprop("/instrumentation/fmc/V1checked",2);
+							cduInput = "";
+					}else{setprop("/instrumentation/fmc/V1checked",1);}
+				}
 			}
 			if (v == "LSK5L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -732,6 +759,10 @@ var key = func(v) {
 					else{
 						setprop("/autopilot/route-manager/input","@INSERT6:"~cduInput);
 					}
+				}
+				if (cduDisplay == "TO_REF"){
+					setprop("/instrumentation/fmc/isUplink",1);
+					setprop("/instrumentation/fmc/UplinkSent",1);
 				}
 			}
 			if (v == "LSK5R"){
@@ -887,10 +918,12 @@ var cdu = func{
 		title = "";		page = "";
 		line1l = "";	line2l = "";	line3l = "";	line4l = "";	line5l = "";	line6l = "";
 		line1lt = "";	line2lt = "";	line3lt = "";	line4lt = "";	line5lt = "";	line6lt = "";
+		line1ls = "";	line2ls = "";	line3ls = "";	line4ls = "";	line5ls = "";	line6ls = "";
 		line1c = "";	line2c = "";	line3c = "";	line4c = "";	line5c = "";	line6c = "";
 		line1ct = "";	line2ct = "";	line3ct = "";	line4ct = "";	line5ct = "";	line6ct = "";
 		line1r = "";	line2r = "";	line3r = "";	line4r = "";	line5r = "";	line6r = "";
 		line1rt = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
+		line1rs = "";	line2rs = "";	line3rs = "";	line4rs = "";	line5rs = "";	line6rs = "";
 		line1ctl = "";	line1cl = ""; line1cr = "";
 		line2ctl = "";	line2cl = ""; line2cr = "";
 		line3ctl = "";	line3cl = ""; line3cr = "";
@@ -1392,25 +1425,30 @@ var cdu = func{
 		}
 		if (display == "TO_REF") {
 			title = "TAKEOFF REF";
-			line1lt = "FLAP/ACCEL HT";
-			line1l = sprintf("%2.0f", getprop("/instrumentation/fmc/to-flap"));
-			line1rt = "REF V1";
-			if (getprop("/instrumentation/fmc/vspeeds/V1") != nil){
-				line1r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V1"));
-			}
-			line2lt = "E/O ACCEL HT";
-			line2rt = "REF VR";
-			if (getprop("/instrumentation/fmc/vspeeds/VR") != nil){
-				line2r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/VR"));
-			}
-			line3lt = "THR REDUCTION";
-			line3rt = "REF V2";
-			if (getprop("/instrumentation/fmc/vspeeds/V2") != nil){
-				line3r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2"));
-			}
-			line4lt = "WIND/SLOPE";
-			line4rt = "TRIM   CG";
-			line5rt = "POS SHIFT";
+			page = "1/2";
+			line1lt = "FLAPS";
+			if(getprop("/instrumentation/fmc/isCustomizeFlaps") != 1){
+				line1ls = sprintf("%2.0f", getprop("/instrumentation/fmc/to-flap"));			
+			}else{line1l = sprintf("%2.0f", getprop("/instrumentation/fmc/to-flap"));}
+			line2lt = "THRUST";
+			line3lt = "CG";
+			line1cr = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V1")) or "---";
+			line2cr = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/VR")) or "---";
+			line3cr = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2")) or "---";
+			line4lt = "RWY/POS";
+			line4ct = "GR WT";
+			line4c =  sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
+			line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" or "--" ~"/--";
+			line5lt = "TAKEOFF DATA";
+			if (getprop("/instrumentation/fmc/isUplink") == 1){
+				line5l = "<REQUEST  SENT";
+				if ("/instrumentation/fmc/UplinkSent" == 1){
+					line3l = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
+				}
+			}else{line5l = "<REQUEST"}
+			if (getprop("/instrumentation/fmc/V1checked") == 1){line1r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V1"));}
+			if (getprop("/instrumentation/fmc/VRchecked") == 1){line2r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/VR"));}
+			if (getprop("/instrumentation/fmc/V1checked") == 1){line3r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2"));}
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1484,6 +1522,19 @@ var cdu = func{
 		setprop("/instrumentation/cdu/output/line4/center-title-large",line4ctl);
 		setprop("/instrumentation/cdu/output/line5/center-title-large",line5ctl);
 		setprop("/instrumentation/cdu/output/line6/center-title-large",line6ctl);
+		setprop("/instrumentation/cdu/output/line1/left-small",line1ls);
+		setprop("/instrumentation/cdu/output/line2/left-small",line2ls);
+		setprop("/instrumentation/cdu/output/line3/left-small",line3ls);
+		setprop("/instrumentation/cdu/output/line4/left-small",line4ls);
+		setprop("/instrumentation/cdu/output/line5/left-small",line5ls);
+		setprop("/instrumentation/cdu/output/line6/left-small",line6ls);
+		setprop("/instrumentation/cdu/output/line1/right-small",line1rs);
+		setprop("/instrumentation/cdu/output/line2/right-small",line2rs);
+		setprop("/instrumentation/cdu/output/line3/right-small",line3rs);
+		setprop("/instrumentation/cdu/output/line4/right-small",line4rs);
+		setprop("/instrumentation/cdu/output/line1/right-small",line1rs);
+		setprop("/instrumentation/cdu/output/line5/right-small",line5rs);
+		setprop("/instrumentation/cdu/output/line6/right-small",line6rs);
 		settimer(cdu,0.2);
     }
 _setlistener("/sim/signals/fdm-initialized", cdu); 
