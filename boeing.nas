@@ -28,49 +28,72 @@ var FL2feet = func(FL)
 	return feet;
 }
 var getRwyOfSids = func(sidID){
-	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
-	var allRwys = keys(apt.runways);
-	var rwysCount = size(allRwys);
-	for(var i = 0; i < rwysCount; i+=1){
-		var allSids = apt.sids(allRwys[i]);
-		for(var j = 0; j < size(allSids); j+=1){
-			if(sidID == allSids[j]){
-				return allRwys[i];
+	if(sidID != "DEFAULT"){
+		var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
+		var allRwys = keys(apt.runways);
+		var rwysCount = size(allRwys);
+		for(var i = 0; i < rwysCount; i+=1){
+			var allSids = apt.sids(allRwys[i]);
+			for(var j = 0; j < size(allSids); j+=1){
+				if(sidID == allSids[j]){
+					return allRwys[i];
+					}
+				}
 			}
+		}else{
+			return getprop("/autopilot/route-manager/departure/runway");
 		}
-	}
 }
 var echoSids = func(page,selectedRwy = ""){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
 		if(selectedRwy != ""){
 			var allSids = apt.sids(selectedRwy);
+			var defaultNum = 1;
 		}else{
 			var allSids = apt.sids();
+			var defaultNum = size(keys(apt.runways));
 		}
 		var echoedSids = [];
 		var i = 0;
 		var sidsNum = size(apt.sids());
-	
-		var countStart = (page - 1) * 5;
-		if(countStart > sidsNum){
-			setprop("/instrumentation/cdu/sids/page", page - 1);
+		if(sidsNum != 0){
+			var countStart = (page - 1) * 5;
+			if(countStart > sidsNum){
+				setprop("/instrumentation/cdu/sids/page", page - 1);
 			}
 			count = countStart;
 			while(i <= 5){
-			if(count < sidsNum){
-				append(echoedSids, allSids[count]);
-				i = i + 1;
-			count = count + 1;
-			}else{
-				append(echoedSids, "");
-				i = i + 1;
+				if(count < sidsNum){
+					append(echoedSids, allSids[count]);
+					i = i + 1;
+					count = count + 1;
+				}else{
+					append(echoedSids, "");
+					i = i + 1;
 				}
+			}
+		}else{
+			var countStart = (page - 1) * 5;
+			if(countStart > sidsNum){
+				setprop("/instrumentation/cdu/sids/page", page - 1);
+			}
+			count = countStart;
+			while(i <= 5){
+				if(count < defaultNum){
+					append(echoedSids, "DEFAULT");
+					i = i + 1;
+					count = count + 1;
+				}else{
+					append(echoedSids, "");
+					i = i + 1;
 				}
+			}
+		}
 				return echoedSids;
-	}else{
-		return ["", "", "", "", ""];
-	}
+			}else{
+				return ["", "", "", "", ""];
+			}
 }
 var echoRwys = func(pageRwys){
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
