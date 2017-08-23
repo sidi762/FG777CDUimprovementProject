@@ -1074,7 +1074,7 @@ var cdu = func{
 			else if (getprop("/sim/flight-model") == "yasim") {
 				line1l = sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/consumables/fuel/total-fuel-lbs")/1000));
-				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
+				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-m"));
 				yasim_emptyweight = getprop("/yasim/gross-weight-lbs");
 				yasim_emptyweight -= getprop("/consumables/fuel/total-fuel-lbs");
 				yasim_weights = props.globals.getNode("/sim").getChildren("weight");
