@@ -523,7 +523,131 @@
         </params>
     </overlay>
 </model>
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.092</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line1/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
 
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.080</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line2/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
+
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.068</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line3/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
+
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.056</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line4/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
+
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.044</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line5/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
+
+<model>
+    <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
+    <offsets>
+        <x-m> 0.004</x-m>
+        <y-m> 0.049</y-m>
+        <z-m> 0.032</z-m>
+    </offsets>
+    <overlay>
+        <params>
+            <property type="string">/instrumentation/cdu/output/line6/right-small</property>
+            <character-size type="double">0.007</character-size>
+            <color>
+                <red   type="double">0.8</red>
+                <green type="double">0.8</green>
+                <blue  type="double">0.8</blue>
+            </color>
+            <alignment>right-center</alignment>
+        </params>
+    </overlay>
+</model>
 
 <model>
     <path>Aircraft/Instruments-3d/cdu/display-text-value.xml</path>
