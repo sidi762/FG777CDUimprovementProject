@@ -1084,7 +1084,6 @@ var cdu = func{
 			title = "PERF INIT";
 			line1lt = "GR WT";
 			line1rt = "CRZ ALT";
-			line1r = getprop("/autopilot/route-manager/cruise/altitude-FL") or " ";
 			line2rt = "COST INDEX";
 			line2r = getprop("instrumentation/fmc/COST_INDEX") or " ";
 			line2lt = "FUEL";
@@ -1099,6 +1098,15 @@ var cdu = func{
 			line6ct = "------------------------------------";
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";	
+			if (getprop("/autopilot/route-manager/cruise/altitude-ft") != nil){
+				if(getprop("/autopilot/route-manager/cruise/altitude-ft") == 0){
+					line1r = "";
+				}else if(getprop("/autopilot/route-manager/cruise/altitude-ft") < 10000){
+					line1r = sprintf("%2.0f",getprop("/autopilot/route-manager/cruise/altitude-ft"));
+				}else if(getprop("/autopilot/route-manager/cruise/altitude-ft") > 10000){
+					line1r = getprop("/autopilot/route-manager/cruise/altitude-FL");
+				}
+			}
 			if (getprop("/sim/flight-model") == "jsb") {
 				line1l = sprintf("%3.1f", (getprop("/fdm/jsbsim/inertia/weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/fdm/jsbsim/propulsion/total-fuel-lbs")/1000));
