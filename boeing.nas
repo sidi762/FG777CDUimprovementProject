@@ -921,6 +921,7 @@ var cdu = func{
 		line5ctl = "";	line5cl = ""; line5cr = "";
 		line6ctl = "";	line6cl = ""; line6cr = "";
 		
+		
 		if (display == "MENU") {
 			title = "MENU";
 			line1l = "<FMC";
@@ -1252,7 +1253,7 @@ var cdu = func{
 			line6r = "ROUTE>";
 		}
 		if (display == "RTE1_DEP") {
-		
+			var selOrAct = "<SEL>";
 			if (getprop("/autopilot/route-manager/departure/airport") != nil){
 				title = getprop("/autopilot/route-manager/departure/airport")~" DEPARTURES";
 			}
@@ -1278,7 +1279,7 @@ var cdu = func{
 					line5l = echoSids(getprop("/instrumentation/cdu/sids/page"), getprop("/autopilot/route-manager/departure/runway"))[4];
 				}
 			}else{
-				line1cl = "<SEL>";
+				line1cl = selOrAct;
 				line1l = getprop("/autopilot/route-manager/departure/sidID"); 
 				line2l = "";
 				line3l = "";
@@ -1291,6 +1292,20 @@ var cdu = func{
 				setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 				setprop("/autopilot/route-manager/departure/sidID", "");
 				setprop("/autopilot/route-manager/departure/sid", "");
+			}else{
+				if(getprop("/instrumentation/cdu/sids/rwyIsSelected") == 0){
+					if(getprop("/instrumentation/cdu/output/line1/right") == getprop("/autopilot/route-manager/departure/runway")){
+						line1cr = selOrAct;
+					}else if(getprop("/instrumentation/cdu/output/line2/right") == getprop("/autopilot/route-manager/departure/runway")){
+						line2cr = selOrAct;
+					}else if(getprop("/instrumentation/cdu/output/line3/right") == getprop("/autopilot/route-manager/departure/runway")){
+						line3cr = selOrAct;
+					}else if(getprop("/instrumentation/cdu/output/line4/right") == getprop("/autopilot/route-manager/departure/runway")){
+						line4cr = selOrAct;
+					}else if(getprop("/instrumentation/cdu/output/line5/right") == getprop("/autopilot/route-manager/departure/runway")){
+						line5cr = selOrAct;
+					}
+				}
 			}
 			
 			if(getprop("/instrumentation/cdu/sids/rwyIsSelected") == 0){
@@ -1301,7 +1316,7 @@ var cdu = func{
 				line4r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[3];
 				line5r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[4];
 			}else{
-				line1cr = "<SEL>";
+				line1cr = "selOrAct";
 				line1r = getprop("/autopilot/route-manager/departure/runway"); 
 				line2r = "";
 				line3r = "";
@@ -1447,8 +1462,19 @@ var cdu = func{
 			line1r = "";	line2r = "";	line3r = "";	line4r = "";	line5r = "";	line6r = "";
 			line1rt = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
 			line1ctl = "";
+			
 			line1cl = ""; 
 			line1cr = "";
+			line2cl = "";
+			line2cr = "";
+			line3cl = "";
+			line3cr = "";
+			line4cl = "";
+			line4cr = "";
+			line5cr = "";
+			line5cl = "";
+			line6cr = "";
+			line6cl = "";
 		}
 		
 		setprop("/instrumentation/cdu/output/title",title);
