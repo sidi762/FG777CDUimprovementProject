@@ -1635,9 +1635,30 @@
         <button>0</button>
         <repeatable>false</repeatable>
         <binding>
+            <condition>
+                <equals>
+                    <property>/instrumentation/fmc/isInputedPos</property>
+                    <value>1</value>
+                </equals>
+            </condition>
             <command>property-assign</command>
             <property>/instrumentation/cdu/display</property>
-            <value type="string">PERF_INIT</value>
+            <value>PERF_INIT</value>
+        </binding>
+    </action>
+	   <action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <condition>
+                <equals>
+                    <property>/instrumentation/fmc/isInputedPos</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+            <command>property-assign</command>
+            <property>/instrumentation/cdu/display</property>
+            <value>POS_INIT</value>
         </binding>
     </action>
 </animation>
