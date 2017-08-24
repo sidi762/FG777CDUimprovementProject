@@ -1735,6 +1735,39 @@
 
 <animation>
     <type>pick</type>
+    <object-name>Btn.exec</object-name>
+    <condition>
+     <equals>
+      <property>/autopilot/route-manager/isArmed</property>
+      <value>1</value>
+     </equals>
+    </condition>
+    <action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>cdu.execPushed();</script>
+        </binding>
+    </action>
+</animation>
+
+<animation>
+    <type>translate</type>
+    <object-name>Power.led</object-name>
+    <property>/autopilot/route-manager/isArmed</property>
+	<offset>0.002</offset>
+	<factor>-0.002</factor>
+	<axis>
+	   <x>1</x>
+	   <y>0</y>
+	   <z>0</z>
+	  </axis>
+</animation>
+
+
+<animation>
+    <type>pick</type>
     <object-name>Btn.prev-page</object-name>
     <action>
         <button>0</button>

@@ -295,6 +295,11 @@ var input = func(v) {
 var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
 	}
+	
+var execPushed = func(){
+	setprop("/autopilot/route-manager/input","@ACTIVATE");
+	setprop("/autopilot/route-manager/isArmed", -1);
+}
 var sidNextPge = func(){
 	var tmp = getprop("/instrumentation/cdu/sids/page");
 	tmp = tmp + 1;
@@ -357,6 +362,7 @@ setprop("/instrumentation/fmc/CLB_LIM","CLB");
 setprop("/instrumentation/fmc/isCustomizeFlaps",0);
 setprop("/instrumentation/fmc/isUplink",0);
 setprop("/instrumentation/fmc/isInputedPos",0);
+setprop("/autopilot/route-manager/isArmed",-1);
 #Format aera end
 
 var key = func(v) {
@@ -871,7 +877,7 @@ var key = func(v) {
 					cduDisplay = "THR_LIM";
 				}
 				else if ((cduDisplay == "RTE1_1") or (cduDisplay == "RTE1_LEGS")){
-					setprop("/autopilot/route-manager/input","@ACTIVATE");
+					setprop("/autopilot/route-manager/isArmed",1);
 				}
 				else if ((cduDisplay == "POS_INIT") or (cduDisplay == "DEP") or (cduDisplay == "RTE1_ARR") or (cduDisplay == "RTE1_DEP")){
 					cduDisplay = "RTE1_1";
@@ -1374,7 +1380,7 @@ var cdu = func{
 				line4r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[3];
 				line5r = echoRwys(getprop("/instrumentation/cdu/sids/page"))[4];
 			}else{
-				line1cr = "selOrAct";
+				line1cr = selOrAct;
 				line1r = getprop("/autopilot/route-manager/departure/runway"); 
 				line2r = "";
 				line3r = "";
@@ -1387,6 +1393,11 @@ var cdu = func{
 			#	line1r = getprop("/autopilot/route-manager/departure/runway");
 			#}
 			#line2lt = "TRANS";
+			#if(getprop("/autopilot/route-manager/departure/sid") != nil){
+			#	line6l = "<ERASE";
+			#}else{
+			#	line6l = "<INDEX";
+			#}
 			line6l = "<ERASE";
 			line6r = "ROUTE>";
 		}
