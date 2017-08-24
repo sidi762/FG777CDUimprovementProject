@@ -19,7 +19,7 @@ the FlightGear official hanger, so it will work correctly on this version
 of 777.
 
 ========运行环境=======
-这个项目使用FlightGear 2017.1.2 与 FlightGear 2017.2.1进行测试，所以它可以在以
+这个项目使用FlightGear 2017.1.3 与 FlightGear 2017.2.1进行测试，所以它可以在以
 上版本的FlightGear中正常运行，并且它有可能支持更高版本的FlightGear。
 这个项目使用FlightGear官方机库中最新（截止2017年8月24日）的Seattle波音777进行测
 试，所以它可以在该版本的波音777中正常运行。
