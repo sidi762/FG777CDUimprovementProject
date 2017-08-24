@@ -356,6 +356,7 @@ setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
 setprop("/instrumentation/fmc/isCustomizeFlaps",0);
 setprop("/instrumentation/fmc/isUplink",0);
+setprop("/instrumentation/fmc/isInputedPos",0);
 #Format aera end
 
 var key = func(v) {
@@ -805,8 +806,10 @@ var key = func(v) {
 				if (cduDisplay == "POS_INIT"){
 					call(func getIRSPos(cduInput), nil, var err2 = []);
 					if (size(err2)){
-						setprop("/instrumentation/cdu/input", "INVALID ENTRY");
+						setprop("/instrumentation/fmc/isInputedPos",0);
+						cduInput = "INVALID ENTRY";
 					}else{
+						setprop("/instrumentation/fmc/isInputedPos",1);
 						cduInput = "";
 					}
 				}
@@ -815,27 +818,27 @@ var key = func(v) {
 				{
 					if (cduInput == "0")
 					{
-						setprop("instrumentation/cdu/StepSize","inhibit");
+						setprop("/instrumentation/cdu/StepSize","inhibit");
 						cduInput = "";
 					}
 					else if(cduInput == "R")
 					{
-						setprop("instrumentation/cdu/StepSize","RVSM");
+						setprop("/instrumentation/cdu/StepSize","RVSM");
 						cduInput = "";
 					}
 					else if(cduInput == "RVSM")
 					{
-						setprop("instrumentation/cdu/StepSize","RVSM");
+						setprop("/instrumentation/cdu/StepSize","RVSM");
 						cduInput = "";
 					}
 					else if(cduInput == "I")
 					{
-						setprop("instrumentation/cdu/StepSize","ICAO");
+						setprop("/instrumentation/cdu/StepSize","ICAO");
 						cduInput = "";
 					}
 					else if(cduInput == "ICAO")
 					{
-						setprop("instrumentation/cdu/StepSize","ICAO");
+						setprop("/instrumentation/cdu/StepSize","ICAO");
 						cduInput = "";
 					}
 				}
@@ -1172,7 +1175,15 @@ var cdu = func{
 			}else{
 				line4l = getprop("/instrumentation/clock/indicated-hour")~getprop("/instrumentation/clock/indicated-min")~"z";
 			}
-			line5rt = "SET INERTIAL POS";
+			if (getprop("/instrumentation/fmc/isInputedPos") == 1){
+				line5rt = "";
+				line5r = "";
+			}
+			else{
+				line5rt = "SET INERTIAL POS";
+				line5r = "   *  .    *  . ";
+			}
+
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
 			line6r = "ROUTE>";
