@@ -502,6 +502,15 @@ var key = func(v) {
 						}else{cduInput = "INVALID ENTRY";}
 						
 					}
+					if (cduDisplay == "TO_REF"){
+					if(cduInput == ""){setprop("/instrumentation/fmc/V1checked",1);}
+					else if(num(cduInput) != nil){
+							setprop("/instrumentation/fmc/vspeeds/V1");
+							setprop("/instrumentation/fmc/V1checked",1);
+							cduInput = "";
+					}else{setprop("/instrumentation/fmc/V1checked",1);}
+				}
+			}
 			}
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -616,12 +625,12 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/CLB_LIM","CLB");
 				}
 				else if (cduDisplay == "TO_REF"){
-					if(cduInput == ""){setprop("/instrumentation/fmc/V1checked",1);}
+					if(cduInput == ""){setprop("/instrumentation/fmc/VRchecked",1);}
 					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/V1");
-							setprop("/instrumentation/fmc/V1checked",1);
+							setprop("/instrumentation/fmc/vspeeds/VR");
+							setprop("/instrumentation/fmc/VRchecked",1);
 							cduInput = "";
-					}else{setprop("/instrumentation/fmc/V1checked",1);}
+					}else{setprop("/instrumentation/fmc/VRchecked",1);}
 				}
 			}
 			if (v == "LSK3L"){
@@ -690,12 +699,12 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/CLB_LIM","CLB-1");
 				}
 				else if (cduDisplay == "TO_REF"){
-					if(cduInput == ""){setprop("/instrumentation/fmc/VRchecked",1);}
+					if(cduInput == ""){setprop("/instrumentation/fmc/V2checked",1);}
 					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/VR");
-							setprop("/instrumentation/fmc/VRchecked",1);
+							setprop("/instrumentation/fmc/vspeeds/V2");
+							setprop("/instrumentation/fmc/V2checked",1);
 							cduInput = "";
-					}else{setprop("/instrumentation/fmc/VRchecked",1);}
+					}else{setprop("/instrumentation/fmc/V2checked",1);}
 				}
 			}
 			if (v == "LSK4L"){
@@ -818,7 +827,7 @@ var key = func(v) {
 				{
 					if (cduInput == "0")
 					{
-						setprop("/instrumentation/cdu/StepSize","inhibit");
+						setprop("/instrumentation/cdu/StepSize","INHIBIT");
 						cduInput = "";
 					}
 					else if(cduInput == "R")
@@ -911,7 +920,6 @@ var key = func(v) {
 			}
 			setprop("/instrumentation/cdu/input",cduInput);
 		}
-	}
 	
 var delete = func {
 		var length = size(getprop("/instrumentation/cdu/input")) - 1;
@@ -1119,7 +1127,7 @@ var cdu = func{
 			else if (getprop("/sim/flight-model") == "yasim") {
 				line1l = sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/consumables/fuel/total-fuel-lbs")/1000));
-				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-m"));
+				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
 				yasim_emptyweight = getprop("/yasim/gross-weight-lbs");
 				yasim_emptyweight -= getprop("/consumables/fuel/total-fuel-lbs");
 				yasim_weights = props.globals.getNode("/sim").getChildren("weight");
@@ -1495,8 +1503,13 @@ var cdu = func{
 			line4lt = "RWY/POS";
 			line4ct = "GR WT";
 			line4c =  sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
-			line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" or "--" ~"/--";
 			line5lt = "TAKEOFF DATA";
+			if (getprop("/autopilot/route-manager/departure/runway") == nil){
+				line4l = "--/--";
+			}
+			else{
+				line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" #will add the runway status at sooooooooooooon	
+			}
 			if (getprop("/instrumentation/fmc/isUplink") == 1){
 				line5l = "<REQUEST  SENT";
 				if ("/instrumentation/fmc/UplinkSent" == 1){
@@ -1505,7 +1518,7 @@ var cdu = func{
 			}else{line5l = "<REQUEST"}
 			if (getprop("/instrumentation/fmc/V1checked") == 1){line1r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V1"));}
 			if (getprop("/instrumentation/fmc/VRchecked") == 1){line2r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/VR"));}
-			if (getprop("/instrumentation/fmc/V1checked") == 1){line3r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2"));}
+			if (getprop("/instrumentation/fmc/V2checked") == 1){line3r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2"));}
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
