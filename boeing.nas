@@ -1127,7 +1127,7 @@ var cdu = func{
 			else if (getprop("/sim/flight-model") == "yasim") {
 				line1l = sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
 				line2l = sprintf("%3.1f", (getprop("/consumables/fuel/total-fuel-lbs")/1000));
-				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
+				line4r = decimal2percentage(getprop("/fdm/yasim/cg-x-m") * -0.1);
 				yasim_emptyweight = getprop("/yasim/gross-weight-lbs");
 				yasim_emptyweight -= getprop("/consumables/fuel/total-fuel-lbs");
 				yasim_weights = props.globals.getNode("/sim").getChildren("weight");
@@ -1183,12 +1183,10 @@ var cdu = func{
 			}else{
 				line4l = getprop("/instrumentation/clock/indicated-hour")~getprop("/instrumentation/clock/indicated-min")~"z";
 			}
+			line5rt = "SET INERTIAL POS";
 			if (getprop("/instrumentation/fmc/isInputedPos") == 1){
-				line5rt = "";
 				line5r = "";
-			}
-			else{
-				line5rt = "SET INERTIAL POS";
+			}else{
 				line5r = "   *  .    *  . ";
 			}
 
