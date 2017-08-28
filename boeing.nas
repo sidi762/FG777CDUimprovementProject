@@ -43,9 +43,11 @@ var getRwyOfSids = func(sidID){
 		}else{
 			if(getprop("/autopilot/route-manager/departure/newrunway") != ""){
 				return getprop("/autopilot/route-manager/departure/newrunway");
+			}else if(getprop("/autopilot/route-manager/departure/newrunway") != nil){
+				return getprop("/autopilot/route-manager/departure/newrunway");
 			}else{
 				return allRwys[0];
-			}	
+			}
 		}
 }
 var echoSids = func(page,selectedRwy = ""){
