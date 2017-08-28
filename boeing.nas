@@ -304,6 +304,7 @@ var input = func(v) {
 	
 var execPushed = func(){
 	if(getprop("/autopilot/route-manager/isArmed") == 1){
+		setprop("/autopilot/route-manager/isChanged",0);
 		setprop("/autopilot/route-manager/input","@ACTIVATE");
 		setprop("/autopilot/route-manager/isArmed", -1);
 	}
@@ -371,6 +372,7 @@ setprop("/instrumentation/fmc/isCustomizeFlaps",0);
 setprop("/instrumentation/fmc/isUplink",0);
 setprop("/instrumentation/fmc/isInputedPos",0);
 setprop("/autopilot/route-manager/isArmed",-1);
+setprop("/autopilot/route-manager/isChanged",1);
 #Format aera end
 
 var key = func(v) {
@@ -383,6 +385,7 @@ var key = func(v) {
 			if (v == "LSK1L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/left") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newsid", getprop("/instrumentation/cdu/output/line1/left"));
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/newrunway", getRwyOfSids(getprop("/instrumentation/cdu/output/line1/left")));
@@ -437,6 +440,7 @@ var key = func(v) {
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line1/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 					}
@@ -529,6 +533,7 @@ var key = func(v) {
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line2/left") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newsid", getprop("/instrumentation/cdu/output/line2/left"));
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/newrunway", getRwyOfSids(getprop("/instrumentation/cdu/output/line2/left")));
@@ -588,6 +593,7 @@ var key = func(v) {
 			}
 			if (v == "LSK2R"){
 				if (cduDisplay == "RTE1_DEP"){
+					setprop("/autopilot/route-manager/isChanged",1);
 					if (getprop("/instrumentation/cdu/output/line2") != ""){
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line2/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
@@ -650,6 +656,7 @@ var key = func(v) {
 			if (v == "LSK3L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line3/left") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newsid", getprop("/instrumentation/cdu/output/line3/left"));
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/newrunway", getRwyOfSids(getprop("/instrumentation/cdu/output/line3/left")));
@@ -692,6 +699,7 @@ var key = func(v) {
 			if (v == "LSK3R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line3") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line3/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						}
@@ -724,6 +732,7 @@ var key = func(v) {
 			if (v == "LSK4L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line4/left") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newsid", getprop("/instrumentation/cdu/output/line4/left"));
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/newrunway", getRwyOfSids(getprop("/instrumentation/cdu/output/line4/left")));
@@ -759,6 +768,7 @@ var key = func(v) {
 			if (v == "LSK4R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line4") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line4/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						}
@@ -788,6 +798,7 @@ var key = func(v) {
 			if (v == "LSK5L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line5/left") != ""){
+						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newsid", getprop("/instrumentation/cdu/output/line5/left"));
 						setprop("/instrumentation/cdu/sids/sidIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/newrunway", getRwyOfSids(getprop("/instrumentation/cdu/output/line5/left")));
@@ -814,6 +825,7 @@ var key = func(v) {
 			}
 			if (v == "LSK5R"){
 				if (cduDisplay == "RTE1_DEP"){
+					setprop("/autopilot/route-manager/isChanged",1);
 					if (getprop("/instrumentation/cdu/output/line5") != ""){
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line5/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
@@ -1331,18 +1343,13 @@ var cdu = func{
 			line6r = "ROUTE>";
 		}
 		if (display == "RTE1_DEP") {
-			if(getprop("/autopilot/route-manager/departure/sid") == getprop("/autopilot/route-manager/departure/newsid")){
-				if(getprop("/autopilot/route-manager/departure/runway") == getprop("/autopilot/route-manager/departure/newrunway")){
+				if(getprop("/autopilot/route-manager/isChanged" == 0){
 					var selOrAct = "<ACT>";
-					var line6l = "<INDEX";
+				    line6l = "<INDEX";
 				}else{
 					var selOrAct = "<SEL>";
-					var line6l = "<ERASE";
+					line6l = "<ERASE";
 				}
-			}else{
-				selOrAct = "<SEL>";
-				line6l = "<ERASE";
-			}
 			if (getprop("/autopilot/route-manager/departure/airport") != nil){
 				title = getprop("/autopilot/route-manager/departure/airport")~" DEPARTURES";
 			}
