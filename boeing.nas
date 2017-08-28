@@ -1343,7 +1343,7 @@ var cdu = func{
 			line6r = "ROUTE>";
 		}
 		if (display == "RTE1_DEP") {
-				if(getprop("/autopilot/route-manager/isChanged" == 0){
+				if(getprop("/autopilot/route-manager/isChanged") == 0){
 					var selOrAct = "<ACT>";
 				    line6l = "<INDEX";
 				}else{
