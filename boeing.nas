@@ -41,12 +41,12 @@ var getRwyOfSids = func(sidID){
 				}
 			}
 		}else{
-			if(getprop("/autopilot/route-manager/departure/newrunway") != ""){
-				return getprop("/autopilot/route-manager/departure/newrunway");
-			}else if(getprop("/autopilot/route-manager/departure/newrunway") != nil){
-				return getprop("/autopilot/route-manager/departure/newrunway");
-			}else{
+			if(getprop("/autopilot/route-manager/departure/newrunway") == ""){
 				return allRwys[0];
+			}else if(getprop("/autopilot/route-manager/departure/newrunway") == nil){
+				return allRwys[0];
+			}else{
+				return getprop("/autopilot/route-manager/departure/newrunway");
 			}
 		}
 }
