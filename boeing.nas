@@ -297,8 +297,10 @@ var input = func(v) {
 	}
 	
 var execPushed = func(){
-	setprop("/autopilot/route-manager/input","@ACTIVATE");
-	setprop("/autopilot/route-manager/isArmed", -1);
+	if(getprop("/autopilot/route-manager/isArmed") == 1){
+		setprop("/autopilot/route-manager/input","@ACTIVATE");
+		setprop("/autopilot/route-manager/isArmed", -1);
+	}
 }
 var sidNextPge = func(){
 	var tmp = getprop("/instrumentation/cdu/sids/page");
@@ -1351,7 +1353,7 @@ var cdu = func{
 				line5l = "";
 			}
 			
-			if (getprop("/autopilot/route-manager/departure/runway") == nil){
+			if (getprop("/autopilot/route-manager/departure/runway") == ""){
 				setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 				setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 				setprop("/autopilot/route-manager/departure/sidID", "");
