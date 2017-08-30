@@ -1,0 +1,54 @@
+var weight_GE90110B1 = [360, 340, 320, 300, 280, 260, 240, 220, 200, 180, 160, 140];
+var V1_GE90110B1 = [169, 164, 158, 152, 146, 139, 131, 122, 113, 102, 91, 83];
+var VR_GE90110B1 = [176, 170, 165, 158, 152, 145, 138, 131, 123, 115, 106, 97];
+var V2_GE90110B1 = [180, 176, 171, 166, 161, 156, 151, 145, 139, 133, 126, 119];
+var VSPEED_GE90110B1 = [weight_GE90110B1, V1_GE90110B1, VR_GE90110B1, V2_GE90110B1];
+
+#V1,VR and V2 Adjustment
+var tempC_GE90110B1 = [70,60,50,40,30,20,-60];
+var -2000V1Adj_GE90110B1 = [12,8,4,1,0,0,0];
+var 0V1Adj_GE90110B1 = [14,10,5,2,0,0,0];
+var 2000V1Adj_GE90110B1 = [0,12,8,4,1,1,1];
+var 4000V1Adj_GE90110B1 = [0,15,10,7,4,3,3];
+var 6000V1Adj_GE90110B1 = [0,0,13,10,7,5,5];
+var 8000V1Adj_GE90110B1 = [0,0,17,14,11,9,7];
+var V1Adjust_GE90110B1 = [-2000V1Adj, 0V1Adj, 1000V1Adj, 2000V1Adj, 3000V1Adj];
+
+var -2000VrAdj_GE90110B1 = [6,4,2,0,0,0,0];
+var 0VrAdj_GE90110B1 = [7,5,3,1,0,0,0];
+var 2000VrAdj_GE90110B1 = [0,6,4,3,1,1,1];
+var 4000VrAdj_GE90110B1 = [0,7,6,4,3,2,2];
+var 6000VrAdj_GE90110B1 = [0,0,7,5,4,3,3];
+var 8000VrAdj_GE90110B1 = [0,0,8,7,6,5,4];
+var VrAdjust_GE90110B1 = [-2000VrAdj, 0VrAdj, 1000VrAdj, 2000VrAdj, 3000VrAdj];
+
+var -2000V2Adj_GE90110B1 = [-3,-2,-1,0,0,0,0];
+var 0V2Adj_GE90110B1 = [-3,-2,-1,-1,0,0,0];
+var 2000V2Adj_GE90110B1 = [0,-3,-2,-1,0,0,0];
+var 4000V2Adj_GE90110B1 = [0,-3,-2,-2,-1,-1,-1];
+var 6000V2Adj_GE90110B1 = [0,0,-3,-2,-1,-1,-1];
+var 8000V2Adj_GE90110B1 = [0,0,-4,-3,-2,-2,-1];
+var V2Adjust_GE90110B1 = [-2000V2Adj, 0V2Adj, 1000V2Adj, 2000V2Adj, 3000V2Adj];
+
+
+
+
+
+
+
+
+
+var tmpWeight = getprop("/fdm/yasim/gross-weight-lbs") * 0.4535924 * 0.0001;
+var weightForCal = 10 * sprintf("%2.0f",tmpWeight);
+var V1 = 0;
+var Vr = 0;
+var V2 = 0;
+for(var i = 0; i <= 11; i+=1){
+	if(VSPEED_GE90110B1[0][i] == weightForCal){
+		V1 = VSPEED_GE90110B1[1][i];
+		Vr = VSPEED_GE90110B1[2][i];
+		V2 = VSPEED_GE90110B1[3][i];
+	}
+}
+
+print(V1~" "~Vr~" "~V2);
