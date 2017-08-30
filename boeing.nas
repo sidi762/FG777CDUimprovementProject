@@ -1,3 +1,74 @@
+var GetVref = func(Flaps,Tons){
+	if(Tons <=140){
+		if(Flaps = 30){return 117;}
+		else if (Flaps = 25){return 118;}
+		else if (Flaps = 20){return 123;}
+	}else if(Tons >= 150){
+		if (Tons < 160){
+			if(Flaps = 30){return 117;}
+			else if(Flaps = 25){return 123;}
+			else if(Flaps = 20){return 127;}
+		}
+	}else if(Tons >= 160){
+		if (Tons < 170){
+			if(Flaps = 30){return 121;}
+			else if(Flaps = 25){return 127;}
+			else if(Flaps = 20){return 131;}
+		}
+	}else if(Tons >= 170){
+		if (Tons < 180){
+			if(Flaps = 30){return 124;}
+			else if(Flaps = 25){return 127;}
+			else if(Flaps = 20){return 131;}
+		}
+	}else if(Tons >= 180){
+		if (Tons < 190){
+			if(Flaps = 30){return 128;}
+			else if(Flaps = 25){return 134;}
+			else if(Flaps = 20){return 139;}
+		}
+	}else if(Tons >= 190){
+		if (Tons < 200){
+			if(Flaps = 30){return 132;}
+			else if(Flaps = 25){return 138;}
+			else if(Flaps = 20){return 143;}
+		}
+	}else if(Tons >= 200){
+		if (Tons < 210){
+			if(Flaps = 30){return 135;}
+			else if(Flaps = 25){return 142;}
+			else if(Flaps = 20){return 147;}
+		}
+	}else if(Tons >= 210){
+		if (Tons < 220){
+			if(Flaps = 30){return 139;}
+			else if(Flaps = 25){return 145;}
+			else if(Flaps = 20){return 150;}
+		}
+	}else if(Tons >= 220){
+		if (Tons < 230){
+			if(Flaps = 30){return 142;}
+			else if(Flaps = 25){return 149;}
+			else if(Flaps = 20){return 154;}
+		}
+	}else if(Tons >= 230){
+		if (Tons < 240){
+			if(Flaps = 30){return 145;}
+			else if(Flaps = 25){return 152;}
+			else if(Flaps = 20){return 158;}
+		}
+	}else if(Tons >= 240){
+		if (Tons < 250){
+			if(Flaps = 30){return 148;}
+			else if(Flaps = 25){return 156;}
+			else if(Flaps = 20){return 161;}
+		}
+	}else if(Tons >= 250){
+		if(Flaps = 30){return 151;}
+		else if(Flaps = 25){return 159;}
+		else if(Flaps = 20){return 164;}
+	}
+}
 var decimal2percentage = func(decimal)
 {
 	var TMP = decimal * 100;
@@ -26,6 +97,10 @@ var FL2feet = func(FL)
 	tmp = right(FL,offset);
 	feet = int(tmp~"00");
 	return feet;
+}
+var lbs2tons = func(lbs){
+	var tons = lbs * 0.0005;
+	return tons;
 }
 var getRwyOfSids = func(sidID){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
@@ -882,10 +957,7 @@ var key = func(v) {
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
 				}
-				if (cduDisplay == "APP_REF"){
-					cduDisplay = "INIT_REF";
-				}
-				if ((cduDisplay == "IDENT") or (cduDisplay = "MAINT") or (cduDisplay = "PERF_INIT") or (cduDisplay = "POS_INIT") or (cduDisplay = "POS_REF") or (cduDisplay = "THR_LIM") or (cduDisplay = "TO_REF")){
+				else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF")){
 					cduDisplay = "INIT_REF";
 				}
 			}
@@ -1011,12 +1083,19 @@ var cdu = func{
 		if (display == "APP_REF") {
 			title = "APPROACH REF";
 			line1lt = "GROSS WT";
-			line1rt = "FLAPS    VREF";
-			if (getprop("/instrumentation/fmc/vspeeds/Vref") != nil){
-				line1l = getprop("/instrumentation/fmc/vspeeds/Vref");
-			}
+			line1cr = "FLAPS";
+			line2cr = "20*";
+			line3cr = "25*";
+			line4cr = "30*";
+			line1rt = "VREF";
+			line2r = sprintf("%3.0f",GetVref(20,getprop("/fdm/yasim/gross-weight-tons")));
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				line4lt = getprop("/autopilot/route-manager/destination/airport");
+			}
+			if (lbs2tons(getprop("/fdm/yasim/gross-weight-lbs")) != nil){
+				line1l = sprintf("%3.2f",lbs2tons(getprop("/yasim/gross-weight-lbs")));
+				setprop("/fdm/yasim/gross-weight-tons",lbs2tons(getprop("/yasim/gross-weight-lbs")));
+				
 			}
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";
