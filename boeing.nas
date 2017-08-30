@@ -1088,8 +1088,8 @@ var cdu = func{
 			line3cr = "25*";
 			line4cr = "30*";
 			line1rt = "VREF";
-			var gross-weight-tons = lbs2tons(getprop("/yasim/gross-weight-lbs"));			
-			line2r = sprintf("%3.0f", GetVref(20, gross-weight-tons));
+			var gross_weight_tons = lbs2tons(getprop("/yasim/gross-weight-lbs"));			
+			line2r = sprintf("%3.0f", GetVref(20, gross_weight_tons));
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				line4lt = getprop("/autopilot/route-manager/destination/airport");
 			}
