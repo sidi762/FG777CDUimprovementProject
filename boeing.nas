@@ -1,5 +1,5 @@
 var GetVref = func(Flaps,Tons){
-	if(Tons <=140){
+	if(Tons <= 140){
 		if(Flaps = 30){return 117;}
 		else if (Flaps = 25){return 118;}
 		else if (Flaps = 20){return 123;}
@@ -1088,7 +1088,8 @@ var cdu = func{
 			line3cr = "25*";
 			line4cr = "30*";
 			line1rt = "VREF";
-			line2r = sprintf("%3.0f",GetVref(20,getprop("/fdm/yasim/gross-weight-tons")));
+			var gross-weight-tons = lbs2tons(getprop("/yasim/gross-weight-lbs"))
+			line2r = sprintf("%3.0f", GetVref(20, gross-weight-tons);
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				line4lt = getprop("/autopilot/route-manager/destination/airport");
 			}

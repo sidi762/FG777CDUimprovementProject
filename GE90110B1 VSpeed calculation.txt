@@ -51,4 +51,7 @@ for(var i = 0; i <= 11; i+=1){
 	}
 }
 
+if(V1 > Vr){
+V1 = Vr;
+}
 print(V1~" "~Vr~" "~V2);
