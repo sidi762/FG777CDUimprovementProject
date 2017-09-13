@@ -434,7 +434,7 @@ var echoUpdateArmed = func()
 		return "NOW>"
 	}
 }
-#Format The "prop" here 
+#Format the "prop" here 
 setprop("/instrumentation/cdu/LATorBRG",0);
 setprop("/instrumentation/cdu/isARMED",0);
 setprop("/autopilot/route-manager/cruise/altitude-ft",0);
@@ -444,10 +444,13 @@ setprop("instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
 setprop("/instrumentation/fmc/isCustomizeFlaps",0);
-setprop("/instrumentation/fmc/isUplink",0);
 setprop("/instrumentation/fmc/isInputedPos",0);
 setprop("/autopilot/route-manager/isArmed",-1);
 setprop("/autopilot/route-manager/isChanged",1);
+setprop("/fmc/EoAccelHT",1000);
+setprop("/fmc/AccelHT",1000);
+setprop("/fmc/Reduction",1000);
+setprop("/fmc/ref-temperature-degc",-999);
 #Format aera end
 
 var key = func(v) {
@@ -893,10 +896,6 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/input","@INSERT6:"~cduInput);
 					}
 				}
-				if (cduDisplay == "TO_REF"){
-					setprop("/instrumentation/fmc/isUplink",1);
-					setprop("/instrumentation/fmc/UplinkSent",1);
-				}
 			}
 			if (v == "LSK5R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -923,7 +922,11 @@ var key = func(v) {
 						cduInput = "";
 					}
 				}
-				
+				if (cduDisplay == "TO_REF_2")
+				{
+					setprop("/fmc/ref-temperature-degc",cduInput);
+					cduInput = "";
+				}
 				if (cduDisplay == "PERF_INIT")
 				{
 					if (cduInput == "0")
@@ -1087,9 +1090,8 @@ var cdu = func{
 			line2cr = "20*";
 			line3cr = "25*";
 			line4cr = "30*";
-			line1rt = "VREF";
-			var gross-weight-tons = lbs2tons(getprop("/yasim/gross-weight-lbs"));			
-			line2r = sprintf("%3.0f", GetVref(20, gross-weight-tons));
+			line1rt = "VREF";		
+			line2r = sprintf("%3.0f", GetVref(20, lbs2tons(getprop("fdm/yasim/gross-weight-lbs"))));
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				line4lt = getprop("/autopilot/route-manager/destination/airport");
 			}
@@ -1623,24 +1625,33 @@ var cdu = func{
 			line4lt = "RWY/POS";
 			line4ct = "GR WT";
 			line4c =  sprintf("%3.1f", (getprop("/yasim/gross-weight-lbs")/1000));
-			line5lt = "TAKEOFF DATA";
 			if (getprop("/autopilot/route-manager/departure/runway") == nil){
 				line4l = "--/--";
 			}
 			else{
 				line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" #will add the runway status at sooooooooooooon	
 			}
-			if (getprop("/instrumentation/fmc/isUplink") == 1){
-				line5l = "<REQUEST  SENT";
-				if ("/instrumentation/fmc/UplinkSent" == 1){
-					line3l = decimal2percentage(getprop("/fdm/yasim/cg-x-mac"));
-				}
-			}else{line5l = "<REQUEST"}
-			if (getprop("/instrumentation/fmc/V1checked") == 1){line1r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V1"));}
-			if (getprop("/instrumentation/fmc/VRchecked") == 1){line2r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/VR"));}
-			if (getprop("/instrumentation/fmc/V2checked") == 1){line3r = sprintf("%3.0f", getprop("/instrumentation/fmc/vspeeds/V2"));}
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
+		}
+		if (display == "TO_REF_2")
+		{
+			title = "TAKEOFF REF UPLINK";
+			line1rt = "EO ACCEL HT";
+			line1r = sprintf("%3.0f",getprop("/fmc/EoAccelHT"));
+			line2rt = "ACCEL HT";
+			line2r = sprintf("%3.0f",getprop("/fmc/AccelHT"));
+			line3rt = "THE REDUCTION";
+			line3r = sprintf("%3.0f",getprop("/fmc/Reduction"));
+			line2lt = "ALTN THRUST";
+			line2l = "<TO";
+			line3lt = "WIND";
+			line3l = "---*/---KT";
+			line4lt = "RWY WIND";
+			line4rt = "LIM TOGW";
+			line5lt = "SLOPE";
+			line5rt = "REF OAT";
+			if (getprop("/fmc/ref-temperature-degc") == 0){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
 		}
 		
 		if (serviceable != 1){
