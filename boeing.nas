@@ -1021,7 +1021,6 @@ var cdu = func{
 			line3cr = "25*";
 			line4cr = "30*";
 			line1rt = "VREF";		
-			line2r = sprintf("%3.0f", GetVref(20, lbs2tons(getprop("fdm/yasim/gross-weight-lbs"))));
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				line4lt = getprop("/autopilot/route-manager/destination/airport");
 			}
@@ -1561,6 +1560,7 @@ var cdu = func{
 			else{
 				line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" #will add the runway status at sooooooooooooon	
 			}
+			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1581,7 +1581,9 @@ var cdu = func{
 			line4rt = "LIM TOGW";
 			line5lt = "SLOPE";
 			line5rt = "REF OAT";
-			if (getprop("/fmc/ref-temperature-degc") == 0){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
+			line6ct = "----------------------------------------";
+			line6l = "<INDEX";
+			if (getprop("/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
 		}
 		
 		if (serviceable != 1){
