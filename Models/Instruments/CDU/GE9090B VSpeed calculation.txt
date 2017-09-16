@@ -1,0 +1,91 @@
+var weight_GE9090B = [300,290,280,270,260,250, 240, 230, 220, 210, 200, 190, 180, 170, 160, 150, 140];
+var V1_GE9090B = [157,153,150,147,144,140,137,133,129,125,121,116,111,106,101,96,92];
+var VR_GE9090B = [162,159,156,153,150,146,143,139,136,132,128,125,121,117,112,108,104];
+var V2_GE9090B = [168,165,163,160,157,154,152,149,146,143,140,136,133,130,126,123,119];
+var VSPEED_GE9090B = [weight_GE9090B, V1_GE9090B, VR_GE9090B, V2_GE9090B];
+
+#V1,VR and V2 Adjustment
+var tempC_GE9090B = [60,50,40,30,20,-60];
+var h02000V1Adj_GE9090B = [8,4,1,0,0,0];
+var h0V1Adj_GE9090B = [10,6,3,0,0,0];
+var h2000V1Adj_GE9090B = [12,8,5,2,1,1];
+var h4000V1Adj_GE9090B = [14,10,7,5,3,3];
+var h6000V1Adj_GE9090B = [0,12,9,7,5,5];
+var h8000V1Adj_GE9090B = [0,14,12,9,7,7];
+var V1Adjust_GE9090B = [tempC_GE9090B, h02000V1Adj_GE9090B, h0V1Adj_GE9090B, h2000V1Adj_GE9090B, h4000V1Adj_GE9090B, h6000V1Adj_GE9090B, h8000V1Adj_GE9090B];
+
+var h02000VrAdj_GE9090B = [4,2,1,0,0,0];
+var h0VrAdj_GE9090B = [4,3,1,0,0,0];
+var h2000VrAdj_GE9090B = [2,5,4,3,1,1,1];
+var h4000VrAdj_GE9090B = [6,5,4,2,2,2];
+var h6000VrAdj_GE9090B = [0,6,5,3,3,2];
+var h8000VrAdj_GE9090B = [0,14,12,9,7,7];
+var VrAdjust_GE9090B = [tempC_GE9090B, h02000VrAdj_GE9090B, h0VrAdj_GE9090B, h2000VrAdj_GE9090B, h4000VrAdj_GE9090B, h6000VrAdj_GE9090B, h8000VrAdj_GE9090B];
+
+var h02000V2Adj_GE9090B = [-2,-1,0,0,0];
+var h0V2Adj_GE9090B = [-2,-1-1,0,0,0];
+var h2000V2Adj_GE9090B = [-3,-2,-1,-1,0,0];
+var h4000V2Adj_GE9090B = [-3,-3,-2,-1,-1,-1];
+var h6000V2Adj_GE9090B = [0,-3,-2,-2,-2,-1,-1];
+var h8000V2Adj_GE9090B = [0,-4,-3,-2,-2,1];
+var V2Adjust_GE9090B = [tempC_GE9090B, h02000V2Adj_GE9090B, h0V2Adj_GE9090B, h2000V2Adj_GE9090B, h4000V2Adj_GE9090B, h6000V2Adj_GE9090B, h8000V2Adj_GE9090B];
+
+
+
+
+
+
+
+
+
+var tmpWeight = getprop("/fdm/yasim/gross-weight-lbs") * 0.4535924 * 0.0001;
+var weightForCal = 10 * sprintf("%2.0f",tmpWeight);
+var V1 = 0;
+var Vr = 0;
+var V2 = 0;
+for(var i = 0; i <= 11; i+=1){
+	if(VSPEED_GE9090B[0][i] == weightForCal){
+		V1 = VSPEED_GE9090B[1][i];
+		Vr = VSPEED_GE9090B[2][i];
+		V2 = VSPEED_GE9090B[3][i];
+	}
+}
+
+var outTempC = getprop("/environment/temperature-degc");
+var alt = getprop("/position/altitude-ft");
+var tempCForCal = 10 * sprintf("%1.0f", (sprintf("%1.0f",outTempC) * 0.1));
+var altForCal = 2000 * sprintf("%1.0f",alt/2000);
+if(altForCal > 8000){
+	altForCal = 8000;
+}else if(altForCal < -2000){
+	altForCal = -2000;
+}
+var altJ = (altForCal / 2000) + 2;
+if(tempCForCal < 20){
+	tempCForCal = -60;
+}else if(tempCForCal > 70){
+	tempCForCal = 70;
+}
+print(tempCForCal);
+var V1Adj = 0;
+var V2Adj = 0;
+var VrAdj = 0;
+for(var i = 0; i <= 6; i+=1){
+	if(V1Adjust_GE9090B[0][i] == tempCForCal){
+			V1Adj = V1Adjust_GE9090B[altJ][i];
+	}
+	if(VrAdjust_GE9090B[0][i] == tempCForCal){
+			VrAdj = VrAdjust_GE9090B[altJ][i];
+	}
+	if(V2Adjust_GE9090B[0][i] == tempCForCal){
+			V2Adj = V2Adjust_GE9090B[altJ][i];
+	}
+}
+print(V1Adj ~ " " ~ VrAdj ~ " " ~ V2Adj);
+var V1 = V1 + V1Adj;
+var Vr = Vr + VrAdj;
+var V2 = V2 + V2Adj;
+if(V1 > Vr){
+V1 = Vr;
+}
+print(V1~" "~Vr~" "~V2);
