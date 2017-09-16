@@ -1444,7 +1444,7 @@ var cdu = func{
 			line6r = "ROUTE>";
 		}
 		if (display == "RTE1_LEGS") {
-			if (getprop("/autopilot/route-manager/active") == true){
+			if (getprop("/autopilot/route-manager/active") == 0){
 				title = "ACT RTE 1 LEGS";
 				}
 			else {
@@ -1509,7 +1509,7 @@ var cdu = func{
 					}
 				}
 			line6l = "<RTE 2 LEGS";
-			if (getprop("/autopilot/route-manager/active") == true){
+			if (getprop("/autopilot/route-manager/active") == 1){
 				line6r = "RTE DATA>";
 				}
 			else{
