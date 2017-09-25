@@ -902,8 +902,8 @@ var key = func(v) {
 					cduDisplay = "THR_LIM";
 				}
 				else if ((cduDisplay == "RTE1_1") or (cduDisplay == "RTE1_LEGS")){
-					setprop("/autopilot/route-manager/departure/sid", getprop("/autopilot/route-manager/departure/newsid"));
-					setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"));
+					if (getprop("/autopilot/route-manager/departure/newsid") != nil){setprop("/autopilot/route-manager/departure/sid", getprop("/autopilot/route-manager/departure/newsid"));}
+					if (getprop("/autopilot/route-manager/departure/newrunway") != nil){setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"))};
 					setprop("/autopilot/route-manager/isArmed",1);
 				}
 				else if ((cduDisplay == "POS_INIT") or (cduDisplay == "DEP") or (cduDisplay == "RTE1_ARR") or (cduDisplay == "RTE1_DEP")){
@@ -1444,7 +1444,7 @@ var cdu = func{
 			line6r = "ROUTE>";
 		}
 		if (display == "RTE1_LEGS") {
-			if (getprop("/autopilot/route-manager/active") == true){
+			if (getprop("/autopilot/route-manager/active") == 0){
 				title = "ACT RTE 1 LEGS";
 				}
 			else {
@@ -1509,7 +1509,7 @@ var cdu = func{
 					}
 				}
 			line6l = "<RTE 2 LEGS";
-			if (getprop("/autopilot/route-manager/active") == true){
+			if (getprop("/autopilot/route-manager/active") == 1){
 				line6r = "RTE DATA>";
 				}
 			else{
