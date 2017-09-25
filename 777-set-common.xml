@@ -1217,12 +1217,14 @@ Service Ceiling: 43,100ft
             <file>Aircraft/777/Nasal/SWanimation.nas</file>
             <file>Aircraft/777/Nasal/runway.nas</file>
             <file>Aircraft/Generic/limits.nas</file>
+			
         </b777>
         <dialogs>
             <file>Aircraft/777/Nasal/dialogs.nas</file>
         </dialogs>
         <cdu>
             <file>Aircraft/777/Models/Instruments/CDU/boeing.nas</file>
+			<file>Aircraft/777/Models/Instruments/CDU/vspeeds-calculation.nas</file>
         </cdu>
     </nasal>
 

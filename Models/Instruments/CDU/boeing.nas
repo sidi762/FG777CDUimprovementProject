@@ -413,10 +413,11 @@ var key = func(v) {
 				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "IDENT";
+					#getVSpeeds(getprop("/instrumentation/cdu/ident/engines"));
 				}
 				if (cduDisplay == "NAV_RAD"){
 					if (int(cduInput) > 107 and int(cduInput) < 119) {
-						setprop("/instrumentation/nav[0]/frequencies/selected-mhz",cduInput);
+				 	 setprop("/instrumentation/nav[0]/frequencies/selected-mhz",cduInput);
 					}
 					cduInput = "";
 				}
