@@ -47,7 +47,15 @@ var getGE90110B1VSpeeds = func(){
 			V1 = VSPEED_GE90110B1[1][i];
 			Vr = VSPEED_GE90110B1[2][i];
 			V2 = VSPEED_GE90110B1[3][i];
+			print(V1~" "~Vr~" "~V2);
 		}
+	}
+	if(V1 == 0){
+		print("V SPEEDS UNAVAILABLE");
+	}else if(V2 == 0){
+		print("V SPEEDS UNAVAILABLE");
+	}else if(Vr == 0){
+		print("V SPEEDS UNAVAILABLE");
 	}
 
 	var outTempC = getprop("/environment/temperature-degc");
@@ -88,12 +96,12 @@ var getGE90110B1VSpeeds = func(){
 	}else if(VrAdj == 1000){
 		print("V SPEEDS UNAVAILABLE");
 	}
-	var V1 = V1 + V1Adj;
-	var Vr = Vr + VrAdj;
-	var V2 = V2 + V2Adj;
+	V1 = V1 + V1Adj;
+	Vr = Vr + VrAdj;
+	V2 = V2 + V2Adj;
 	if(V1 > Vr){
-	V1 = Vr;
+		V1 = Vr;
 	}
 	print(V1~" "~Vr~" "~V2);
 }
-_setlistener("/sim/signals/fdm-initialized", getVSpeeds); 
+
