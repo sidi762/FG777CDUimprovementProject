@@ -129,6 +129,7 @@ var getLastPos = func(){
 	setprop("/instrumentation/fmc/lastpos", lastPosGot);
 	return lastPosGot;
 }
+
 var execPushed = func(){
 	if(getprop("/autopilot/route-manager/isArmed") == 1){
 		setprop("/autopilot/route-manager/isChanged",0);
@@ -136,6 +137,7 @@ var execPushed = func(){
 		setprop("/autopilot/route-manager/isArmed", -1);
 	}
 }
+
 var sidNextPge = func(){
 	var tmp = getprop("/instrumentation/cdu/sids/page");
 	tmp = tmp + 1;
@@ -148,6 +150,7 @@ var sidPrevPge = func(){
 	}
 	setprop("/instrumentation/cdu/sids/page", tmp);
 }
+
 var DisplayLATorBRG = func(){
 	if (getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return "LAT/LON>";
@@ -162,5 +165,26 @@ var echoLatBrg = func(){
 	}
 	else if(getprop("/instrumentation/cdu/LATorBRG") == 0){
 		return getGpsPos();
+	}
+}
+
+var isUpdateArm = func(){
+	if (getprop("/instrumentation/cdu/isARMED") == 0)
+	{
+		return "ARM";
+	}
+	else if(getprop("/instrumentation/cdu/isARMED") == 1)
+	{
+		return "ARMED";
+	}
+}
+var echoUpdateArmed = func(){
+	if (getprop("/instrumentation/cdu/isARMED") == 0)
+	{
+		return " ";
+	}
+	else if (getprop("/instrumentation/cdu/isARMED") == 1)
+	{
+		return "NOW>"
 	}
 }

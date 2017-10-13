@@ -1,44 +1,4 @@
-var input = func(v) {
-		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
-	}
-	
-var input = func(v) {
-		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
-	}
-	
-
-var isUpdateArm = func()
-{
-	if (getprop("/instrumentation/cdu/isARMED") == 0)
-	{
-		return "ARM";
-	}
-	else if(getprop("/instrumentation/cdu/isARMED") == 1)
-	{
-		return "ARMED";
-	}
-}
-var armChanges = func(){
-	if (getprop("/autopilot/route-manager/departure/newsid") != nil){
-		setprop("/autopilot/route-manager/departure/sid", getprop("/autopilot/route-manager/departure/newsid"));
-	}
-	if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
-		setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"));
-	}
-	setprop("/autopilot/route-manager/isArmed",1);
-}
-var echoUpdateArmed = func()
-{
-	if (getprop("/instrumentation/cdu/isARMED") == 0)
-	{
-		return " ";
-	}
-	else if (getprop("/instrumentation/cdu/isARMED") == 1)
-	{
-		return "NOW>"
-	}
-}
-#Format the "prop" here 
+#Initialize the properties here 
 setprop("/instrumentation/cdu/LATorBRG",0);
 setprop("/instrumentation/cdu/isARMED",0);
 setprop("/autopilot/route-manager/cruise/altitude-ft",0);
@@ -55,7 +15,45 @@ setprop("/fmc/EoAccelHT",1000);
 setprop("/fmc/AccelHT",1000);
 setprop("/fmc/Reduction",1000);
 setprop("/fmc/ref-temperature-degc",-999);
-#Format aera end
+#Initialize aera end
+
+var input = func(v) {
+		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
+}
+
+var armChanges = func(){
+	if (getprop("/autopilot/route-manager/departure/newsid") != nil){
+		setprop("/autopilot/route-manager/departure/sid", getprop("/autopilot/route-manager/departure/newsid"));
+	}
+	if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
+		setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"));
+	}
+	setprop("/autopilot/route-manager/isArmed",1);
+}
+	
+var delete = func {
+		var length = size(getprop("/instrumentation/cdu/input")) - 1;
+		setprop("/instrumentation/cdu/input",substr(getprop("/instrumentation/cdu/input"),0,length));
+}
+
+var plusminus = func {
+	var end = size(getprop("/instrumentation/cdu/input"));
+	var start = end - 1;
+	var lastchar = substr(getprop("/instrumentation/cdu/input"),start,end);
+	if (lastchar == "+"){
+		me.delete();
+		me.input('-');
+		}
+	if (lastchar == "-"){
+		me.delete();
+		me.input('+');
+		}
+	if ((lastchar != "-") and (lastchar != "+")){
+		me.input('+');
+		}
+}
+	
+var i = 0;
 
 var key = func(v) {
 		var cduDisplay = getprop("/instrumentation/cdu/display");
@@ -625,31 +623,7 @@ var key = func(v) {
 				setprop("/instrumentation/eicas/display",eicasDisplay);
 			}
 			setprop("/instrumentation/cdu/input",cduInput);
-		}
-	
-var delete = func {
-		var length = size(getprop("/instrumentation/cdu/input")) - 1;
-		setprop("/instrumentation/cdu/input",substr(getprop("/instrumentation/cdu/input"),0,length));
-	}
-	
-var i = 0;
-
-var plusminus = func {	
-	var end = size(getprop("/instrumentation/cdu/input"));
-	var start = end - 1;
-	var lastchar = substr(getprop("/instrumentation/cdu/input"),start,end);
-	if (lastchar == "+"){
-		me.delete();
-		me.input('-');
-		}
-	if (lastchar == "-"){
-		me.delete();
-		me.input('+');
-		}
-	if ((lastchar != "-") and (lastchar != "+")){
-		me.input('+');
-		}
-	}
+}
 
 var cdu = func{
 		
@@ -1353,5 +1327,6 @@ var cdu = func{
 		setprop("/instrumentation/cdu/output/line5/right-small",line5rs);
 		setprop("/instrumentation/cdu/output/line6/right-small",line6rs);
 		settimer(cdu,0.2);
-    }
+}
+
 _setlistener("/sim/signals/fdm-initialized", cdu); 

@@ -1,12 +1,11 @@
-var decimal2percentage = func(decimal)
-{
+var decimal2percentage = func(decimal){
 	var TMP = decimal * 100;
 	var tmp = " "~TMP;#convert to string
 	var percentage = substr(tmp,0,4)~"%";
 	return percentage;
 }
-var feet2FL = func(feet)
-{
+
+var feet2FL = func(feet){
 	var tmp = "";
 	var FL = "";
 	var offset = 0;
@@ -16,8 +15,7 @@ var feet2FL = func(feet)
 		FL = left(tmp,offset);
 	return FL;
 }
-var FL2feet = func(FL)
-{
+var FL2feet = func(FL){
 	var tmp = "";
 	var feet = 0;
 	var offset = 0;
@@ -27,10 +25,12 @@ var FL2feet = func(FL)
 	feet = int(tmp~"00");
 	return feet;
 }
+
 var lbs2tons = func(lbs){
 	var tons = lbs * 0.0005;
 	return tons;
 }
+
 var inputPosLatConversion = func(inputedPos){
 	var isNorth = 1;
 	
@@ -71,6 +71,7 @@ var inputPosLonConversion = func(inputedPos){
 	#print(outputLonDeg);
 	return(outputLonDeg);
 }
+
 var LatDMMunsignal = func(LatDeg){
 	var latdegree_INIT = int(LatDeg);
 	var latminint_INIT = int((LatDeg - latdegree_INIT) * 60);
@@ -95,7 +96,6 @@ var LatDMMunsignal = func(LatDeg){
 		var latresults_INIT = isNS_INIT~outlatdegree_INIT~""~latmin_INIT;
 		return latresults_INIT;
 }
-	
 var LonDmmUnsignal = func(LonDeg){
 	var londegree_INIT = int(LonDeg);
 	var lonminint_INIT = int((LonDeg - londegree_INIT) * 60);
@@ -103,7 +103,7 @@ var LonDmmUnsignal = func(LonDeg){
 	if(lonminint_INIT < 10){
 		var outlonminint_INIT = "0"~abs(lonminint_INIT);
 	}else{
-	var outlonminint_INIT = abs(lonminint_INIT);
+		var outlonminint_INIT = abs(lonminint_INIT);
 	}
 	var lonmin_INIT = outlonminint_INIT~"."~abs(lonmindouble_INIT);
 	var isEW_INIT = "E";
@@ -118,9 +118,10 @@ var LonDmmUnsignal = func(LonDeg){
 		var outlondegree_INIT = abs(londegree_INIT);
 	}
 	var lonresults_INIT = isEW_INIT~outlondegree_INIT~lonmin_INIT;
-		return lonresults_INIT;
+	return lonresults_INIT;
 }
-	var latdeg2latDMM = func(inLatDeg){
+
+var latdeg2latDMM = func(inLatDeg){
 		var latdegree_INIT = int(inLatDeg);
 		var latminint_INIT = int((inLatDeg - latdegree_INIT) * 60);
 		var latmindouble_INIT = int((((inLatDeg - latdegree_INIT) * 60) - latminint_INIT) * 10);
@@ -144,7 +145,7 @@ var LonDmmUnsignal = func(LonDeg){
 		var latresults_INIT = isNS_INIT~outlatdegree_INIT~"*"~latmin_INIT;
 		return latresults_INIT;
 }
-	var londeg2lonDMM = func(inLonDeg){
+var londeg2lonDMM = func(inLonDeg){
 		var londegree_INIT = int(inLonDeg);
 		var lonminint_INIT = int((inLonDeg - londegree_INIT) * 60);
 		var lonmindouble_INIT = int((((inLonDeg - londegree_INIT) * 60) - lonminint_INIT) * 10);
