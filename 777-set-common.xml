@@ -1224,6 +1224,8 @@ Service Ceiling: 43,100ft
         </dialogs>
         <cdu>
             <file>Aircraft/777/Models/Instruments/CDU/boeing.nas</file>
+			<file>Aircraft/777/Models/Instruments/CDU/library.nas</file>
+			<file>Aircraft/777/Models/Instruments/CDU/functions.nas</file>
         </cdu>
 		<fmc>
 			<file>Aircraft/777/Models/Instruments/CDU/vspeedscalculation.nas</file>
