@@ -562,10 +562,27 @@ var key = func(v) {
 			if (v == "LSK6L"){
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
-				}
-				else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF")){
+				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF")){
 					cduDisplay = "INIT_REF";
+				}else if (cduDisplay == "RTE1_DEP"){
+					if(getprop("/autopilot/route-manager/isChanged") != 0){
+						if (getprop("/autopilot/route-manager/departure/sid") != nil){
+							setprop("/autopilot/route-manager/departure/newsid", getprop("/autopilot/route-manager/departure/sid"));
+						}else{
+							setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
+						}
+						if (getprop("/autopilot/route-manager/departure/runway") != nil){
+							setprop("/autopilot/route-manager/departure/newrunway", getprop("/autopilot/route-manager/departure/runway"));
+						}else{
+							setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
+						}
+						setprop("/autopilot/route-manager/isChanged", 0);
+						setprop("/autopilot/route-manager/isArmed", -1);
+					}else{
+						cduDisplay = "DEP_ARR_INDEX";
+					}
 				}
+				
 			}
 			if (v == "LSK6R"){
 				if (cduDisplay == "THR_LIM"){
@@ -1211,8 +1228,7 @@ var cdu = func{
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
-		if (display == "TO_REF_2")
-		{
+		if (display == "TO_REF_2"){
 			title = "TAKEOFF REF UPLINK";
 			line1rt = "EO ACCEL HT";
 			line1r = sprintf("%3.0f",getprop("/fmc/EoAccelHT"));
