@@ -15,10 +15,23 @@ setprop("/fmc/EoAccelHT",1000);
 setprop("/fmc/AccelHT",1000);
 setprop("/fmc/Reduction",1000);
 setprop("/fmc/ref-temperature-degc",-999);
+setprop("/fmc/VNAV/XTransSPD",250);
+setprop("/fmc/VNAV/XTransALT",10000);
+setprop("/fmc/VNAV/RestrSPD",240);
+setprop("/fmc/VNAV/RestrALT",8000);
+setprop("/fmc/VNAV/TransALT",18000);
 #Initialize aera end
 
 var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
+}
+
+var isFLinit = func()
+{
+	if (getprop("/autopilot/route-manager/cruise/altitude-FL")!=nil)
+		return getprop("/autopilot/route-manager/cruise/altitude-FL");
+	else
+		return "";
 }
 
 var armChanges = func(){
@@ -1229,17 +1242,17 @@ var cdu = func{
 			line6r = "POS INIT>";
 		}
 		if (display == "TO_REF_2"){
-			title = "TAKEOFF REF UPLINK";
+			title   = "TAKEOFF REF UPLINK";
 			line1rt = "EO ACCEL HT";
-			line1r = sprintf("%3.0f",getprop("/fmc/EoAccelHT"));
+			line1r  = sprintf("%3.0f",getprop("/fmc/EoAccelHT"));
 			line2rt = "ACCEL HT";
-			line2r = sprintf("%3.0f",getprop("/fmc/AccelHT"));
+			line2r  = sprintf("%3.0f",getprop("/fmc/AccelHT"));
 			line3rt = "THE REDUCTION";
-			line3r = sprintf("%3.0f",getprop("/fmc/Reduction"));
+			line3r  = sprintf("%3.0f",getprop("/fmc/Reduction"));
 			line2lt = "ALTN THRUST";
-			line2l = "<TO";
+			line2l  = "<TO";
 			line3lt = "WIND";
-			line3l = "---*/---KT";
+			line3l  = "---*/---KT";
 			line4lt = "RWY WIND";
 			line4rt = "LIM TOGW";
 			line5lt = "SLOPE";
@@ -1247,6 +1260,41 @@ var cdu = func{
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
 			if (getprop("/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
+		}
+		if (display == "VNAV") {
+			
+			#• ACT ECON CLB      —速度以成本指数为依据
+			#• ACT MCP SPD CLB   —表示选择了MCP 速度干预
+			#• ACT XXXKT CLB     –选择了固定CAS 爬升速度
+			#• ACT M.XXX CLB     –选择了固定马赫爬升速度
+			#• ACT LIM SPD CLB   –速度基于包线限制速度
+			
+			title   = "ACT"~"ECON"~"CLB"; 
+			#TODO:改成变量！
+			
+			line1lt = "CRZ ALT";
+			line1l  = isFLinit();
+			line2lt = "ECON SPD";
+			line2l  = "INOP"; #TODO:仍然不知道算法
+			line3lt = "SPD TRANS";#速度过渡
+			line3l  = sprintf("%2.0f",getprop("/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/XTransAlt"));
+			line4lt = "SPD RESTR";#低于此巡航高度的高度速度限制
+			line4l  = sprintf("%2.0f",getprop("/fmc/VNAV/RestrSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/RestrALT"));
+						
+			line1rt = "AT"~"";#下一个航点的限高、限速
+			line1r  = "";
+			line2rt = "ERROR";#误差，如果没有误差的话是没有显示的，所以我懒得做233
+			line2r  = "";
+			line3rt = "TRANS ALT";
+			line3r  = sprintf("%2.0f",getprop("/fmc/VNAV/TransALT"));
+			line4rt = "MAX ANGLE";#显示爬升速度的最大角度,不允许输入.
+			line4r  = "215";  #算法不明，先留着以后做
+			
+			line5rt = "-----------------------------------------------------------------------------------";
+			
+			line5l  = "<ECON";
+			line5r  = "ENG OUT>"; 
+			line6r  = "CLB DIR>"
 		}
 		
 		if (serviceable != 1){

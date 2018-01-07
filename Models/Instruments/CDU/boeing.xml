@@ -1679,6 +1679,20 @@
 
 <animation>
     <type>pick</type>
+    <object-name>Btn.vnav</object-name>
+    <action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/cdu/display</property>
+            <value type="string">VNAV</value>
+        </binding>
+    </action>
+</animation>
+
+<animation>
+    <type>pick</type>
     <object-name>Btn.nav-rad</object-name>
     <action>
         <button>0</button>
