@@ -389,6 +389,44 @@ var key = func(v) {
 				if (cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/THRLIM","TO-1");
 				}
+				if (cduDisplay == "VNAV")
+				{
+					if(num(cduInput) != nil)
+					{
+						if(num(substr(cduInput,1)) >= getprop("instrumentation/weu/state/stall-speed") + 5)
+						{	
+							if(num(substr(cduInput,1)) <= getprop("instrumentation/afds/max-airspeed-kts"))
+							{
+								setprop("/fmc/VNAV/XTransSPD",num(cduInput));
+								cduInput = "";
+							}
+						}else{cduInput = "INVALID ENTRY";}
+					}
+					else if(left(cduInput,1) == "/")  #只修改ALT的情况
+					{
+						if (sum(substr(cduInput,1)) <=42000)
+						{
+							setprop("/fmc/VNAV/XTransALT",sum(substr(cduInput,1)));
+							cduInput = "";
+						}
+					}
+					else if (num(left(cduInput,3)) != nil)
+					{printf("1");
+						if (substr(cduInput,3,1) == "/")
+						{printf("2");
+							if(right(cduInput,4) >= 1000)
+							{						printf("3");
+								if (num((left(cduInput,2))) <= getprop("instrumentation/weu/state/stall-speed") + 5)
+								{printf("4");
+									setprop("/fmc/VNAV/XTransSPD",num((left(cduInput,3))));
+									setprop("/fmc/VNAV/XTransALT",num(substr(cduInput,4)));
+									cduInput = "";
+								}else{cduInput = "INVALID ENTRY";}
+							}
+						}
+					}
+					else{cduInput = "INVALID ENTRY";}
+				}
 			}
 			if (v == "LSK3R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -1277,7 +1315,7 @@ var cdu = func{
 			line2lt = "ECON SPD";
 			line2l  = "INOP"; #TODO:仍然不知道算法
 			line3lt = "SPD TRANS";#速度过渡
-			line3l  = sprintf("%2.0f",getprop("/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/XTransAlt"));
+			line3l  = sprintf("%2.0f",getprop("/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/XTransALT"));
 			line4lt = "SPD RESTR";#低于此巡航高度的高度速度限制
 			line4l  = sprintf("%2.0f",getprop("/fmc/VNAV/RestrSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/RestrALT"));
 						
