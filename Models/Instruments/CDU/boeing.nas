@@ -1266,6 +1266,7 @@ var cdu = func{
 			if (getprop("/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
 		}
 		if (display == "VNAV") {
+			#TODO:Change the page name to sth like "VNAV_CLB" or "VNAV_1".
 			var ACTorMOD = "ACT";
 			var climbSpdMode = "ECON";
 			
@@ -1277,7 +1278,7 @@ var cdu = func{
 			#• ACT LIM SPD CLB   –速度基于包线限制速度
 			
 			title   = ACTorMOD~" "~climbSpdMode~" "~"CLB"; 
-			
+			page = "1/3";
 			line1lt = "CRZ ALT";
 			line1l  = isFLinit();
 			line2lt = "ECON SPD";
