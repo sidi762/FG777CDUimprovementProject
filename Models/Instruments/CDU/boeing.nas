@@ -1300,15 +1300,17 @@ var cdu = func{
 			if (getprop("/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
 		}
 		if (display == "VNAV") {
+			var ACTorMOD = "ACT";
+			var climbSpdMode = "ECON";
 			
+			#TODO:To make it actually work.
 			#• ACT ECON CLB      —速度以成本指数为依据
 			#• ACT MCP SPD CLB   —表示选择了MCP 速度干预
 			#• ACT XXXKT CLB     –选择了固定CAS 爬升速度
 			#• ACT M.XXX CLB     –选择了固定马赫爬升速度
 			#• ACT LIM SPD CLB   –速度基于包线限制速度
 			
-			title   = "ACT"~"ECON"~"CLB"; 
-			#TODO:改成变量！
+			title   = ACTorMOD~" "~climbSpdMode~" "~"CLB"; 
 			
 			line1lt = "CRZ ALT";
 			line1l  = isFLinit();
