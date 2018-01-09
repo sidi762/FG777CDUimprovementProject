@@ -188,3 +188,65 @@ var echoUpdateArmed = func(){
 		return "NOW>"
 	}
 }
+
+var crzAltCDUInput = func(){
+	var cduDisplay = getprop("/instrumentation/cdu/display");
+	var cduInput = getprop("/instrumentation/cdu/input");
+	if (find("FL", cduInput) != -1){
+		if (size(cduInput) <=5 ){
+			if (num(substr(cduInput,2,size(cduInput))) != nil){
+				if (substr(cduInput,2,size(cduInput)) >= 100){
+					if (substr(cduInput,2,size(cduInput)) <= 412){
+						setprop("/autopilot/route-manager/cruise/altitude-FL",cduInput);
+						setprop("/autopilot/route-manager/cruise/altitude-ft",FL2feet(cduInput));
+						cduInput = "";
+					}else{
+						cduInput = "INVALID ENTRY";
+					}
+				}else{
+					cduInput = "INVALID ENTRY";
+				}
+			}
+		} else {
+			cduInput = "INVALID ENTRY";
+		}
+	
+	} else if (find("FL", cduInput) == -1){
+	
+		if (num(cduInput) != nil){
+			if (cduInput >= 1000){
+			
+				if (cduInput < 10000){
+					setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
+					setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+					cduInput = "";
+				} else if (cduInput >= 10000){
+				
+					if (cduInput <= 41200){
+						setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
+						setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+						cduInput = "";
+					}else if(cduInput >= 10){
+						if (cduInput <= 412){
+							setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
+							setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
+							cduInput = "";
+						}else{
+							cduInput = "INVALID ENTRY";
+						}
+					}else{
+							cduInput = "INVALID ENTRY";
+						}
+					}
+				
+				}
+			
+			}else{ 
+				#else for "num(cduInput) != nil"
+				cduInput = "INVALID ENTRY";
+			}
+		}else{
+			#else for "find("FL", cduInput) == -1"
+			cduInput = "INVALID ENTRY";
+		}
+}

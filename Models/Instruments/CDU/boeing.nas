@@ -28,7 +28,7 @@ var input = func(v) {
 
 var isFLinit = func()
 {
-	if (getprop("/autopilot/route-manager/cruise/altitude-FL")!=nil)
+	if (getprop("/autopilot/route-manager/cruise/altitude-FL") != nil)
 		return getprop("/autopilot/route-manager/cruise/altitude-FL");
 	else
 		return "";
@@ -85,11 +85,11 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						setprop("/autopilot/route-manager/departure/sidID", getprop("/instrumentation/cdu/output/line1/left"));
 					}
-				}
+				}#end of RTE1_DEP
 				if (cduDisplay == "DEP_ARR_INDEX"){
 					cduDisplay = "RTE1_DEP";
 					setprop("/instrumentation/cdu/sids/page", 1);
-				}
+				}#end of DEP_ARR_INDEX
 				if (cduDisplay == "EICAS_MODES"){
 					eicasDisplay = "ENG";
 				}
@@ -114,8 +114,7 @@ var key = func(v) {
 					if (cduInput == "DELETE"){
 						setprop("/autopilot/route-manager/input","@DELETE1");
 						cduInput = "";
-					}
-					else{
+					}else{
 						setprop("/autopilot/route-manager/input","@INSERT2:"~cduInput);
 					}
 				}
@@ -130,7 +129,11 @@ var key = func(v) {
 				if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
-			}
+				if (cduDisplay == "VNAV"){
+					crzAltCDUInput();
+					cduInput = "";
+				}
+			}#end of LSK1L
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
@@ -138,7 +141,6 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line1/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 					}
-					
 				}
 				if (cduDisplay == "EICAS_MODES"){
 					eicasDisplay = "FUEL";
@@ -167,63 +169,28 @@ var key = func(v) {
 					cduInput = "";
 				}
 				if (cduDisplay == "POS_REF_0"){
-					if (getprop("/instrumentation/cdu/isARMED") == 0)
-					{
+					if (getprop("/instrumentation/cdu/isARMED") == 0){
 						setprop("/instrumentation/cdu/isARMED",1);
-					}
-					else if(getprop("/instrumentation/cdu/isARMED") == 1)
-					{
+					}else if(getprop("/instrumentation/cdu/isARMED") == 1){
 						setprop("/instrumentation/cdu/isARMED",0);
 					}
 				}
 				if (cduDisplay == "PERF_INIT"){
-					if(find("FL", cduInput) != -1){
-						if (size(cduInput) <=5 ){
-							if(num(substr(cduInput,2,size(cduInput))) != nil){
-								if (substr(cduInput,2,size(cduInput)) >= 100){
-									if(substr(cduInput,2,size(cduInput)) <= 412){
-										setprop("/autopilot/route-manager/cruise/altitude-FL",cduInput);
-										setprop("/autopilot/route-manager/cruise/altitude-ft",FL2feet(cduInput));
-										cduInput = "";
-									}else{cduInput = "INVALID ENTRY";}
-								}else{cduInput = "INVALID ENTRY";}
-							}
-						}else{cduInput = "INVALID ENTRY";}
-					}else if(find("FL", cduInput) == -1){
-						if (num(cduInput) != nil){
-							if (cduInput >= 1000){
-								if (cduInput < 10000){
-									setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
-									setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
-									cduInput = "";
-								}else if(cduInput >= 10000){
-									if(cduInput <= 41200){
-										setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
-										setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
-										cduInput = "";
-									}else if(cduInput >= 10){
-										if(cduInput <= 412){
-											setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
-											setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
-											cduInput = "";
-											}else{cduInput = "INVALID ENTRY";}
-										}else{cduInput = "INVALID ENTRY";}
-									}
-								}
-							}else{cduInput = "INVALID ENTRY";}
-						}else{cduInput = "INVALID ENTRY";}
-						
+					crzAltCDUInput();
+					cduInput = "";
+				}#end of PERF_INIT	
+				if (cduDisplay == "TO_REF"){
+					if (cduInput == ""){
+						setprop("/instrumentation/fmc/V1checked",1);
+					} else if (num(cduInput) != nil){
+						setprop("/instrumentation/fmc/vspeeds/V1");
+						setprop("/instrumentation/fmc/V1checked",1);
+						cduInput = "";
+					}else{
+						setprop("/instrumentation/fmc/V1checked",1);
 					}
-					if (cduDisplay == "TO_REF"){
-					if(cduInput == ""){setprop("/instrumentation/fmc/V1checked",1);}
-					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/V1");
-							setprop("/instrumentation/fmc/V1checked",1);
-							cduInput = "";
-					}else{setprop("/instrumentation/fmc/V1checked",1);}
-				}
-			}
-			}
+				}#end of TO_REF
+			}#end of LSK1R
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line2/left") != ""){
@@ -260,10 +227,9 @@ var key = func(v) {
 				if (cduDisplay == "RTE1_1"){
 					if (getprop("/autopilot/route-manager/departure/airport") == ""){
 						cduInput = cduInput;
-					}
-					else{
-					setprop("/autopilot/route-manager/departure/newrunway",cduInput);
-					cduInput = "";
+					}else{
+						setprop("/autopilot/route-manager/departure/newrunway",cduInput);
+						cduInput = "";
 					}
 				}
 				if (cduDisplay == "RTE1_LEGS"){
@@ -680,12 +646,12 @@ var key = func(v) {
 						setprop("/instrumentation/cdu/LATorBRG",1);
 					}
 				}
-				else if(cduDisplay == "PERF_INIT")
+				else if (cduDisplay == "PERF_INIT")
 				{
 					cduDisplay = "THR_LIM";
 				}
 			}
-			
+		}
 			setprop("/instrumentation/cdu/display",cduDisplay);
 			if (eicasDisplay != nil){
 				setprop("/instrumentation/eicas/display",eicasDisplay);
@@ -1303,7 +1269,7 @@ var cdu = func{
 			var ACTorMOD = "ACT";
 			var climbSpdMode = "ECON";
 			
-			#TODO:To make it actually work.
+			#TODO:To make it actually work._by 0762
 			#• ACT ECON CLB      —速度以成本指数为依据
 			#• ACT MCP SPD CLB   —表示选择了MCP 速度干预
 			#• ACT XXXKT CLB     –选择了固定CAS 爬升速度
@@ -1326,7 +1292,7 @@ var cdu = func{
 			line2rt = "ERROR";#误差，如果没有误差的话是没有显示的，所以我懒得做233
 			line2r  = "";
 			line3rt = "TRANS ALT";
-			line3r  = sprintf("%2.0f",getprop("/fmc/VNAV/TransALT"));
+			line3r  = sprintf("%2.0f",getprop("/fmc/VNAV/TransALT"));#Todo:未制作输入_by 0762
 			line4rt = "MAX ANGLE";#显示爬升速度的最大角度,不允许输入.
 			line4r  = "215";  #算法不明，先留着以后做
 			
