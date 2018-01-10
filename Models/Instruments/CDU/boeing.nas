@@ -20,6 +20,9 @@ setprop("/fmc/VNAV/XTransALT",10000);
 setprop("/fmc/VNAV/RestrSPD",240);
 setprop("/fmc/VNAV/RestrALT",8000);
 setprop("/fmc/VNAV/TransALT",18000);
+setprop("/fmc/VNAV/isChanged",1);
+setprop("/fmc/VNAV/cruise/altitude-FL","");
+setprop("/fmc/VNAV/cruise/altitude-ft",0);
 #Initialize aera end
 
 var input = func(v) {
@@ -28,8 +31,8 @@ var input = func(v) {
 
 var isFLinit = func()
 {
-	if (getprop("/autopilot/route-manager/cruise/altitude-FL") != nil)
-		return getprop("/autopilot/route-manager/cruise/altitude-FL");
+	if (getprop("/fmc/VNAV/cruise/altitude-FL") != nil)
+		return getprop("/fmc/VNAV/cruise/altitude-FL");
 	else
 		return "";
 }
@@ -41,6 +44,11 @@ var armChanges = func(){
 	if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
 		setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"));
 	}
+	setprop("/autopilot/route-manager/isArmed",1);
+}
+
+var VNAVChanges = func(){
+	setprop("/fmc/VNAV/isChanged",0);
 	setprop("/autopilot/route-manager/isArmed",1);
 }
 	
@@ -131,6 +139,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "VNAV"){
 					crzAltCDUInput();
+					VNAVChanges();					
 					cduInput = "";
 				}
 			}#end of LSK1L
@@ -177,6 +186,8 @@ var key = func(v) {
 				}
 				if (cduDisplay == "PERF_INIT"){
 					crzAltCDUInput();
+					setprop("/autopilot/route-manager/cruise/altitude-FL",getprop("/fmc/VNAV/cruise/altitude-FL"));
+					setprop("/autopilot/route-manager/cruise/altitude-ft",getprop("/fmc/VNAV/cruise/altitude-ft"));
 					cduInput = "";
 				}#end of PERF_INIT	
 				if (cduDisplay == "TO_REF"){
@@ -678,6 +689,7 @@ var cdu = func{
 		line4ctl = "";	line4cl = ""; line4cr = "";
 		line5ctl = "";	line5cl = ""; line5cr = "";
 		line6ctl = "";	line6cl = ""; line6cr = "";
+		
 		
 		
 		if (display == "MENU") {
@@ -1267,7 +1279,13 @@ var cdu = func{
 		}
 		if (display == "VNAV") {
 			#TODO:Change the page name to sth like "VNAV_CLB" or "VNAV_1".
-			var ACTorMOD = "ACT";
+			var ACTorMOD = "MOD";
+			if(getprop("/fmc/VNAV/isChanged") == 0){
+				ACTorMOD = "MOD";
+			}else{
+				ACTorMOD = "ACT";
+			}
+			
 			var climbSpdMode = "ECON";
 			
 			#TODO:To make it actually work._by 0762

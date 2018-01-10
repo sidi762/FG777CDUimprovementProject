@@ -131,10 +131,15 @@ var getLastPos = func(){
 }
 
 var execPushed = func(){
-	if(getprop("/autopilot/route-manager/isArmed") == 1){
+	if (getprop("/autopilot/route-manager/isArmed") == 1){
 		setprop("/autopilot/route-manager/isChanged",0);
 		setprop("/autopilot/route-manager/input","@ACTIVATE");
 		setprop("/autopilot/route-manager/isArmed", -1);
+	}
+	if (getprop("/fmc/VNAV/isChanged") == 0){
+		setprop("/autopilot/route-manager/cruise/altitude-FL", getprop("/fmc/VNAV/cruise/altitude-FL"));
+		setprop("/autopilot/route-manager/cruise/altitude-ft", getprop("/fmc/VNAV/cruise/altitude-ft"));
+		setprop("/fmc/VNAV/isChanged", 1);
 	}
 }
 
@@ -197,8 +202,8 @@ var crzAltCDUInput = func(){
 			if (num(substr(cduInput,2,size(cduInput))) != nil){
 				if (substr(cduInput,2,size(cduInput)) >= 100){
 					if (substr(cduInput,2,size(cduInput)) <= 412){
-						setprop("/autopilot/route-manager/cruise/altitude-FL",cduInput);
-						setprop("/autopilot/route-manager/cruise/altitude-ft",FL2feet(cduInput));
+						setprop("/fmc/VNAV/cruise/altitude-FL",cduInput);
+						setprop("/fmc/VNAV/cruise/altitude-ft",FL2feet(cduInput));
 						cduInput = "";
 					}else{
 						cduInput = "INVALID ENTRY";
@@ -217,19 +222,19 @@ var crzAltCDUInput = func(){
 			if (cduInput >= 1000){
 			
 				if (cduInput < 10000){
-					setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
-					setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+					setprop("/fmc/VNAV/cruise/altitude-ft",cduInput);
+					setprop("/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
 					cduInput = "";
 				} else if (cduInput >= 10000){
 				
 					if (cduInput <= 41200){
-						setprop("/autopilot/route-manager/cruise/altitude-ft",cduInput);
-						setprop("/autopilot/route-manager/cruise/altitude-FL",feet2FL(cduInput));
+						setprop("/fmc/VNAV/cruise/altitude-ft",cduInput);
+						setprop("/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
 						cduInput = "";
 					}else if(cduInput >= 10){
 						if (cduInput <= 412){
-							setprop("/autopilot/route-manager/cruise/altitude-FL","FL"~cduInput);
-							setprop("/autopilot/route-manager/cruise/altitude-ft",int(cduInput~"00"));
+							setprop("/fmc/VNAV/cruise/altitude-FL","FL"~cduInput);
+							setprop("/fmc/VNAV/cruise/altitude-ft",int(cduInput~"00"));
 							cduInput = "";
 						}else{
 							cduInput = "INVALID ENTRY";
