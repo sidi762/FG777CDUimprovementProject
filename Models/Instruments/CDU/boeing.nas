@@ -376,6 +376,7 @@ var key = func(v) {
 							{
 								setprop("/fmc/VNAV/XTransSPD",num(cduInput));
 								cduInput = "";
+								VNAVChanges();
 							}
 						}else{cduInput = "INVALID ENTRY";}
 					}
@@ -385,23 +386,26 @@ var key = func(v) {
 						{
 							setprop("/fmc/VNAV/XTransALT",sum(substr(cduInput,1)));
 							cduInput = "";
+							VNAVChanges();
 						}
 					}
 					else if (num(left(cduInput,3)) != nil)
-					{printf("1");
+					{
 						if (substr(cduInput,3,1) == "/")
-						{printf("2");
+						{
 							if(right(cduInput,4) >= 1000)
-							{						printf("3");
+							{	
 								if (num((left(cduInput,2))) <= getprop("instrumentation/weu/state/stall-speed") + 5)
-								{printf("4");
+								{
 									setprop("/fmc/VNAV/XTransSPD",num((left(cduInput,3))));
 									setprop("/fmc/VNAV/XTransALT",num(substr(cduInput,4)));
 									cduInput = "";
+									VNAVChanges();
 								}else{cduInput = "INVALID ENTRY";}
 							}
 						}
 					}
+
 					else{cduInput = "INVALID ENTRY";}
 				}
 			}
