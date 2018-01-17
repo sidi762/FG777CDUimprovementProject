@@ -368,6 +368,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "VNAV")
 				{
+					#LSK3L，TransALT/SPD
 					if(num(cduInput) != nil)
 					{
 						if(num(cduInput) >= getprop("instrumentation/weu/state/stall-speed") + 5)
@@ -430,16 +431,25 @@ var key = func(v) {
 					}
 					cduInput = "";
 				}
-				else if(cduDisplay == "THR_LIM"){
+				if(cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/CLB_LIM","CLB-1");
 				}
-				else if (cduDisplay == "TO_REF"){
+				if (cduDisplay == "TO_REF"){
 					if(cduInput == ""){setprop("/instrumentation/fmc/V2checked",1);}
 					else if(num(cduInput) != nil){
 							setprop("/instrumentation/fmc/vspeeds/V2");
 							setprop("/instrumentation/fmc/V2checked",1);
 							cduInput = "";
 					}else{setprop("/instrumentation/fmc/V2checked",1);}
+				}
+				if (cduDisplay == "VNAV")
+				{
+					if (num(cduInput) != nil)
+					{
+						setprop("/fmc/VNAV/TransALT",cduInput);
+						VNAVChanges();
+						cduInput = "";
+					}
 				}
 			}
 			if (v == "LSK4L"){
@@ -479,6 +489,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "VNAV")
 				{
+					#LSK4L，TransALT/SPD
 					if(num(cduInput) != nil)
 					{
 						if(int(cduInput) >= getprop("instrumentation/weu/state/stall-speed") + 5)
