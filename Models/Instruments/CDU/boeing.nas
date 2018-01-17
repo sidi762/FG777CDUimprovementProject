@@ -370,9 +370,9 @@ var key = func(v) {
 				{
 					if(num(cduInput) != nil)
 					{
-						if(num(substr(cduInput,1)) >= getprop("instrumentation/weu/state/stall-speed") + 5)
+						if(num(cduInput) >= getprop("instrumentation/weu/state/stall-speed") + 5)
 						{	
-							if(num(substr(cduInput,1)) <= getprop("instrumentation/afds/max-airspeed-kts"))
+							if(num(cduInput) <= getprop("instrumentation/afds/max-airspeed-kts"))
 							{
 								setprop("/fmc/VNAV/XTransSPD",num(cduInput));
 								cduInput = "";
@@ -477,6 +477,49 @@ var key = func(v) {
 				if (cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/THRLIM","TO-2");
 				}
+				if (cduDisplay == "VNAV")
+				{
+					if(num(cduInput) != nil)
+					{
+						if(int(cduInput) >= getprop("instrumentation/weu/state/stall-speed") + 5)
+						{	
+							if(int(cduInput) <= getprop("instrumentation/afds/max-airspeed-kts"))
+							{
+								setprop("/fmc/VNAV/RestrSPD",num(cduInput));
+								cduInput = "";
+								VNAVChanges();
+							}
+						}else{cduInput = "INVALID ENTRY";}
+					}
+					else if(left(cduInput,1) == "/")  #只修改ALT的情况
+					{
+						if (sum(substr(cduInput,1)) <=42000)
+						{
+							setprop("/fmc/VNAV/RestrALT",sum(substr(cduInput,1)));
+							cduInput = "";
+							VNAVChanges();
+						}
+					}
+					else if (num(left(cduInput,3)) != nil)
+					{
+						if (substr(cduInput,3,1) == "/")
+						{
+							if(right(cduInput,4) >= 1000)
+							{	
+								if (num((left(cduInput,2))) <= getprop("instrumentation/weu/state/stall-speed") + 5)
+								{
+									setprop("/fmc/VNAV/RestrSPD",num((left(cduInput,3))));
+									setprop("/fmc/VNAV/RestrALT",num(substr(cduInput,4)));
+									cduInput = "";
+									VNAVChanges();
+								}else{cduInput = "INVALID ENTRY";}
+							}
+						}
+					}
+
+					else{cduInput = "INVALID ENTRY";}
+				}
+				
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "RTE1_DEP"){
