@@ -139,6 +139,7 @@ var execPushed = func(){
 	if (getprop("/fmc/VNAV/isChanged") == 0){
 		setprop("/autopilot/route-manager/cruise/altitude-FL", getprop("/fmc/VNAV/cruise/altitude-FL"));
 		setprop("/autopilot/route-manager/cruise/altitude-ft", getprop("/fmc/VNAV/cruise/altitude-ft"));
+		setprop("/autopilot/settings/transition-altitude", getprop("/fmc/VNAV/XTransALT"));
 		setprop("/fmc/VNAV/isChanged", 1);
 	}
 }
@@ -255,3 +256,4 @@ var crzAltCDUInput = func(){
 			cduInput = "INVALID ENTRY";
 		}
 }
+

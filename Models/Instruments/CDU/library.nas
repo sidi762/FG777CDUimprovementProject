@@ -30,6 +30,11 @@ var lbs2tons = func(lbs){
 	var tons = lbs * 0.0005;
 	return tons;
 }
+var lbs2kg = func(lbs){
+	var tons = lbs * 0.0005;
+	var kg = tons * 1000;
+	return kg;
+}
 
 var inputPosLatConversion = func(inputedPos){
 	var isNorth = 1;
