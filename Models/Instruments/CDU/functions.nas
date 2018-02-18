@@ -33,7 +33,7 @@ var echoSids = func(page,selectedRwy = ""){
 		}
 		var echoedSids = [];
 		var i = 0;
-		var sidsNum = size(apt.sids());
+		var sidsNum = size(allSids);
 		if(sidsNum != 0){
 			var countStart = (page - 1) * 5;
 			if(countStart > sidsNum){
@@ -41,7 +41,7 @@ var echoSids = func(page,selectedRwy = ""){
 			}
 			count = countStart;
 			while(i <= 5){
-				if(count < sidsNum){
+				if(count <= sidsNum-1){
 					append(echoedSids, allSids[count]);
 					i = i + 1;
 					count = count + 1;

@@ -33,4 +33,4 @@ var calVy = func(){
 	var VyTASkts = math.sqrt(perfData.flift / CL * perfData.pAir * perfData.wingArea * 0.5) * 0.51444;
 	print(VyTASkts);
 }
-calVy();
+#calVy();
