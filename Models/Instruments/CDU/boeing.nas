@@ -82,7 +82,7 @@ var key = func(v) {
 		var eicasDisplay = getprop("/instrumentation/eicas/display");
 		var cduInput = getprop("/instrumentation/cdu/input");
 		
-		
+		if (serviceable == 1){
 			if (v == "LSK1L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/left") != ""){
