@@ -136,11 +136,11 @@ var execPushed = func(){
 		setprop("/autopilot/route-manager/input","@ACTIVATE");
 		setprop("/autopilot/route-manager/isArmed", -1);
 	}
-	if (getprop("/fmc/VNAV/isChanged") == 0){
-		setprop("/autopilot/route-manager/cruise/altitude-FL", getprop("/fmc/VNAV/cruise/altitude-FL"));
-		setprop("/autopilot/route-manager/cruise/altitude-ft", getprop("/fmc/VNAV/cruise/altitude-ft"));
-		setprop("/autopilot/settings/transition-altitude", getprop("/fmc/VNAV/TransALT"));
-		setprop("/fmc/VNAV/isChanged", 1);
+	if (getprop("/instrumentation/fmc/VNAV/isChanged") == 0){
+		setprop("/autopilot/route-manager/cruise/altitude-FL", getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL"));
+		setprop("/autopilot/route-manager/cruise/altitude-ft", getprop("/instrumentation/fmc/VNAV/cruise/altitude-ft"));
+		setprop("/autopilot/settings/transition-altitude", getprop("/instrumentation/fmc/VNAV/TransALT"));
+		setprop("/instrumentation/fmc/VNAV/isChanged", 1);
 	}
 }
 
@@ -203,8 +203,8 @@ var crzAltCDUInput = func(){
 			if (num(substr(cduInput,2,size(cduInput))) != nil){
 				if (substr(cduInput,2,size(cduInput)) >= 100){
 					if (substr(cduInput,2,size(cduInput)) <= 412){
-						setprop("/fmc/VNAV/cruise/altitude-FL",cduInput);
-						setprop("/fmc/VNAV/cruise/altitude-ft",FL2feet(cduInput));
+						setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL",cduInput);
+						setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",FL2feet(cduInput));
 						cduInput = "";
 					}else{
 						cduInput = "INVALID ENTRY";
@@ -223,19 +223,19 @@ var crzAltCDUInput = func(){
 			if (cduInput >= 1000){
 			
 				if (cduInput < 10000){
-					setprop("/fmc/VNAV/cruise/altitude-ft",cduInput);
-					setprop("/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
+					setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",cduInput);
+					setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
 					cduInput = "";
 				} else if (cduInput >= 10000){
 				
 					if (cduInput <= 41200){
-						setprop("/fmc/VNAV/cruise/altitude-ft",cduInput);
-						setprop("/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
+						setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",cduInput);
+						setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL",feet2FL(cduInput));
 						cduInput = "";
 					}else if(cduInput >= 10){
 						if (cduInput <= 412){
-							setprop("/fmc/VNAV/cruise/altitude-FL","FL"~cduInput);
-							setprop("/fmc/VNAV/cruise/altitude-ft",int(cduInput~"00"));
+							setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL","FL"~cduInput);
+							setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",int(cduInput~"00"));
 							cduInput = "";
 						}else{
 							cduInput = "INVALID ENTRY";

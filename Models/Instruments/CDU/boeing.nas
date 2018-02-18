@@ -11,18 +11,18 @@ setprop("/instrumentation/fmc/isCustomizeFlaps",0);
 setprop("/instrumentation/fmc/isInputedPos",0);
 setprop("/autopilot/route-manager/isArmed",-1);
 setprop("/autopilot/route-manager/isChanged",1);
-setprop("/fmc/EoAccelHT",1000);
-setprop("/fmc/AccelHT",1000);
-setprop("/fmc/Reduction",1000);
-setprop("/fmc/ref-temperature-degc",-999);
-setprop("/fmc/VNAV/XTransSPD",250);
-setprop("/fmc/VNAV/XTransALT",10000);
-setprop("/fmc/VNAV/RestrSPD",240);
-setprop("/fmc/VNAV/RestrALT",8000);
-setprop("/fmc/VNAV/TransALT",18000);
-setprop("/fmc/VNAV/isChanged",1);
-setprop("/fmc/VNAV/cruise/altitude-FL","");
-setprop("/fmc/VNAV/cruise/altitude-ft",0);
+setprop("/instrumentation/fmc/EoAccelHT",1000);
+setprop("/instrumentation/fmc/AccelHT",1000);
+setprop("/instrumentation/fmc/Reduction",1000);
+setprop("/instrumentation/fmc/ref-temperature-degc",-999);
+setprop("/instrumentation/fmc/VNAV/XTransSPD",250);
+setprop("/instrumentation/fmc/VNAV/XTransALT",10000);
+setprop("/instrumentation/fmc/VNAV/RestrSPD",240);
+setprop("/instrumentation/fmc/VNAV/RestrALT",8000);
+setprop("/instrumentation/fmc/VNAV/TransALT",18000);
+setprop("/instrumentation/fmc/VNAV/isChanged",1);
+setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL","");
+setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",0);
 #Initialize aera end
 
 var input = func(v) {
@@ -31,8 +31,8 @@ var input = func(v) {
 
 var isFLinit = func()
 {
-	if (getprop("/fmc/VNAV/cruise/altitude-FL") != nil)
-		return getprop("/fmc/VNAV/cruise/altitude-FL");
+	if (getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL") != nil)
+		return getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL");
 	else
 		return "";
 }
@@ -48,7 +48,7 @@ var armChanges = func(){
 }
 
 var VNAVChanges = func(){
-	setprop("/fmc/VNAV/isChanged",0);
+	setprop("/instrumentation/fmc/VNAV/isChanged",0);
 	setprop("/autopilot/route-manager/isArmed",1);
 }
 	
@@ -82,7 +82,7 @@ var key = func(v) {
 		var eicasDisplay = getprop("/instrumentation/eicas/display");
 		var cduInput = getprop("/instrumentation/cdu/input");
 		
-		if (serviceable == 1){
+		
 			if (v == "LSK1L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/left") != ""){
@@ -186,8 +186,8 @@ var key = func(v) {
 				}
 				if (cduDisplay == "PERF_INIT"){
 					crzAltCDUInput();
-					setprop("/autopilot/route-manager/cruise/altitude-FL",getprop("/fmc/VNAV/cruise/altitude-FL"));
-					setprop("/autopilot/route-manager/cruise/altitude-ft",getprop("/fmc/VNAV/cruise/altitude-ft"));
+					setprop("/autopilot/route-manager/cruise/altitude-FL",getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL"));
+					setprop("/autopilot/route-manager/cruise/altitude-ft",getprop("/instrumentation/fmc/VNAV/cruise/altitude-ft"));
 					cduInput = "";
 				}#end of PERF_INIT	
 				if (cduDisplay == "TO_REF"){
@@ -375,7 +375,7 @@ var key = func(v) {
 						{	
 							if(num(cduInput) <= getprop("instrumentation/afds/max-airspeed-kts"))
 							{
-								setprop("/fmc/VNAV/XTransSPD",num(cduInput));
+								setprop("/instrumentation/fmc/VNAV/XTransSPD",num(cduInput));
 								cduInput = "";
 								VNAVChanges();
 							}
@@ -385,7 +385,7 @@ var key = func(v) {
 					{
 						if (sum(substr(cduInput,1)) <=42000)
 						{
-							setprop("/fmc/VNAV/XTransALT",sum(substr(cduInput,1)));
+							setprop("/instrumentation/fmc/VNAV/XTransALT",sum(substr(cduInput,1)));
 							cduInput = "";
 							VNAVChanges();
 						}
@@ -398,8 +398,8 @@ var key = func(v) {
 							{	
 								if (num((left(cduInput,2))) <= getprop("instrumentation/weu/state/stall-speed") + 5)
 								{
-									setprop("/fmc/VNAV/XTransSPD",num((left(cduInput,3))));
-									setprop("/fmc/VNAV/XTransALT",num(substr(cduInput,4)));
+									setprop("/instrumentation/fmc/VNAV/XTransSPD",num((left(cduInput,3))));
+									setprop("/instrumentation/fmc/VNAV/XTransALT",num(substr(cduInput,4)));
 									cduInput = "";
 									VNAVChanges();
 								}else{cduInput = "INVALID ENTRY";}
@@ -446,7 +446,7 @@ var key = func(v) {
 				{
 					if (num(cduInput) != nil)
 					{
-						setprop("/fmc/VNAV/TransALT",cduInput);
+						setprop("/instrumentation/fmc/VNAV/TransALT",cduInput);
 						VNAVChanges();
 						cduInput = "";
 					}
@@ -496,7 +496,7 @@ var key = func(v) {
 						{	
 							if(int(cduInput) <= getprop("instrumentation/afds/max-airspeed-kts"))
 							{
-								setprop("/fmc/VNAV/RestrSPD",num(cduInput));
+								setprop("/instrumentation/fmc/VNAV/RestrSPD",num(cduInput));
 								cduInput = "";
 								VNAVChanges();
 							}
@@ -506,7 +506,7 @@ var key = func(v) {
 					{
 						if (sum(substr(cduInput,1)) <=42000)
 						{
-							setprop("/fmc/VNAV/RestrALT",sum(substr(cduInput,1)));
+							setprop("/instrumentation/fmc/VNAV/RestrALT",sum(substr(cduInput,1)));
 							cduInput = "";
 							VNAVChanges();
 						}
@@ -519,8 +519,8 @@ var key = func(v) {
 							{	
 								if (num((left(cduInput,2))) <= getprop("instrumentation/weu/state/stall-speed") + 5)
 								{
-									setprop("/fmc/VNAV/RestrSPD",num((left(cduInput,3))));
-									setprop("/fmc/VNAV/RestrALT",num(substr(cduInput,4)));
+									setprop("/instrumentation/fmc/VNAV/RestrSPD",num((left(cduInput,3))));
+									setprop("/instrumentation/fmc/VNAV/RestrALT",num(substr(cduInput,4)));
 									cduInput = "";
 									VNAVChanges();
 								}else{cduInput = "INVALID ENTRY";}
@@ -613,7 +613,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "TO_REF_2")
 				{
-					setprop("/fmc/ref-temperature-degc",cduInput);
+					setprop("/instrumentation/fmc/ref-temperature-degc",cduInput);
 					cduInput = "";
 				}
 				if (cduDisplay == "PERF_INIT")
@@ -1318,11 +1318,11 @@ var cdu = func{
 		if (display == "TO_REF_2"){
 			title   = "TAKEOFF REF UPLINK";
 			line1rt = "EO ACCEL HT";
-			line1r  = sprintf("%3.0f",getprop("/fmc/EoAccelHT"));
+			line1r  = sprintf("%3.0f",getprop("/instrumentation/fmc/EoAccelHT"));
 			line2rt = "ACCEL HT";
-			line2r  = sprintf("%3.0f",getprop("/fmc/AccelHT"));
+			line2r  = sprintf("%3.0f",getprop("/instrumentation/fmc/AccelHT"));
 			line3rt = "THE REDUCTION";
-			line3r  = sprintf("%3.0f",getprop("/fmc/Reduction"));
+			line3r  = sprintf("%3.0f",getprop("/instrumentation/fmc/Reduction"));
 			line2lt = "ALTN THRUST";
 			line2l  = "<TO";
 			line3lt = "WIND";
@@ -1333,12 +1333,12 @@ var cdu = func{
 			line5rt = "REF OAT";
 			line6ct = "----------------------------------------";
 			line6l = "<INDEX";
-			if (getprop("/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/fmc/ref-temperature-degc")}
+			if (getprop("/instrumentation/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/instrumentation/fmc/ref-temperature-degc")}
 		}
 		if (display == "VNAV") {
 			#TODO:Change the page name to sth like "VNAV_CLB" or "VNAV_1".
 			var ACTorMOD = "MOD";
-			if(getprop("/fmc/VNAV/isChanged") == 0){
+			if(getprop("/instrumentation/fmc/VNAV/isChanged") == 0){
 				ACTorMOD = "MOD";
 			}else{
 				ACTorMOD = "ACT";
@@ -1360,16 +1360,16 @@ var cdu = func{
 			line2lt = "ECON SPD";
 			line2l  = "INOP"; #TODO:仍然不知道算法
 			line3lt = "SPD TRANS";#速度过渡
-			line3l  = sprintf("%2.0f",getprop("/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/XTransALT"));
+			line3l  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/instrumentation/fmc/VNAV/XTransALT"));
 			line4lt = "SPD RESTR";#低于此巡航高度的高度速度限制
-			line4l  = sprintf("%2.0f",getprop("/fmc/VNAV/RestrSPD"))~"/"~sprintf("%.0f",getprop("/fmc/VNAV/RestrALT"));
+			line4l  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/RestrSPD"))~"/"~sprintf("%.0f",getprop("/instrumentation/fmc/VNAV/RestrALT"));
 						
 			line1rt = "AT"~"";#下一个航点的限高、限速
 			line1r  = "";
 			line2rt = "ERROR";#误差，如果没有误差的话是没有显示的，所以我懒得做233
 			line2r  = "";
 			line3rt = "TRANS ALT";
-			line3r  = sprintf("%2.0f",getprop("/fmc/VNAV/TransALT"));#Todo:未制作输入_by 0762
+			line3r  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/TransALT"));#Todo:未制作输入_by 0762
 			line4rt = "MAX ANGLE";#显示爬升速度的最大角度,不允许输入.
 			line4r  = "215";  #算法不明，先留着以后做
 			
