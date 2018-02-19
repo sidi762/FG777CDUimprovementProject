@@ -1379,6 +1379,18 @@ var cdu = func{
 			line5r  = "ENG OUT>"; 
 			line6r  = "CLB DIR>"
 		}
+		if (display == "FMC_COMM"){
+			title = "FMC COMM";
+			line1l = "<RTE 1";
+			line2l = "<ALTN";
+			line3l = "<PERF";
+			line4l = "<TAKEOFF";
+			line5l = "<WIND";
+			line6l = "<DES FORECAST";
+			line1r = "POS REPORT>";
+			line6rt = "DATA LINK";
+			line6r = "FAIL";# data link currently not avilable
+		}
 		
 		if (serviceable != 1){
 			title = "";		page = "";

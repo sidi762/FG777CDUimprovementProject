@@ -1749,6 +1749,20 @@
 
 <animation>
     <type>pick</type>
+    <object-name>Btn.fmc-comm</object-name>
+    <action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/cdu/display</property>
+            <value type="string">FMC_COMM</value>
+        </binding>
+    </action>
+</animation>
+
+<animation>
+    <type>pick</type>
     <object-name>Btn.exec</object-name>
     <condition>
      <equals>
@@ -1838,6 +1852,21 @@
             <script>cdu.sidPrevPge();</script>
         </binding>
     </action>
+	<action>
+	<button>0</button>
+	<repeatable>false</repeatable>
+	<binding>
+		<condition>
+			<equals>
+				<property>/instrumentation/cdu/display</property>
+				<value>TO_REF_2</value>
+			</equals>
+		</condition>
+		<command>property-assign</command>
+		<property>/instrumentation/cdu/display</property>
+		<value>TO_REF</value>
+    </binding>
+</action>
 </animation>
 
 <animation>
