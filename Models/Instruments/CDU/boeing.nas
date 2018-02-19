@@ -142,6 +142,9 @@ var key = func(v) {
 					VNAVChanges();					
 					cduInput = "";
 				}
+				if (cduDisplay == "FMC_COMM"){
+					cduDisplay = "RTE1_1";
+				}
 			}#end of LSK1L
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -183,6 +186,9 @@ var key = func(v) {
 					}else if(getprop("/instrumentation/cdu/isARMED") == 1){
 						setprop("/instrumentation/cdu/isARMED",0);
 					}
+				}
+				if (cduDisplay == "FMC_COMM"){
+					cduInput = "IN DEVELOPMENT";
 				}
 				if (cduDisplay == "PERF_INIT"){
 					crzAltCDUInput();
@@ -260,6 +266,9 @@ var key = func(v) {
 				}
 				if (cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/THRLIM","TOGA");
+				}
+				if (cduDisplay == "FMC_COMM"){
+					cduInput = "IN DEVELOPMENT";
 				}
 			}
 			if (v == "LSK2R"){
@@ -365,6 +374,9 @@ var key = func(v) {
 				}
 				if (cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/THRLIM","TO-1");
+				}
+				if (cduDisplay == "FMC_COMM"){
+					cduDisplay = "PERF_INIT";
 				}
 				if (cduDisplay == "VNAV")
 				{
@@ -487,6 +499,9 @@ var key = func(v) {
 				if (cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/THRLIM","TO-2");
 				}
+				if (cduDisplay == "FMC_COMM"){
+					cduDisplay = "TO_REF";
+				}
 				if (cduDisplay == "VNAV")
 				{
 					#LSK4L，TransALT/SPD
@@ -576,6 +591,9 @@ var key = func(v) {
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "TO_REF";
 				}
+				if (cduDisplay == "FMC_COMM"){
+					cduInput = "IN DEVELOPMENT";
+				}
 				if (cduDisplay == "RTE1_LEGS"){
 					if (cduInput == "DELETE"){
 						setprop("/autopilot/route-manager/input","@DELETE5");
@@ -646,6 +664,9 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK6L"){
+				if (cduDisplay == "FMC_COMM"){
+					cduInput = "IN DEVELOPMENT";
+				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
 				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF")){
