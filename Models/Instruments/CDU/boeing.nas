@@ -692,6 +692,9 @@ var key = func(v) {
 				
 			}
 			if (v == "LSK6R"){
+				if (cduDisplay == "FMC_COMM"){
+					datalink.aircraft1.testConnection();
+				}
 				if (cduDisplay == "THR_LIM"){
 					cduDisplay = "TO_REF";
 				}
@@ -1410,7 +1413,7 @@ var cdu = func{
 			line6l = "<DES FORECAST";
 			line1r = "POS REPORT>";
 			line6rt = "DATA LINK";
-			line6r = "FAIL";# data link currently not avilable
+			line6r = datalink.aircraft1.states; # data link currently not avilable
 		}
 		
 		if (serviceable != 1){

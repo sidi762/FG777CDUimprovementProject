@@ -1,4 +1,5 @@
 var serviceable = 1;
+
 if (serviceable == 1){
 
 	var ground = {
@@ -36,7 +37,11 @@ if (serviceable == 1){
 		
 		ident : 0,
 		
-		new: func(id) { return { parents:[onBoard], ident: id}; },
+		states : "NO COMM",
+		
+		new: func(id) { 
+			return { parents:[onBoard], ident: id}; 
+		},
 		
 		data : ["Comm Success by Aircraft"],
 		dataName: ["test"],
@@ -49,11 +54,24 @@ if (serviceable == 1){
 			append(me.data, allGrounds[from].data[key]);
 			append(me.dataName, allGrounds[from].dataName[key]);
 			print("UplinkReceived, "~allGrounds[from].dataName[key]~" is "~allGrounds[from].data[key]);
+			if(me.data[size(me.data)-1] == "Comm Success"){
+				me.states = "READY";
+			}
 		},
 		request : func(key,target){
 			me.requestState = "DATALINK REQUESTING";
 			print(me.requestState);
 			transmit(key,"request",me.ident,target.ident);
+			
+			
+		},
+		
+		testConnection: func(){
+			
+			me.request("testMessage",allGrounds[0]);
+			print("DATALINK COMM TEST STARTED");
+			me.states = "NO COMM";
+			
 		},
 		
 		requestState: "",
@@ -79,8 +97,8 @@ if (serviceable == 1){
 	var groundDefault = ground.new(0);
 	
 	append(allGrounds, groundDefault);
+	append(allAircrafts, aircraft1);
 	
-	#append(allAircrafts, aircraft1);
 	#allAircrafts[0].request("testMessage",allGrounds[0]);
 	#allAircrafts[0].downlink("test",allGrounds[0]);
 	
