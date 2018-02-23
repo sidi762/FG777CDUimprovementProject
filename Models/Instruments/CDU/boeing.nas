@@ -1403,7 +1403,7 @@ var cdu = func{
 			line5r  = "ENG OUT>"; 
 			line6r  = "CLB DIR>"
 		}
-		if (display == "FMC_COMM"){
+		if (display == "FMC_COMM") {
 			title  = "FMC COMM";
 			line1l = "<RTE 1";
 			line2l = "<ALTN";
@@ -1415,8 +1415,7 @@ var cdu = func{
 			line6rt = "DATA LINK";
 			line6r = datalink.aircraft1.states; # data link currently not avilable
 		}
-		if (display == "ALTN")
-		        {
+		if (display == "ALTN") {
 		            #先做个简单的应付一下（滑稽
 		              var info = airportinfo();
 		            #先做个简单的应付一下（滑稽
@@ -1431,30 +1430,8 @@ var cdu = func{
 		            line5rt = "ALTN INHIBIT";
 		            line5r  = "----/----";
 		            line6rt = info.id;
-		            line6r  = "DIVERT NOW>"
-		        }
-
-			line6r = "FAIL";# data link currently not avilable
-        }
-        if (display == "ALTN")
-        {
-            #先做个简单的应付一下（滑稽
-              var info = airportinfo();
-            #先做个简单的应付一下（滑稽
-            title   = "ALTN";
-            page    = "1/2";
-            line1l  = info.id;
-            line1cl = "<SEL>";##TODO
-            line5lt = "ALTN";
-            line5l  = "<REQUEST";
-            line6lt = "WXR";
-            line6l  = "<REQUEST";
-            line5rt = "ALTN INHIBIT";
-            line5r  = "----/----";
-            line6rt = info.id;
-            line6r  = "DIVERT NOW>"
-        }
->>>>>>> 465bc188d3c832176f7b941992171317245e19ad
+		            line6r  = "DIVERT NOW>";
+		    }
 		
 		if (serviceable != 1){
 			title = "";		page = "";
