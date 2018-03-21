@@ -151,9 +151,10 @@ var key = func(v) {
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
 				if (cduDisplay == "VNAV"){
-					crzAltCDUInput();
-					VNAVChanges();					
-					cduInput = "";
+					cduInput = crzAltCDUInput();
+					if(cduInput != "INVALID ENTRY"){
+						VNAVChanges();	
+					}				
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "RTE1_1";
@@ -205,10 +206,9 @@ var key = func(v) {
 					msg = 1;
 				}
 				if (cduDisplay == "PERF_INIT"){
-					crzAltCDUInput();
+					cduInput = crzAltCDUInput();
 					setprop("/autopilot/route-manager/cruise/altitude-FL",getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL"));
 					setprop("/autopilot/route-manager/cruise/altitude-ft",getprop("/instrumentation/fmc/VNAV/cruise/altitude-ft"));
-					cduInput = "";
 				}#end of PERF_INIT	
 				if (cduDisplay == "TO_REF"){
 					if (cduInput == ""){

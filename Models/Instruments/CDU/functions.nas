@@ -257,7 +257,7 @@ var crzAltCDUInput = func(){
 			cduInput = "INVALID ENTRY";
 		}
 		setprop("/instrumentation/cdu/display",cduDisplay);
-		setprop("/instrumentation/cdu/input",cduInput);
 		setprop("/instrumentation/fmc/isMsg",msg); 
+		return cduInput;
 }
 
