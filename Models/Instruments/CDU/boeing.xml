@@ -2510,10 +2510,9 @@
         <repeatable>false</repeatable>
         <binding>
             <command>nasal</command>
-            <script>setprop("/instrumentation/cdu/input",left(getprop("/instrumentation/cdu/input"),size(getprop("/instrumentation/cdu/input"))-1));</script>
+            <script>cdu.Del();</script>
         </binding>
-    </action>
+	</action>
 </animation>
-
 
 </PropertyList>

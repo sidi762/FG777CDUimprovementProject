@@ -23,6 +23,8 @@ setprop("/instrumentation/fmc/VNAV/TransALT",18000);
 setprop("/instrumentation/fmc/VNAV/isChanged",1);
 setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL","");
 setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",0);
+setprop("/instrumentation/fmc/isMsg",0);
+setprop("/instrumentation/fmc/OrgInput","");
 #Initialize aera end
 
 var input = func(v) {
@@ -52,9 +54,19 @@ var VNAVChanges = func(){
 	setprop("/autopilot/route-manager/isArmed",1);
 }
 	
-var delete = func {
-		var length = size(getprop("/instrumentation/cdu/input")) - 1;
-		setprop("/instrumentation/cdu/input",substr(getprop("/instrumentation/cdu/input"),0,length));
+var Del = func()
+{
+	var isMsg = getprop("/instrumentation/fmc/isMsg");
+	if(isMsg == 0)
+	{
+		setprop("/instrumentation/cdu/input",left(getprop("/instrumentation/cdu/input"),size(getprop("/instrumentation/cdu/input"))-1));
+	}
+	else if(isMsg == 1)
+	{
+		setprop("instrumentation/cdu/input","");
+		isMsg = 0;
+	}
+	setprop("/instrumentation/fmc/isMsg",isMsg);
 }
 
 var plusminus = func {
@@ -77,10 +89,11 @@ var plusminus = func {
 var i = 0;
 
 var key = func(v) {
-		var cduDisplay = getprop("/instrumentation/cdu/display");
-		var serviceable = getprop("/instrumentation/cdu/serviceable");
+		var cduDisplay   = getprop("/instrumentation/cdu/display");
+		var serviceable  = getprop("/instrumentation/cdu/serviceable");
 		var eicasDisplay = getprop("/instrumentation/eicas/display");
-		var cduInput = getprop("/instrumentation/cdu/input");
+		var cduInput     = getprop("/instrumentation/cdu/input");
+		var msg          = getprop("/instrumentation/fmc/isMsg"); 
 		
 		if (serviceable == 1){
 			if (v == "LSK1L"){
@@ -189,6 +202,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 				if (cduDisplay == "PERF_INIT"){
 					crzAltCDUInput();
@@ -269,6 +283,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 			}
 			if (v == "LSK2R"){
@@ -312,14 +327,16 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/flight-number",cduInput);
 					cduInput = "";
 				}else if (cduDisplay == "PERF_INIT"){
+					
 					if (num(cduInput) != nil){
 						if(cduInput >= 0){
 							if(cduInput <= 1000){
 								setprop("/instrumentation/fmc/COST_INDEX",cduInput);
 								cduInput = "";
-							}else{cduInput = "INVALID ENTRY"}
-						}else{cduInput = "INVALID ENTRY"}
-					}else{cduInput = "INVALID ENTRY"}
+							}else{cduInput = "INVALID ENTRY";msg = 1;}
+						}else{cduInput = "INVALID ENTRY";msg = 1;}
+					}else{cduInput = "INVALID ENTRY";msg = 1;}
+					
 				}
 				else if(cduDisplay == "THR_LIM"){
 					setprop("/instrumentation/fmc/CLB_LIM","CLB");
@@ -391,7 +408,7 @@ var key = func(v) {
 								cduInput = "";
 								VNAVChanges();
 							}
-						}else{cduInput = "INVALID ENTRY";}
+						}else{cduInput = "INVALID ENTRY";msg = 1;}
 					}
 					else if(left(cduInput,1) == "/")  #只修改ALT的情况
 					{
@@ -414,12 +431,12 @@ var key = func(v) {
 									setprop("/instrumentation/fmc/VNAV/XTransALT",num(substr(cduInput,4)));
 									cduInput = "";
 									VNAVChanges();
-								}else{cduInput = "INVALID ENTRY";}
+								}else{cduInput = "INVALID ENTRY";msg = 1;}
 							}
 						}
 					}
 
-					else{cduInput = "INVALID ENTRY";}
+					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
 			}
 			if (v == "LSK3R"){
@@ -515,7 +532,7 @@ var key = func(v) {
 								cduInput = "";
 								VNAVChanges();
 							}
-						}else{cduInput = "INVALID ENTRY";}
+						}else{cduInput = "INVALID ENTRY";msg = 1;}
 					}
 					else if(left(cduInput,1) == "/")  #只修改ALT的情况
 					{
@@ -538,12 +555,12 @@ var key = func(v) {
 									setprop("/instrumentation/fmc/VNAV/RestrALT",num(substr(cduInput,4)));
 									cduInput = "";
 									VNAVChanges();
-								}else{cduInput = "INVALID ENTRY";}
+								}else{cduInput = "INVALID ENTRY";msg = 1;}
 							}
 						}
 					}
 
-					else{cduInput = "INVALID ENTRY";}
+					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
 				
 			}
@@ -624,6 +641,7 @@ var key = func(v) {
 					if (size(err2)){
 						setprop("/instrumentation/fmc/isInputedPos",0);
 						cduInput = "INVALID ENTRY";
+						msg = 1;
 					}else{
 						setprop("/instrumentation/fmc/isInputedPos",1);
 						cduInput = "";
@@ -749,7 +767,9 @@ var key = func(v) {
 			if (eicasDisplay != nil){
 				setprop("/instrumentation/eicas/display",eicasDisplay);
 			}
-			setprop("/instrumentation/cdu/input",cduInput);
+			
+		setprop("/instrumentation/cdu/input",cduInput);
+		setprop("/instrumentation/fmc/isMsg",msg);
 }
 
 var cdu = func{

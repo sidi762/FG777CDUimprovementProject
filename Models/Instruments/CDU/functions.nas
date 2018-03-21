@@ -197,7 +197,8 @@ var echoUpdateArmed = func(){
 
 var crzAltCDUInput = func(){
 	var cduDisplay = getprop("/instrumentation/cdu/display");
-	var cduInput = getprop("/instrumentation/cdu/input");
+	var cduInput   = getprop("/instrumentation/cdu/input");
+	var msg        = getprop("/instrumentation/fmc/isMsg"); 
 	if (find("FL", cduInput) != -1){
 		if (size(cduInput) <=5 ){
 			if (num(substr(cduInput,2,size(cduInput))) != nil){
@@ -255,5 +256,8 @@ var crzAltCDUInput = func(){
 			#else for "find("FL", cduInput) == -1"
 			cduInput = "INVALID ENTRY";
 		}
+		setprop("/instrumentation/cdu/display",cduDisplay);
+		setprop("/instrumentation/cdu/input",cduInput);
+		setprop("/instrumentation/fmc/isMsg",msg); 
 }
 
