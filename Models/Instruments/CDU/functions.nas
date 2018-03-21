@@ -196,7 +196,6 @@ var echoUpdateArmed = func(){
 }
 
 var crzAltCDUInput = func(){
-	var cduDisplay = getprop("/instrumentation/cdu/display");
 	var cduInput   = getprop("/instrumentation/cdu/input");
 	var msg        = getprop("/instrumentation/fmc/isMsg"); 
 	if (find("FL", cduInput) != -1){
@@ -209,13 +208,16 @@ var crzAltCDUInput = func(){
 						cduInput = "";
 					}else{
 						cduInput = "INVALID ENTRY";
+						msg = 1;
 					}
 				}else{
 					cduInput = "INVALID ENTRY";
+					msg = 1;
 				}
 			}
 		} else {
 			cduInput = "INVALID ENTRY";
+			msg = 1;
 		}
 	
 	} else if (find("FL", cduInput) == -1){
@@ -240,13 +242,16 @@ var crzAltCDUInput = func(){
 							cduInput = "";
 						}else{
 							cduInput = "INVALID ENTRY";
+
 						}
 					}else{
 							cduInput = "INVALID ENTRY";
 						}
 					}
 				
-				}
+				}else{
+						cduInput = "INVALID ENTRY";
+						}
 			
 			}else{ 
 				#else for "num(cduInput) != nil"
@@ -255,9 +260,8 @@ var crzAltCDUInput = func(){
 		}else{
 			#else for "find("FL", cduInput) == -1"
 			cduInput = "INVALID ENTRY";
-		}
-		setprop("/instrumentation/cdu/display",cduDisplay);
-		setprop("/instrumentation/fmc/isMsg",msg); 
+			}
+			 
 		return cduInput;
 }
 

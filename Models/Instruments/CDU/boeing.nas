@@ -54,18 +54,18 @@ var VNAVChanges = func(){
 	setprop("/autopilot/route-manager/isArmed",1);
 }
 	
-var Del = func()
+var del = func()
 {
 	var isMsg = getprop("/instrumentation/fmc/isMsg");
-	if(isMsg == 0)
+	if(isMsg == 1)
+	{
+		setprop("instrumentation/cdu/input","");
+	}
+	else
 	{
 		setprop("/instrumentation/cdu/input",left(getprop("/instrumentation/cdu/input"),size(getprop("/instrumentation/cdu/input"))-1));
 	}
-	else if(isMsg == 1)
-	{
-		setprop("instrumentation/cdu/input","");
-		isMsg = 0;
-	}
+	isMsg = 0;
 	setprop("/instrumentation/fmc/isMsg",isMsg);
 }
 
@@ -207,6 +207,8 @@ var key = func(v) {
 				}
 				if (cduDisplay == "PERF_INIT"){
 					cduInput = crzAltCDUInput();
+					if (cduInput == "INVALID ENTRY")
+					{msg = 1;}
 					setprop("/autopilot/route-manager/cruise/altitude-FL",getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL"));
 					setprop("/autopilot/route-manager/cruise/altitude-ft",getprop("/instrumentation/fmc/VNAV/cruise/altitude-ft"));
 				}#end of PERF_INIT	

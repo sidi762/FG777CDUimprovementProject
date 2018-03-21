@@ -2510,7 +2510,7 @@
         <repeatable>false</repeatable>
         <binding>
             <command>nasal</command>
-            <script>cdu.Del();</script>
+            <script>cdu.del();</script>
         </binding>
 	</action>
 </animation>
