@@ -265,3 +265,63 @@ var crzAltCDUInput = func(){
 		return cduInput;
 }
 
+var findPosWithGate = func(gateName,airport){
+	#WIP, currently will only print in Nasal console: Sidi Liang is Working on it ---0762
+	var firstLetter = utf8.chstr(airport[0]);
+	var secLetter = utf8.chstr(airport[1]);
+	var thirdLetter = utf8.chstr(airport[2]);
+
+	var groundNetData = io.read_airport_properties(airport, "groundnet"); 
+	var parkingListData = nil;
+	var groundNetDataGot = 0;
+	if(groundNetData == nil){
+
+		if(getprop("sim/fg-scenery")!=nil){
+			groundNetData = io.readxml(getprop("/sim/fg-scenery") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+			if(groundNetData != nil){
+				parkingListData = groundNetData.getNode("groundnet/parkingList");
+				#props.dump(parkingListData); # dump groundNetData
+				groundNetDataGot = 1;
+			}
+		
+			if(!groundNetDataGot){
+				var i_scenery = 1;
+				while(getprop("sim/fg-scenery["~i_scenery~"]") != nil){
+					groundNetData = io.readxml(getprop("/sim/fg-scenery["~i_scenery~"]") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+					if(groundNetData != nil){
+						groundNetDataGot = 1;
+						parkingListData = groundNetData.getNode("groundnet/parkingList");
+						#props.dump(parkingListData); # dump groundNetData
+						break;
+					}
+					i_scenery += 1;
+				}
+			}
+	
+		}
+	}else{
+		props.dump(groundNetData); # dump groundNetData
+		groundNetDataGot = 1;
+	}
+
+	if(parkingListData.getNode("Parking").getValue("___name") == gateName){
+		#print(gateName);
+		var lat = parkingListData.getNode("Parking").getValue("___lat");
+		var lon = parkingListData.getNode("Parking").getValue("___lon");
+		print(lat);
+		print(lon);
+	}else{
+		var i_Parking = 0;
+		while(parkingListData.getNode("Parking["~i_Parking~"]") != nil){
+			if(parkingListData.getNode("Parking["~i_Parking~"]").getValue("___name") == gateName){
+				#print(gateName);
+				var lat = parkingListData.getNode("Parking").getValue("___lat");
+				var lon = parkingListData.getNode("Parking").getValue("___lon");
+				print(lat);
+				print(lon);
+				break;
+			}
+			i_Parking += 1;
+		}
+	}
+}
