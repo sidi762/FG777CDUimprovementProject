@@ -367,8 +367,20 @@ var key = func(v) {
 					cduDisplay = "PERF_INIT";
 				}
 				if (cduDisplay == "POS_INIT"){
-					setprop("/instrumentation/fmc/gate",cduInput);
-					cduInput = "";
+					if(getprop("/instrumentation/fmc/ref-airport")){
+						if(cduInput == ""){
+							setprop("/instrumentation/fmc/gate",cduInput);
+							cduInput = "";
+						}else if(findPosWithGate(gateName = cduInput, airport = getprop("/instrumentation/fmc/ref-airport")) == 404){
+							cduInput = "NOT IN DATABASE";
+							msg = 1;
+						}else{
+							setprop("/instrumentation/fmc/gate",cduInput);
+							cduInput = "IN DEVELOPMENT";
+							msg = 1;
+						}
+					}
+					
 				}
 				if (cduDisplay == "NAV_RAD"){
 					if (int(cduInput) > 189 and int(cduInput) < 1751) {
@@ -983,14 +995,12 @@ var cdu = func{
 			var getRefApt = func(){
 				var aptA_INIT = getprop("/instrumentation/fmc/ref-airport") or "";
 				if (aptA_INIT == ""){
-				    setprop("/instrumentation/fmc/gate", " ");
 					setprop("/instrumentation/fmc/ref-airport-pos", "");
 					return "----";
 				}else{
 					var refAptLat = airportinfo(aptA_INIT).lat;
 					var refAptLon = airportinfo(aptA_INIT).lon;
 					var refAptPosStr = latdeg2latDMM(refAptLat)~" "~londeg2lonDMM(refAptLon);
-					setprop("/instrumentation/fmc/gate", "-----");
 					setprop("/instrumentation/fmc/ref-airport-pos", refAptPosStr);
 					return aptA_INIT;
 				}
@@ -999,12 +1009,23 @@ var cdu = func{
 			if (size(err)){
 				setprop("/instrumentation/fmc/ref-airport", "");
 				setprop("/instrumentation/cdu/input", "NOT IN DATABASE");
+				setprop("/instrumentation/fmc/isMsg",1);
 			}else{
 				line2l = line2ltmp;
 			}
+			
 			line2r = getprop("/instrumentation/fmc/ref-airport-pos");
 			line3lt = "GATE";
-			line3l = getprop("/instrumentation/fmc/gate");
+			#line3l = getprop("/instrumentation/fmc/gate"); #Temperary code, abandoned April 24 by Sidi Liang, replaced by code below
+			if(getprop("/instrumentation/fmc/ref-airport")){
+				if(!getprop("/instrumentation/fmc/gate")){
+					line3l = "-----";
+				}else{
+					line3l = getprop("/instrumentation/fmc/gate");
+				}
+			}else{
+				line3l = " ";
+			}
 			line4rt = "GPS POS";
 			line4r = getGpsPos();
 			line4lt = "UTC";

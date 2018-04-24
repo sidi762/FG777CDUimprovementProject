@@ -266,7 +266,11 @@ var crzAltCDUInput = func(){
 }
 
 var findPosWithGate = func(gateName,airport){
-	#WIP, currently will only print in Nasal console: Sidi Liang is Working on it ---0762
+	#WIP, currently will only print the coordinate in Nasal console: Sidi Liang and YongFan Li is Working on it ---0762
+	#Currently only supports airports downloaded by Terrasync or custom scenery added by launcher or commandlines.
+	#Supports the airports which parking in groundnet was formatted as "name" or "name"+"number".
+	#Behaviour: Display "IN DEVELOPMENT" in CDU and print the coordinate in Nasal console if the gate was found in scenery that was supported(see above), and the gate number will be displayed in the CDU.  
+	#			Display "NOT IN DATABASE" in CDU if groundnet file or requested gate weren't found.
 	var firstLetter = utf8.chstr(airport[0]);
 	var secLetter = utf8.chstr(airport[1]);
 	var thirdLetter = utf8.chstr(airport[2]);
@@ -274,10 +278,16 @@ var findPosWithGate = func(gateName,airport){
 	var groundNetData = io.read_airport_properties(airport, "groundnet"); 
 	var parkingListData = nil;
 	var groundNetDataGot = 0;
+	var gateGot = 0;
 	if(groundNetData == nil){
 
 		if(getprop("sim/fg-scenery")!=nil){
-			groundNetData = io.readxml(getprop("/sim/fg-scenery") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+			var getGroundNetDataAttempt = call(func io.readxml(getprop("/sim/fg-scenery") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml'), nil, var err = []);
+			if (size(err)){
+				groundNetData = nil;
+			}else{
+				groundNetData = io.readxml(getprop("/sim/fg-scenery") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+			}
 			if(groundNetData != nil){
 				parkingListData = groundNetData.getNode("groundnet/parkingList");
 				#props.dump(parkingListData); # dump groundNetData
@@ -287,7 +297,12 @@ var findPosWithGate = func(gateName,airport){
 			if(!groundNetDataGot){
 				var i_scenery = 1;
 				while(getprop("sim/fg-scenery["~i_scenery~"]") != nil){
-					groundNetData = io.readxml(getprop("/sim/fg-scenery["~i_scenery~"]") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+					var getGroundNetDataAttempt = call(func io.readxml(getprop("sim/fg-scenery["~i_scenery~"]") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml'), nil, var err = []);
+					if (size(err)){
+						groundNetData = nil;
+					}else{
+						groundNetData = io.readxml(getprop("sim/fg-scenery["~i_scenery~"]") ~ '/Airports/'~firstLetter~'/'~secLetter~'/'~thirdLetter~'/'~airport~'.groundnet.xml');
+					}
 					if(groundNetData != nil){
 						groundNetDataGot = 1;
 						parkingListData = groundNetData.getNode("groundnet/parkingList");
@@ -300,28 +315,46 @@ var findPosWithGate = func(gateName,airport){
 	
 		}
 	}else{
-		props.dump(groundNetData); # dump groundNetData
+		#props.dump(groundNetData); # dump groundNetData
+		parkingListData = groundNetData.getNode("groundnet/parkingList");
 		groundNetDataGot = 1;
 	}
 
-	if(parkingListData.getNode("Parking").getValue("___name") == gateName){
-		#print(gateName);
-		var lat = parkingListData.getNode("Parking").getValue("___lat");
-		var lon = parkingListData.getNode("Parking").getValue("___lon");
-		print(lat);
-		print(lon);
-	}else{
-		var i_Parking = 0;
-		while(parkingListData.getNode("Parking["~i_Parking~"]") != nil){
-			if(parkingListData.getNode("Parking["~i_Parking~"]").getValue("___name") == gateName){
-				#print(gateName);
-				var lat = parkingListData.getNode("Parking").getValue("___lat");
-				var lon = parkingListData.getNode("Parking").getValue("___lon");
-				print(lat);
-				print(lon);
-				break;
-			}
-			i_Parking += 1;
+	if(groundNetDataGot){
+		var getGateName = parkingListData.getNode("Parking").getValue("___name");
+		if(parkingListData.getNode("Parking").getValue("___number") != nil){
+			getGateName = getGateName ~ parkingListData.getNode("Parking").getValue("___number");#Add support to the name+number format type of groundnet file.
 		}
+		if(getGateName == gateName){
+			#print(gateName);
+			var lat = parkingListData.getNode("Parking").getValue("___lat");
+			var lon = parkingListData.getNode("Parking").getValue("___lon");
+			print(lat);
+			print(lon);
+			gateGot = 1;
+		}else{
+			var i_Parking = 0;
+			while(parkingListData.getNode("Parking["~i_Parking~"]") != nil){
+				getGateName = parkingListData.getNode("Parking["~i_Parking~"]").getValue("___name");
+				if(parkingListData.getNode("Parking["~i_Parking~"]").getValue("___number") != nil){
+					getGateName = getGateName ~ parkingListData.getNode("Parking["~i_Parking~"]").getValue("___number");#Add support to the name+number format type of groundnet file.
+				}
+				if(getGateName == gateName){
+					#print(gateName);
+					var lat = parkingListData.getNode("Parking").getValue("___lat");
+					var lon = parkingListData.getNode("Parking").getValue("___lon");
+					print(lat);
+					print(lon);
+					gateGot = 1;
+					break;
+				}
+				i_Parking += 1;
+			}
+		}
+		if(!gateGot){
+			return 404;#Gate Not Found
+		}
+	}else{
+		return 404;#Groundnet Data Not Found
 	}
 }
