@@ -130,7 +130,7 @@ var latdeg2latDMM = func(inLatDeg){
 		var latdegree_INIT = int(inLatDeg);
 		var latminint_INIT = int((inLatDeg - latdegree_INIT) * 60);
 		var latmindouble_INIT = int((((inLatDeg - latdegree_INIT) * 60) - latminint_INIT) * 10);
-		if(latminint_INIT < 10){
+		if(abs(latminint_INIT) < 10){
 			var outlatminint_INIT = "0"~abs(latminint_INIT);
 		}else{
 			var outlatminint_INIT = abs(latminint_INIT);
@@ -142,7 +142,7 @@ var latdeg2latDMM = func(inLatDeg){
 		}else{
 				isNS_INIT = "S";
 		}
-		if(latdegree_INIT < 10){
+		if(abs(latdegree_INIT) < 10){
 			var outlatdegree_INIT = "0"~abs(latdegree_INIT);
 		}else{
 			var outlatdegree_INIT = abs(latdegree_INIT);
@@ -154,7 +154,7 @@ var londeg2lonDMM = func(inLonDeg){
 		var londegree_INIT = int(inLonDeg);
 		var lonminint_INIT = int((inLonDeg - londegree_INIT) * 60);
 		var lonmindouble_INIT = int((((inLonDeg - londegree_INIT) * 60) - lonminint_INIT) * 10);
-		if(lonminint_INIT < 10){
+		if(abs(lonminint_INIT) < 10){
 			var outlonminint_INIT = "0"~abs(lonminint_INIT);
 		}else{
 			var outlonminint_INIT = abs(lonminint_INIT);
@@ -166,7 +166,7 @@ var londeg2lonDMM = func(inLonDeg){
 		}else{
 			isEW_INIT = "W";
 		}
-		if(londegree_INIT < 10){
+		if(abs(londegree_INIT) < 10){
 			var outlondegree_INIT = "0"~abs(londegree_INIT);
 		}else{
 			var outlondegree_INIT = abs(londegree_INIT);
