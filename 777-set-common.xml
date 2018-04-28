@@ -17,6 +17,10 @@
                 <file type="string">BAW</file>
             </livery>
             <armrest type="double">0</armrest>
+			<ramp>
+			    <x-m type="float">-24.6206</x-m>
+			    <class type="string">0</class>
+			</ramp>
         </model>
         <shutterspeed type="double">0.18</shutterspeed>
         <instrument-options>

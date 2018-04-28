@@ -4,7 +4,7 @@ setprop("/instrumentation/cdu/isARMED",0);
 setprop("/autopilot/route-manager/cruise/altitude-ft",0);
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
-setprop("instrumentation/cdu/StepSize","RVSM");
+setprop("/instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
 setprop("/instrumentation/fmc/isCustomizeFlaps",0);
@@ -25,6 +25,10 @@ setprop("/instrumentation/fmc/VNAV/cruise/altitude-FL","");
 setprop("/instrumentation/fmc/VNAV/cruise/altitude-ft",0);
 setprop("/instrumentation/fmc/isMsg",0);
 setprop("/instrumentation/fmc/OrgInput","");
+setprop("/instrumentation/fmc/gate-pos-lat-str","");
+setprop("/instrumentation/fmc/gate-pos-lon-str","");
+setprop("/instrumentation/fmc/gate-pos-lat-noformat","");
+setprop("/instrumentation/fmc/gate-pos-lon-noformat","");
 #Initialize aera end
 
 var input = func(v) {
@@ -59,7 +63,7 @@ var del = func()
 	var isMsg = getprop("/instrumentation/fmc/isMsg");
 	if(isMsg == 1)
 	{
-		setprop("instrumentation/cdu/input","");
+		setprop("/instrumentation/cdu/input","");
 	}
 	else
 	{
@@ -246,6 +250,7 @@ var key = func(v) {
 					var RefApt = airportinfo(getprop("/instrumentation/fmc/ref-airport"));
 					setprop("/instrumentation/fmc/ref-airport-poslat",RefApt.lat);
 					setprop("/instrumentation/fmc/ref-airport-poslon",RefApt.lon);
+					setprop("/instrumentation/fmc/gate", "");
 					cduInput = "";
 				}
 				if (cduDisplay == "NAV_RAD"){
@@ -376,7 +381,7 @@ var key = func(v) {
 							msg = 1;
 						}else{
 							setprop("/instrumentation/fmc/gate",cduInput);
-							cduInput = "IN DEVELOPMENT";
+							cduInput = "";
 							msg = 1;
 						}
 					}
@@ -493,6 +498,9 @@ var key = func(v) {
 						VNAVChanges();
 						cduInput = "";
 					}
+				}
+				if(cduDisplay == "POS_INIT"){
+					cduInput = getprop("instrumentation/fmc/gate-pos-lat-noformat") ~ getprop("instrumentation/fmc/gate-pos-lon-noformat");
 				}
 			}
 			if (v == "LSK4L"){
@@ -1020,11 +1028,14 @@ var cdu = func{
 			if(getprop("/instrumentation/fmc/ref-airport")){
 				if(!getprop("/instrumentation/fmc/gate")){
 					line3l = "-----";
+					line3r = " ";
 				}else{
 					line3l = getprop("/instrumentation/fmc/gate");
+					line3r = getprop("instrumentation/fmc/gate-pos-lat-str") ~" "~getprop("instrumentation/fmc/gate-pos-lon-str");
 				}
 			}else{
 				line3l = " ";
+				line3r = " ";
 			}
 			line4rt = "GPS POS";
 			line4r = getGpsPos();

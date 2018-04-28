@@ -266,11 +266,11 @@ var crzAltCDUInput = func(){
 }
 
 var findPosWithGate = func(gateName,airport){
-	#WIP, currently will only print the coordinate in Nasal console: Sidi Liang and YongFan Li is Working on it ---0762
+	#Sidi Liang and YongFan Li is Working on it ---0762
 	#Currently only supports airports downloaded by Terrasync or custom scenery added by launcher or commandlines.
 	#Supports the airports which parking in groundnet was formatted as "name" or "name"+"number".
-	#Behaviour: Display "IN DEVELOPMENT" in CDU and print the coordinate in Nasal console if the gate was found in scenery that was supported(see above), and the gate number will be displayed in the CDU.  
-	#			Display "NOT IN DATABASE" in CDU if groundnet file or requested gate weren't found.
+	#Behaviour: Write the coordinate to the property tree if the gate was found in scenery that was supported(see above), and the gate number will be displayed in the CDU.  
+	#			Return 404 if groundnet file or requested gate weren't found.
 	var firstLetter = utf8.chstr(airport[0]);
 	var secLetter = utf8.chstr(airport[1]);
 	var thirdLetter = utf8.chstr(airport[2]);
@@ -345,6 +345,68 @@ var findPosWithGate = func(gateName,airport){
 					var lon = parkingListData.getNode("Parking").getValue("___lon");
 					print(lat);
 					print(lon);
+					var latOutput = "";
+					var lonOutput = "";
+					var latOutput1 = "";#擦写板格式
+					var lonOutput1 = "";
+					var nOrS = utf8.chstr(lat[0]);
+					var eOrW = utf8.chstr(lon[0]);
+					var latpointer = 0;
+					var lonpointer = 0;
+					latOutput = latOutput ~ nOrS;
+					lonOutput = lonOutput ~ eOrW;
+					latOutput1 = latOutput1 ~ nOrS;
+					lonOutput1 = lonOutput1 ~ eOrW;
+					if(utf8.chstr(lat[3]) == " "){
+						latOutput = latOutput~utf8.chstr(lat[1])~utf8.chstr(lat[2])~"*";
+						latOutput1 = latOutput1~utf8.chstr(lat[1])~utf8.chstr(lat[2]);
+						latpointer = 4;
+					}else{
+						latOutput = latOutput~"0"~utf8.chstr(lat[1])~"*";
+						latOutput1 = latOutput1~"0"~utf8.chstr(lat[1]);
+						latpointer = 3;
+					}
+					if(utf8.chstr(lon[2]) == " "){
+						lonOutput = lonOutput~"0"~utf8.chstr(lon[1])~"*";
+						lonOutput1 = lonOutput1~"0"~utf8.chstr(lon[1]);
+						lonpointer = 3;
+					}else if(utf8.chstr(lon[3]) == " "){
+						lonOutput = lonOutput~utf8.chstr(lon[1])~utf8.chstr(lon[2])~"*";
+						lonOutput1 = lonOutput1~utf8.chstr(lon[1])~utf8.chstr(lon[2]);
+						lonpointer = 4;
+					}else{
+						lonOutput = lonOutput~utf8.chstr(lon[1])~utf8.chstr(lon[2])~utf8.chstr(lon[3])~"*";
+						lonOutput1 = lonOutput1~utf8.chstr(lon[1])~utf8.chstr(lon[2])~utf8.chstr(lon[3]);
+						lonpointer = 5;
+					}
+					
+					if(utf8.chstr(lat[latpointer+1]) == "."){
+						latOutput = latOutput ~ "0"~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]);
+						latOutput1 = latOutput1 ~ "0"~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]);
+					}else if(utf8.chstr(lat[latpointer+2]) == "."){
+						latOutput = latOutput ~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]) ~ utf8.chstr(lat[latpointer+3]);
+						latOutput1 = latOutput1 ~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]) ~ utf8.chstr(lat[latpointer+3]);
+					}else if(utf8.chstr(lat[latpointer+3]) == "."){
+						latOutput = latOutput ~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]) ~ utf8.chstr(lat[latpointer+3]) ~ utf8.chstr(lat[latpointer+4]);
+						latOutput1 = latOutput1 ~ utf8.chstr(lat[latpointer]) ~ utf8.chstr(lat[latpointer+1]) ~ utf8.chstr(lat[latpointer+2]) ~ utf8.chstr(lat[latpointer+3]) ~ utf8.chstr(lat[latpointer+4]);
+					}
+					
+					if(utf8.chstr(lon[lonpointer+1]) == "."){
+						lonOutput = lonOutput ~ "0"~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]);
+						lonOutput1 = lonOutput1 ~ "0"~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]);
+					}else if(utf8.chstr(lon[lonpointer+2]) == "."){
+						lonOutput = lonOutput ~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]) ~ utf8.chstr(lon[lonpointer+3]);
+						lonOutput1 = lonOutput1 ~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]) ~ utf8.chstr(lon[lonpointer+3]);
+					}else if(utf8.chstr(lat[lonpointer+3]) == "."){
+						lonOutput = lonOutput ~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]) ~ utf8.chstr(lon[lonpointer+3]) ~ utf8.chstr(lon[lonpointer+4]);
+						lonOutput1 = lonOutput1 ~ utf8.chstr(lon[lonpointer]) ~ utf8.chstr(lon[lonpointer+1]) ~ utf8.chstr(lon[lonpointer+2]) ~ utf8.chstr(lon[lonpointer+3]) ~ utf8.chstr(lon[lonpointer+4]);
+					}
+					setprop("instrumentation/fmc/gate-pos-lat-str",latOutput);
+					setprop("instrumentation/fmc/gate-pos-lon-str",lonOutput);
+					setprop("instrumentation/fmc/gate-pos-lat-noformat",latOutput1);
+					setprop("instrumentation/fmc/gate-pos-lon-noformat",lonOutput1);
+		
+		
 					gateGot = 1;
 					break;
 				}
