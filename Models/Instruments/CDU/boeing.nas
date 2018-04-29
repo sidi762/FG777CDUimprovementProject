@@ -1,3 +1,11 @@
+################################
+#|  ___/ ___|  _ \|  _ \ / ___|#
+#| |_ | |  _| |_) | |_) | |	   #
+#|  _|| |_| |  __/|  _ <| |___ #
+#|_|   \____|_|   |_| \_\\____|#
+################################
+
+
 #Initialize the properties here 
 setprop("/instrumentation/cdu/LATorBRG",0);
 setprop("/instrumentation/cdu/isARMED",0);
