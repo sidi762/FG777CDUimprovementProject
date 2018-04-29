@@ -21,6 +21,20 @@ var getRwyOfSids = func(sidID){
 			}
 		}
 }
+var findAirportsWithinNumber = func(num)
+{
+	var range = 10;
+	var nApts = findAirportsWithinRange(range);
+
+	while(size (nApts) <= num)
+	{
+			range = range + 10;
+			nApts = findAirportsWithinRange(range);
+	}
+		return nApts;	
+}
+#nApts = findAirportsWithinNumber(4);
+#print(nApts[0].id);
 var echoSids = func(page,selectedRwy = ""){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	if(getprop("/autopilot/route-manager/departure/airport") != ""){
@@ -28,6 +42,7 @@ var echoSids = func(page,selectedRwy = ""){
 			var allSids = apt.sids(selectedRwy);
 			var defaultNum = 1;
 		}else{
+			var allSids = apt.sids();
 			var allSids = apt.sids();
 			var defaultNum = size(keys(apt.runways));
 		}
