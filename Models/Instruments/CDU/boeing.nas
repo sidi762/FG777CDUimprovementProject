@@ -1470,12 +1470,25 @@ var cdu = func{
 			line6r = datalink.aircraft1.states; # data link currently not avilable
 		}
 		if (display == "ALTN") {
+					var range = 10;
+		              var nApts = findAirportsWithinRange(range);
 		            #先做个简单的应付一下（滑稽
-		              var info = airportinfo();
-		            #先做个简单的应付一下（滑稽
+					while(size (nApts) < 10)
+					{
+						range = range + 10;
+						nApts = findAirportsWithinRange(range);
+					}
+					foreach ( var apt;nApts )
+					{
+						print(apt.id);
+						
+					}
 		            title   = "ALTN";
 		            page    = "1/2";
-		            line1l  = info.id;
+		            line1l  = nApts[0].id;
+		            line2l  = nApts[1].id;
+		            line3l  = nApts[2].id;
+		            line4l  = nApts[3].id;	
 		            line1cl = "<SEL>";##TODO
 		            line5lt = "ALTN";
 		            line5l  = "<REQUEST";
@@ -1483,7 +1496,7 @@ var cdu = func{
 		            line6l  = "<REQUEST";
 		            line5rt = "ALTN INHIBIT";
 		            line5r  = "----/----";
-		            line6rt = info.id;
+		            line6rt = nApts[0].id;
 		            line6r  = "DIVERT NOW>";
 		    }
 		
