@@ -282,6 +282,7 @@ var crzAltCDUInput = func(){
 
 var findPosWithGate = func(gateName,airport){
 	#Done by Sidi Liang ---0762
+	#gateName\airport are string
 	#Currently only supports airports downloaded by Terrasync or custom scenery added by launcher or commandlines.
 	#Supports the airports which parking in groundnet was formatted as "name" or "name"+"number".
 	#Behaviour: Write the coordinate to the property tree if the gate was found in scenery that was supported(see above), and the gate number will be displayed in the CDU.  
