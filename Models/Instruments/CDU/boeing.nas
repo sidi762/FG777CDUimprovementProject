@@ -5,7 +5,6 @@
 #|_|   \____|_|   |_| \_\\____|#
 ################################
 
-
 #Initialize the properties here 
 setprop("/instrumentation/cdu/LATorBRG",0);
 setprop("/instrumentation/cdu/isARMED",0);
@@ -38,6 +37,14 @@ setprop("/instrumentation/fmc/gate-pos-lon-str","");
 setprop("/instrumentation/fmc/gate-pos-lat-noformat","");
 setprop("/instrumentation/fmc/gate-pos-lon-noformat","");
 #Initialize aera end
+
+print("Thanks for using FlightGear 777 CDU Improvement project!");
+print(" _____ ____ ____  ____   ____ ");
+print("|  ___/ ___|  _ \|  _ \ / ___|");
+print("| |_ | |  _| |_) | |_) | |    ");
+print("|  _|| |_| |  __/|  _ <| |___ ");
+print("|_|   \____|_|   |_| \_\\____|");
+print("Enjoy your flight and happy landings!");
 
 var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
@@ -737,9 +744,15 @@ var key = func(v) {
 						cduDisplay = "DEP_ARR_INDEX";
 					}
 				}
+				if(cduDisplay == "ABOUT_PROJECT"){
+					cduDisplay = "MAINT";
+				}
 				
 			}
 			if (v == "LSK6R"){
+				if (cduDisplay == "MAINT") {
+					cduDisplay = "ABOUT_PROJECT";
+				}
 				if (cduDisplay == "FMC_COMM"){
 					datalink.aircraft1.testConnection();
 				}
@@ -939,6 +952,17 @@ var cdu = func{
 			line2l = "<PERF FACTORS";
 			line3l = "<IRS MONITOR";
 			line6l = "<INDEX";
+			line6r = "READ ME>";
+		}
+		if(display == "ABOUT_PROJECT"){
+			title = "FG777CDU IMPROVEMENT PROJECT";
+			line1lt = "BROUGHT TO YOU BY";
+			line2lt = " ________ _______ _______  _______   _______ ";
+			line2l = "|  ___/ ___|  _ \|  _ \ / ___|";
+			line3l = "| |_ | |  _| |_) | |_) | |    ";
+			line4l = "|  _|| |_| |  __/|  _ <| |___ ";
+			line5l = "|_|   \____|_|   |_| \_\\____|";
+			line6l = "<MAINT";
 		}
 		if (display == "NAV_RAD") {
 			title = "NAV RADIO";

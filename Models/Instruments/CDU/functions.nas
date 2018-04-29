@@ -1,3 +1,12 @@
+####################################
+#   _____ ____ ____  ____   ____   # 
+#  |  ___/ ___|  _ \|  _ \ / ___|  #
+#  | |_ | |  _| |_) | |_) | |      #
+#  |  _|| |_| |  __/|  _ <| |___   #
+#  |_|   \____|_|   |_| \_\\____|  #
+#							       #
+####################################
+
 var getRwyOfSids = func(sidID){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	var allRwys = keys(apt.runways);
