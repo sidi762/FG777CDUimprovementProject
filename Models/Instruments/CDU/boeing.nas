@@ -1522,7 +1522,25 @@ var cdu = func{
 		    }
 		if(display == "ALTN_REQ")
 			{
-				
+				altnApts = findAirportsWithinNumber(16);
+                
+                title = "APTS-NOT SURE NAME";
+                line1l      = altnApts[0].id;
+                line1cl     = altnApts[1].id;
+                line1cr     = altnApts[2].id;
+                line1r      = altnApts[3].id;
+                line2l      = altnApts[4].id;
+                line2cl     = altnApts[5].id;
+                line2cr     = altnApts[6].id;
+                line2r      = altnApts[7].id;
+                line3l      = altnApts[8].id;
+                line3cl     = altnApts[9].id;
+                line3cr     = altnApts[10].id;
+                line3r      = altnApts[11].id;
+                line4l      = altnApts[12].id;
+                line4cl     = altnApts[13].id;
+                line4cr     = altnApts[14].id;
+                line4r      = altnApts[15].id;
 			}
 		
 		if (serviceable != 1){
