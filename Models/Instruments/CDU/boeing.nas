@@ -1524,7 +1524,7 @@ var cdu = func{
 			{
 				altnApts = findAirportsWithinNumber(16);
                 
-                title = "APTS-NOT SURE NAME";
+                title = "ALTN LIST";
                 line1l      = altnApts[0].id;
                 line1cl     = altnApts[1].id;
                 line1cr     = altnApts[2].id;
@@ -1639,4 +1639,4 @@ var cdu = func{
 		settimer(cdu,0.2);
 }
 
-_setlistener("/sim/signals/fdm-initialized", cdu); 
+_setlistener("/sim/signals/fdm-initialized", cdu);
