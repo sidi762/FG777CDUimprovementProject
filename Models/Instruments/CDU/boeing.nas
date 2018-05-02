@@ -304,8 +304,7 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/THRLIM","TOGA");
 				}
 				if (cduDisplay == "FMC_COMM"){
-					cduInput = "IN DEVELOPMENT";
-					msg = 1;
+					cduDisplay = "ALTN";
 				}
 			}
 			if (v == "LSK2R"){
@@ -724,7 +723,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
-				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF")){
+				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF") or (cduDisplay == "ALTN_LIST")){
 					cduDisplay = "INIT_REF";
 				}else if (cduDisplay == "RTE1_DEP"){
 					if(getprop("/autopilot/route-manager/isChanged") != 0){
