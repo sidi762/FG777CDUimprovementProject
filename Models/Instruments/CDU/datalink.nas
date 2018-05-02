@@ -30,6 +30,11 @@ if (serviceable == 1){
 			}else{
 				print(me.errorMessage);
 			}
+		},
+		getWXR : func(apt){	#apt is the ICAO(4 digit)code for the airport
+			http.save("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString="~apt~"&hoursBeforeNow=1", getprop('/sim/fg-home') ~ '/Export/METAR.xml')
+			    .fail(func print("Download failed!"))
+			    .done(func(r) processMETAR(r));
 		}
 	};
 	
@@ -110,4 +115,24 @@ if (serviceable == 1){
 			return "NOT FOUND";
 		}
 	}
+}
+var processMETAR = func(r){
+	#For datalink wxr request use
+	print("Finished request with status: " ~ r.status ~ " " ~ r.reason);
+	var path = getprop("/sim/fg-home") ~ '/Export/METAR.xml';
+	var data = io.readfile(path);
+	var result = "";
+	for(var i = 0; i < utf8.size(data)-2; i = i+1){
+		if(utf8.chstr(data[i])~utf8.chstr(data[i+1])~utf8.chstr(data[i+2]) == "raw"){
+			var metar_j = i+9;
+			while(utf8.chstr(data[metar_j]) != "<"){
+				result = result~utf8.chstr(data[metar_j]);
+				metar_j += 1;
+			}
+			break;
+		}
+	}	
+	print(result);
+	append(groundDefault.data,result);
+	append(groundDefault.dataName,"wxr");
 }
