@@ -1520,11 +1520,12 @@ var cdu = func{
 		            line6rt = nApts[0].id;
 		            line6r  = "DIVERT NOW>";
 		    }
-		if(display == "ALTN_REQ")
+		if(display == "ALTN_LIST")
 			{
 				altnApts = findAirportsWithinNumber(16);
                 
                 title = "ALTN LIST";
+				page = "2/2";
                 line1l      = altnApts[0].id;
                 line1cl     = altnApts[1].id;
                 line1cr     = altnApts[2].id;
@@ -1544,13 +1545,13 @@ var cdu = func{
 			}
 		
 		if (serviceable != 1){
-			title = "";		page = "";
-			line1l = "";	line2l = "";	line3l = "";	line4l = "";	line5l = "";	line6l = "";
-			line1lt = "";	line2lt = "";	line3lt = "";	line4lt = "";	line5lt = "";	line6lt = "";
-			line1c = "";	line2c = "";	line3c = "";	line4c = "";	line5c = "";	line6c = "";
-			line1ct = "";	line2ct = "";	line3ct = "";	line4ct = "";	line5ct = "";	line6ct = "";
-			line1r = "";	line2r = "";	line3r = "";	line4r = "";	line5r = "";	line6r = "";
-			line1rt = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
+			title    = "";	page    = "";
+			line1l   = "";	line2l  = "";	line3l  = "";	line4l  = "";	line5l  = "";	line6l  = "";
+			line1lt  = "";	line2lt = "";	line3lt = "";	line4lt = "";	line5lt = "";	line6lt = "";
+			line1c   = "";	line2c  = "";	line3c  = "";	line4c  = "";	line5c  = "";	line6c  = "";
+			line1ct  = "";	line2ct = "";	line3ct = "";	line4ct = "";	line5ct = "";	line6ct = "";
+			line1r   = "";	line2r  = "";	line3r  = "";	line4r  = "";	line5r  = "";	line6r  = "";
+			line1rt  = "";	line2rt = "";	line3rt = "";	line4rt = "";	line5rt = "";	line6rt = "";
 			line1ctl = "";
 			
 			line1cl = ""; 
@@ -1566,7 +1567,7 @@ var cdu = func{
 			line6cr = "";
 			line6cl = "";
 		}
-		
+		 
 		setprop("/instrumentation/cdu/output/title",title);
 		setprop("/instrumentation/cdu/output/page",page);
 		setprop("/instrumentation/cdu/output/line1/left",line1l);
