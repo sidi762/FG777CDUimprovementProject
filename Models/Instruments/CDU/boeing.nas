@@ -1542,6 +1542,11 @@ var cdu = func{
                 line4cl     = altnApts[13].id;
                 line4cr     = altnApts[14].id;
                 line4r      = altnApts[15].id;
+				line5lt     = "ALTN LIST";
+				line5l		= "<REQUEST";
+				line5rt		= "ALTN LIST";
+				line5r		= "PURGE>";
+				line6l		= "<INDEX";
 			}
 		
 		if (serviceable != 1){
