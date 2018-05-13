@@ -133,6 +133,6 @@ var processMETAR = func(r){
 		}
 	}	
 	print(result);
-	append(groundDefault.data,result);
-	append(groundDefault.dataName,"wxr");
+	#append(groundDefault.data,result);
+	#append(groundDefault.dataName,"wxr");
 }
