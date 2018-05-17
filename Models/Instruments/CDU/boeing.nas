@@ -753,7 +753,8 @@ var key = func(v) {
 					cduDisplay = "ABOUT_PROJECT";
 				}
 				if (cduDisplay == "FMC_COMM"){
-					datalink.aircraft1.testConnection();
+					#datalink.aircraft1.testConnection();
+					datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
 				}
 				if (cduDisplay == "THR_LIM"){
 					cduDisplay = "TO_REF";

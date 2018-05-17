@@ -28,14 +28,19 @@ if (serviceable == 1){
 			if(findInArray(me.dataName,key) != "NOT FOUND"){
 				me.uplink(findInArray(me.dataName,key),to);
 			}else{
-				print(me.errorMessage);
+				if(key == "ALTNWXR"){
+					me.getWXR("ZBAA",me.ident,to);
+				}else{
+					print(me.errorMessage);
+				}
 			}
 		},
-		getWXR : func(apt){	#apt is the ICAO(4 digit)code for the airport
+		getWXR : func(apt,from,to){	#apt is the ICAO(4 digit)code for the airport
 			http.save("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString="~apt~"&hoursBeforeNow=1", getprop('/sim/fg-home') ~ '/Export/METAR.xml')
 			    .fail(func print("Download failed!"))
-			    .done(func(r) processMETAR(r));
+			    .done(func(r) processMETAR(r,from,to));
 		}
+		#datalink.allAircrafts[0].request("ALTNWXR",groundDefault);
 	};
 	
 	var onBoard = {
@@ -116,7 +121,7 @@ if (serviceable == 1){
 		}
 	}
 }
-var processMETAR = func(r){
+var processMETAR = func(r,from,to){
 	#For datalink wxr request use
 	print("Finished request with status: " ~ r.status ~ " " ~ r.reason);
 	var path = getprop("/sim/fg-home") ~ '/Export/METAR.xml';
@@ -133,6 +138,7 @@ var processMETAR = func(r){
 		}
 	}	
 	print(result);
+	allGrounds[from].uplink(result,to);
 	#append(groundDefault.data,result);
 	#append(groundDefault.dataName,"wxr");
 }
