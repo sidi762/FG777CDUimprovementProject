@@ -25,7 +25,7 @@ if (serviceable == 1){
 				me.requestRespond(key,from);
 		},
 		requestRespond : func(key, to){
-			if(findInArray(me.dataName,key) != "NOT FOUND"){
+			if(findInArray(me.dataName,key) != 404){
 				me.uplink(findInArray(me.dataName,key),to);
 			}else{
 				if(key == "ALTNWXR"){
@@ -54,7 +54,7 @@ if (serviceable == 1){
 		},
 		
 		data : ["Comm Success by Aircraft"],
-		dataName: ["test"],
+		dataName: ["test",],
 		errorMessage : "Error",
 		
 		downlink : func(key,target){
@@ -117,28 +117,29 @@ if (serviceable == 1){
 			if(target[i] == obj){
 				return i;
 			}
-			return "NOT FOUND";
 		}
+		return 404;
 	}
-}
-var processMETAR = func(r,from,to){
-	#For datalink wxr request use
-	print("Finished request with status: " ~ r.status ~ " " ~ r.reason);
-	var path = getprop("/sim/fg-home") ~ '/Export/METAR.xml';
-	var data = io.readfile(path);
-	var result = "";
-	for(var i = 0; i < utf8.size(data)-2; i = i+1){
-		if(utf8.chstr(data[i])~utf8.chstr(data[i+1])~utf8.chstr(data[i+2]) == "raw"){
-			var metar_j = i+9;
-			while(utf8.chstr(data[metar_j]) != "<"){
-				result = result~utf8.chstr(data[metar_j]);
-				metar_j += 1;
+
+	var processMETAR = func(r,from,to){
+		#For datalink wxr request use
+		#print("Finished request with status: " ~ r.status ~ " " ~ r.reason);
+		var path = getprop("/sim/fg-home") ~ '/Export/METAR.xml';
+		var data = io.readfile(path);
+		var result = "";
+		for(var i = 0; i < utf8.size(data)-2; i = i+1){
+			if(utf8.chstr(data[i])~utf8.chstr(data[i+1])~utf8.chstr(data[i+2]) == "raw"){
+				var metar_j = i+9;
+				while(utf8.chstr(data[metar_j]) != "<"){
+					result = result~utf8.chstr(data[metar_j]);
+					metar_j += 1;
+				}
+				break;
 			}
-			break;
-		}
-	}	
-	print(result);
-	allGrounds[from].uplink(result,to);
-	#append(groundDefault.data,result);
-	#append(groundDefault.dataName,"wxr");
+		}	
+		#print(result);
+		append(allGrounds[from].data,result);
+		append(allGrounds[from].dataName,"ALTNWXR");
+		allGrounds[from].uplink(findInArray(allGrounds[from].data,result),to);
+	}
 }
