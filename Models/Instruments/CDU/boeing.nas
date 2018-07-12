@@ -754,7 +754,10 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					#datalink.aircraft1.testConnection();
+					
 					datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
+					
+
 				}
 				if (cduDisplay == "THR_LIM"){
 					cduDisplay = "TO_REF";
@@ -1500,6 +1503,15 @@ var cdu = func{
 			line1r = "POS REPORT>";
 			line6rt = "DATA LINK";
 			line6r = datalink.aircraft1.states; # data link currently not avilable
+			for(var i = 0; i < datalink.allAircrafts[0].dataNum; i=i+1){
+				if(datalink.allAircrafts[0].dataName[i] == "ALTNWXR"){
+					var window = screen.window.new(10, 10, 3, 10);
+					window.autoscroll = 0.1;
+					window.write("ALTN WXR: "~datalink.allAircrafts[0].data[i]);
+					#print("Outputed");
+				} 
+			}
+		    
 		}
 		if (display == "ALTN")
 			{		nApts = findAirportsWithinNumber(4);
@@ -1511,6 +1523,21 @@ var cdu = func{
 		            line3l  = nApts[2].id;
 		            line4l  = nApts[3].id;	
 		            line1cl = "<SEL>";##TODO
+					var haveSaved = 0;
+					for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
+						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[0].id){
+							datalink.allAircrafts[0].data[i] = nApts[0].id;
+							haveSaved = 1;
+							print("ALTN SAVED");
+						}
+					}
+					if(haveSaved == 0){
+						append(datalink.allAircrafts[0].data, nApts[0].id);
+						append(datalink.allAircrafts[0].dataName, "ALTN");
+						datalink.allAircrafts[0].dataNum+=1;
+						print("ALTN SAVED");
+						haveSaved = 1;
+					}
 		            line5lt = "ALTN";
 		            line5l  = "<REQUEST";
 		            line6lt = "WXR";

@@ -15,9 +15,10 @@ if (serviceable == 1){
 			transmit(key, "uplink",me.ident,target);
 		},
 		downlinkReceived: func(key,from){
-			append(me.data, from.data[findInArray(from.dataName, key)]);
-			append(me.dataName, from.dataName[findInArray(from.dataName, key)]);
-			print("DownlinkReceived, "~from.dataName[findInArray(from.dataName, key)]~" is "~from.data[findInArray(from.dataName, key)]);
+			print(key);
+			append(me.data, allAircrafts[from].data[key]);
+			append(me.dataName, allAircrafts[from].dataName[key]);
+			#print("DownlinkReceived, "~allAircrafts[from].dataName[findInArray(allAircrafts[from].dataName, key)]~" is "~allAircrafts[from].data[findInArray(allAircrafts[from].dataName, key)]);#Bugs in this line, I'm too lazy to fix it --- 0762
 		},
 		requestReceived : func(key,from){
 				onBoard.requestState = "DATALINK REQUEST SENT"; 
@@ -29,7 +30,12 @@ if (serviceable == 1){
 				me.uplink(findInArray(me.dataName,key),to);
 			}else{
 				if(key == "ALTNWXR"){
-					me.getWXR("ZBAA",me.ident,to);
+					while(findInArray(me.dataName,"ALTN")==404){
+						settimer(break,10);
+					}
+					if(findInArray(me.dataName,"ALTN")!=404){
+						me.getWXR(me.data[findInArray(me.dataName,"ALTN")],me.ident,to);
+					}
 				}else{
 					print(me.errorMessage);
 				}
@@ -57,12 +63,15 @@ if (serviceable == 1){
 		dataName: ["test",],
 		errorMessage : "Error",
 		
+		dataNum: 1,
+		
 		downlink : func(key,target){
-			transmit(key, "downlink",me,target.ident);
+			transmit(key, "downlink",me.ident,target.ident);
 		},
 		uplinkReceived: func(key,from){
 			append(me.data, allGrounds[from].data[key]);
 			append(me.dataName, allGrounds[from].dataName[key]);
+			me.dataNum+=1;
 			print("UplinkReceived, "~allGrounds[from].dataName[key]~" is "~allGrounds[from].data[key]);
 			if(me.data[size(me.data)-1] == "Comm Success"){
 				me.states = "READY";
@@ -71,6 +80,9 @@ if (serviceable == 1){
 		request : func(key,target){
 			me.requestState = "DATALINK REQUESTING";
 			print(me.requestState);
+			if(key == "ALTNWXR"){
+				me.downlink(findInArray(me.dataName, "ALTN"),allGrounds[0]);
+			}
 			transmit(key,"request",me.ident,target.ident);
 			
 			
