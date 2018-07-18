@@ -36,6 +36,7 @@ setprop("/instrumentation/fmc/gate-pos-lat-str","");
 setprop("/instrumentation/fmc/gate-pos-lon-str","");
 setprop("/instrumentation/fmc/gate-pos-lat-noformat","");
 setprop("/instrumentation/fmc/gate-pos-lon-noformat","");
+setprop("/instrumentation/fmc/sltd-ALTN",1);
 #Initialize aera end
 
 print("Thanks for using FlightGear 777 CDU Improvement project!");
@@ -178,7 +179,13 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "RTE1_1";
 				}
+				if (cduDisplay == "ALTN")
+				{
+					setprop("/instrumentation/fmc/sltd-ALTN",1);
+				}
 			}#end of LSK1L
+			
+			
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
@@ -305,6 +312,10 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "ALTN";
+				}
+				if (cduDisplay == "ALTN")
+				{
+					setprop("/instrumentation/fmc/sltd-ALTN",2);
 				}
 			}
 			if (v == "LSK2R"){
@@ -471,6 +482,10 @@ var key = func(v) {
 
 					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
+				if (cduDisplay == "ALTN")
+				{
+					setprop("/instrumentation/fmc/sltd-ALTN",3);
+				}
 			}
 			if (v == "LSK3R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -598,7 +613,10 @@ var key = func(v) {
 
 					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
-				
+				if (cduDisplay == "ALTN")
+				{
+					setprop("/instrumentation/fmc/sltd-ALTN",4);
+				}
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -1522,7 +1540,16 @@ var cdu = func{
 		            line2l  = nApts[1].id;
 		            line3l  = nApts[2].id;
 		            line4l  = nApts[3].id;	
-		            line1cl = "<SEL>";##TODO
+					
+					if (getprop("/instrumentation/fmc/sltd-ALTN") == 1)
+						{line1cl = "<SEL>";}
+					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 2)
+						{line2cl = "<SEL>";}
+					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 3)
+						{line3cl = "<SEL>";}
+					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 4)
+						{line4cl = "<SEL>";}
+					
 					var haveSaved = 0;
 					for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
 						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[0].id){
