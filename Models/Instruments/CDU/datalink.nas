@@ -15,30 +15,40 @@ if (serviceable == 1){
 			transmit(key, "uplink",me.ident,target);
 		},
 		downlinkReceived: func(key,from){
-			print(key);
-			append(me.data, allAircrafts[from].data[key]);
-			append(me.dataName, allAircrafts[from].dataName[key]);
+			#print(key);
+			
+			if(findInArray(me.dataName,allAircrafts[from].dataName[key]) == 404){
+				append(me.data, allAircrafts[from].data[key]);
+				append(me.dataName, allAircrafts[from].dataName[key]);
+			}else{
+				me.data[findInArray(me.dataName, allAircrafts[from].dataName[key])] = allAircrafts[from].data[key];
+			}
 			#print("DownlinkReceived, "~allAircrafts[from].dataName[findInArray(allAircrafts[from].dataName, key)]~" is "~allAircrafts[from].data[findInArray(allAircrafts[from].dataName, key)]);#Bugs in this line, I'm too lazy to fix it --- 0762
 		},
 		requestReceived : func(key,from){
-				onBoard.requestState = "DATALINK REQUEST SENT"; 
-				print(onBoard.requestState);
+				allAircrafts[from].requestState = "<REQUEST SENT"; 
+				print(allAircrafts[from].requestState);
 				me.requestRespond(key,from);
 		},
 		requestRespond : func(key, to){
-			if(findInArray(me.dataName,key) != 404){
+			if(key == "ALTNWXR"){
+				while(findInArray(me.dataName,"ALTN")==404){
+					print("Hold on for a sec... Waiting for ALTN APT to be transmit");
+					#settimer(break,1);
+				}
+				#while(me.data[findInArray(me.dataName,"ALTN")] != allAircrafts[0].data[findInArray(allAircrafts[0].dataName,"ALTN")]){ #Commanded because it might cause FG to freeze - 0762
+				#	print("Hold on for a sec... Waiting for new ALTN APT to be transmit");
+				#}
+				if(findInArray(me.dataName,"ALTN")!=404){
+					print("Getting WXR for "~me.data[findInArray(me.dataName,"ALTN")]);
+					me.getWXR(me.data[findInArray(me.dataName,"ALTN")],me.ident,to);
+				}else{
+					print(me.errorMessage ~ "NO ALTN DATA");
+				}
+			}else if(findInArray(me.dataName,key) != 404){
 				me.uplink(findInArray(me.dataName,key),to);
 			}else{
-				if(key == "ALTNWXR"){
-					while(findInArray(me.dataName,"ALTN")==404){
-						settimer(break,10);
-					}
-					if(findInArray(me.dataName,"ALTN")!=404){
-						me.getWXR(me.data[findInArray(me.dataName,"ALTN")],me.ident,to);
-					}
-				}else{
-					print(me.errorMessage);
-				}
+				print(me.errorMessage);
 			}
 		},
 		getWXR : func(apt,from,to){	#apt is the ICAO(4 digit)code for the airport
@@ -69,20 +79,29 @@ if (serviceable == 1){
 			transmit(key, "downlink",me.ident,target.ident);
 		},
 		uplinkReceived: func(key,from){
-			append(me.data, allGrounds[from].data[key]);
-			append(me.dataName, allGrounds[from].dataName[key]);
-			me.dataNum+=1;
+			if(findInArray(me.dataName,allGrounds[from].dataName[key]) == 404){
+				append(me.data, allGrounds[from].data[key]);
+				append(me.dataName, allGrounds[from].dataName[key]);
+				me.dataNum+=1;
+			}else{
+				me.data[findInArray(me.dataName, allGrounds[from].dataName[key])] = allGrounds[from].data[key];
+			}
+			
 			print("UplinkReceived, "~allGrounds[from].dataName[key]~" is "~allGrounds[from].data[key]);
 			if(me.data[size(me.data)-1] == "Comm Success"){
 				me.states = "READY";
 			}
+			if(allGrounds[from].dataName[key] == "ALTNWXR"){
+				cdu.outputUI(content = "ALTN WXR: "~me.data[size(me.data)-1]);	
+			}
 		},
 		request : func(key,target){
-			me.requestState = "DATALINK REQUESTING";
+			me.requestState = "REQUESTING";
 			print(me.requestState);
 			if(key == "ALTNWXR"){
 				me.downlink(findInArray(me.dataName, "ALTN"),allGrounds[0]);
 			}
+			#print("I made it here");
 			transmit(key,"request",me.ident,target.ident);
 			
 			
@@ -96,7 +115,7 @@ if (serviceable == 1){
 			
 		},
 		
-		requestState: "",
+		requestState: "<REQUEST",
 		
 	};
 	
@@ -109,7 +128,7 @@ if (serviceable == 1){
 			}else if(tag == "request"){
 				allGrounds[groundId].requestReceived(key,planeId);
 			}
-		}, rand()*10);
+		}, rand()*5);
 	}
 	
 	
@@ -150,8 +169,13 @@ if (serviceable == 1){
 			}
 		}	
 		#print(result);
-		append(allGrounds[from].data,result);
-		append(allGrounds[from].dataName,"ALTNWXR");
-		allGrounds[from].uplink(findInArray(allGrounds[from].data,result),to);
+		if(result != ""){
+			append(allGrounds[from].data,result);
+			append(allGrounds[from].dataName,"ALTNWXR");
+			allGrounds[from].uplink(findInArray(allGrounds[from].data,result),to);
+		}else{
+			print("nil Error");
+			cdu.outputUI(content = "ALTN WXR NOT AVAILABLE");	
+		}
 	}
 }

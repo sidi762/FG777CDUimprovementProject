@@ -37,6 +37,9 @@ setprop("/instrumentation/fmc/gate-pos-lon-str","");
 setprop("/instrumentation/fmc/gate-pos-lat-noformat","");
 setprop("/instrumentation/fmc/gate-pos-lon-noformat","");
 setprop("/instrumentation/fmc/sltd-ALTN",1);
+setprop("/instrumentation/fmc/outputUIContent","");
+setprop("/instrumentation/fmc/lastOutputUITime",0);
+var AltnHaveSaved2Datalink = 0;
 #Initialize aera end
 
 print("Thanks for using FlightGear 777 CDU Improvement project!");
@@ -105,6 +108,18 @@ var plusminus = func {
 		me.input('+');
 		}
 }
+var window = screen.window.new(10, 10, 3, 10);
+
+var outputUI = func(content, timeout = 10){
+	window.autoscroll = timeout;
+	timeNow = systime();
+	if(content != getprop("/instrumentation/fmc/outputUIContent") or (timeNow - timeout) >= getprop("/instrumentation/fmc/lastOutputUITime")){
+		window.write(content);
+		setprop("/instrumentation/fmc/outputUIContent",content);
+		setprop("/instrumentation/fmc/lastOutputUITime",systime());
+		#print("Outputed");
+	}
+}
 	
 var i = 0;
 
@@ -114,7 +129,7 @@ var key = func(v) {
 		var eicasDisplay = getprop("/instrumentation/eicas/display");
 		var cduInput     = getprop("/instrumentation/cdu/input");
 		var msg          = getprop("/instrumentation/fmc/isMsg"); 
-		
+		datalink.allAircrafts[0].requestState = "<REQUEST";
 		if (serviceable == 1){
 			if (v == "LSK1L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -739,6 +754,11 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
 				}
+				if(cduDisplay == "ALTN"){
+					if(datalink.allAircrafts[0].requestState == "<REQUEST" or datalink.allAircrafts[0].requestState == "<REQUEST SENT"){
+						datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
+					}
+				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
 				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF") or (cduDisplay == "ALTN_LIST")){
@@ -764,6 +784,7 @@ var key = func(v) {
 				if(cduDisplay == "ABOUT_PROJECT"){
 					cduDisplay = "MAINT";
 				}
+			
 				
 			}
 			if (v == "LSK6R"){
@@ -771,9 +792,9 @@ var key = func(v) {
 					cduDisplay = "ABOUT_PROJECT";
 				}
 				if (cduDisplay == "FMC_COMM"){
-					#datalink.aircraft1.testConnection();
+					datalink.aircraft1.testConnection();
 					
-					datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
+					#datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
 					
 
 				}
@@ -1520,15 +1541,8 @@ var cdu = func{
 			line6l = "<DES FORECAST";
 			line1r = "POS REPORT>";
 			line6rt = "DATA LINK";
-			line6r = datalink.aircraft1.states; # data link currently not avilable
-			for(var i = 0; i < datalink.allAircrafts[0].dataNum; i=i+1){
-				if(datalink.allAircrafts[0].dataName[i] == "ALTNWXR"){
-					var window = screen.window.new(10, 10, 3, 10);
-					window.autoscroll = 0.1;
-					window.write("ALTN WXR: "~datalink.allAircrafts[0].data[i]);
-					#print("Outputed");
-				} 
-			}
+			line6r = datalink.aircraft1.states; # data link currently not stable
+			
 		    
 		}
 		if (display == "ALTN")
@@ -1550,28 +1564,28 @@ var cdu = func{
 					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 4)
 						{line4cl = "<SEL>";}
 					
-					var haveSaved = 0;
+					
 					for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
-						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[0].id){
-							datalink.allAircrafts[0].data[i] = nApts[0].id;
-							haveSaved = 1;
-							print("ALTN SAVED");
+						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id){
+							datalink.allAircrafts[0].data[i] = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
+							AltnHaveSaved2Datalink = 1;
+							print("ALTN SAVED 1 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
 						}
 					}
-					if(haveSaved == 0){
-						append(datalink.allAircrafts[0].data, nApts[0].id);
+					if(AltnHaveSaved2Datalink == 0){
+						append(datalink.allAircrafts[0].data, nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
 						append(datalink.allAircrafts[0].dataName, "ALTN");
 						datalink.allAircrafts[0].dataNum+=1;
-						print("ALTN SAVED");
-						haveSaved = 1;
+						print("ALTN SAVED 2 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
+						AltnHaveSaved2Datalink = 1;
 					}
 		            line5lt = "ALTN";
 		            line5l  = "<REQUEST";
 		            line6lt = "WXR";
-		            line6l  = "<REQUEST";
+		            line6l  = datalink.allAircrafts[0].requestState;
 		            line5rt = "ALTN INHIBIT";
 		            line5r  = "----/----";
-		            line6rt = nApts[0].id;
+		            line6rt = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
 		            line6r  = "DIVERT NOW>";
 		    }
 		if(display == "ALTN_LIST")
