@@ -19,6 +19,7 @@
         <reflection-correction type="float">-0.05</reflection-correction>
         <reflection-type type="int">2</reflection-type>
         <ambient-correction type="float">0.1</ambient-correction>
+		<lightmap-enabled type="int">1</lightmap-enabled>
         <lightmap-multi type="int">1</lightmap-multi>
         <lightmap-factor type="float" n="0"><use>systems/electrical/outputs/logo-lights</use></lightmap-factor>
         <lightmap-color type="vec3d" n="0">0.03 0.03 0.03</lightmap-color>
