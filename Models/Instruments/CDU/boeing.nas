@@ -11,6 +11,7 @@ setprop("/instrumentation/cdu/isARMED",0);
 setprop("/autopilot/route-manager/cruise/altitude-ft",0);
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
+setprop("/instrumentation/cdu/appr/apprIsSelected", 0);
 setprop("/instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
@@ -66,6 +67,7 @@ var armChanges = func(){
 	if (getprop("/autopilot/route-manager/departure/newsid") != nil){
 		setprop("/autopilot/route-manager/departure/sid", getprop("/autopilot/route-manager/departure/newsid"));
 	}
+	
 	if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
 		setprop("/autopilot/route-manager/departure/runway", getprop("/autopilot/route-manager/departure/newrunway"));
 	}
@@ -76,6 +78,7 @@ var VNAVChanges = func(){
 	setprop("/instrumentation/fmc/VNAV/isChanged",0);
 	setprop("/autopilot/route-manager/isArmed",1);
 }
+
 	
 var del = func()
 {
@@ -207,6 +210,14 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/isChanged",1);
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line1/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
+						
+					}
+				}
+				if (cduDisplay == "RTE1_ARR"){
+					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
+						setprop("/autopilot/route-manager/isArmed",1);
+						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line1/right"));
+						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
 					}
 				}
 				if (cduDisplay == "EICAS_MODES"){
@@ -334,6 +345,13 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK2R"){
+				if (cduDisplay == "RTE1_ARR"){
+					if (getprop("/instrumentation/cdu/output/line2/right") != ""){
+						setprop("/autopilot/route-manager/isArmed",1);
+						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line2/right"));
+						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "RTE1_DEP"){
 					setprop("/autopilot/route-manager/isChanged",1);
 					if (getprop("/instrumentation/cdu/output/line2") != ""){
@@ -343,6 +361,7 @@ var key = func(v) {
 				}else if (cduDisplay == "DEP_ARR_INDEX")
 				{
 					cduDisplay = "RTE1_ARR";
+					setprop("/instrumentation/cdu/appr/page", 1);
 				}
 				else if (cduDisplay == "EICAS_MODES"){
 					eicasDisplay = "GEAR";
@@ -503,6 +522,13 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK3R"){
+				if (cduDisplay == "RTE1_ARR"){
+					if (getprop("/instrumentation/cdu/output/line3/right") != ""){
+						setprop("/autopilot/route-manager/isArmed",1);
+						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line3/right"));
+						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line3") != ""){
 						setprop("/autopilot/route-manager/isChanged",1);
@@ -634,6 +660,13 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK4R"){
+				if (cduDisplay == "RTE1_ARR"){
+					if (getprop("/instrumentation/cdu/output/line4/right") != ""){
+						setprop("/autopilot/route-manager/isArmed",1);
+						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line4/right"));
+						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line4") != ""){
 						setprop("/autopilot/route-manager/isChanged",1);
@@ -691,6 +724,13 @@ var key = func(v) {
 				}
 			}
 			if (v == "LSK5R"){
+				if (cduDisplay == "RTE1_ARR"){
+					if (getprop("/instrumentation/cdu/output/line5/right") != ""){
+						setprop("/autopilot/route-manager/isArmed",1);
+						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line5/right"));
+						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
+					}
+				}
 				if (cduDisplay == "RTE1_DEP"){
 					setprop("/autopilot/route-manager/isChanged",1);
 					if (getprop("/instrumentation/cdu/output/line5") != ""){
@@ -1239,6 +1279,7 @@ var cdu = func{
 			line6l = "<RTE 2";
 			line6r = "ACTIVATE>";
 		}
+		
 		if (display == "RTE1_ARR") {
 			if (getprop("/autopilot/route-manager/destination/airport") != nil){
 				title = getprop("/autopilot/route-manager/destination/airport")~" ARRIVALS";
@@ -1246,16 +1287,40 @@ var cdu = func{
 			else{
 				title = "ARRIVALS";
 			}
-			line1lt = "STARS";
-			line1rt = "APPROACHES";
-			if (getprop("/autopilot/route-manager/destination/runway") != nil){
-				line1r = getprop("/autopilot/route-manager/destination/runway");
+			if(getprop("/autopilot/route-manager/isChanged") == 0){
+				var selOrAct = "<ACT>";
+			    line6l = "<INDEX";
+			}else{
+				var selOrAct = "<SEL>";
+				line6l = "<ERASE(WIP)";# WORK IN PROGRESS
 			}
-			line2lt = "TRANS";
-			line3rt = "RUNWAYS";
-			line6l = "<INDEX";
+			line1ctl = "RTE 1";
+			line1lt = "STARS";
+			line1l = "WIP"; # WORK IN PROGRESS
+			line1rt = "APPROACHES";
+			if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 0){
+				line1r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+				line2r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[1];
+				line3r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[2];
+				line4r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[3];
+				line5r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[4];
+			}else if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 1){
+				line1r = getprop("/autopilot/route-manager/destination/newApproach");
+				line1cr = selOrAct;
+				line2lt = "TRANS";
+				line2 = "WIP";# WORK IN PROGRESS
+			}
+			#if (getprop("/autopilot/route-manager/destination/runway") != nil){
+			#	line1r = getprop("/autopilot/route-manager/destination/runway");
+			#}
+			
+			#line2lt = "TRANS";
+			#line3rt = "RUNWAYS";
+			#line6l = "<INDEX";
 			line6r = "ROUTE>";
+			line6ct = "----------------------------------------";
 		}
+		
 		if (display == "RTE1_DEP") {
 				if(getprop("/autopilot/route-manager/isChanged") == 0){
 					var selOrAct = "<ACT>";

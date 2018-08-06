@@ -7,6 +7,58 @@
 #							       #
 ####################################
 
+var echoAppr = func(page,selectedRwy = ""){
+	var dest = getprop("/autopilot/route-manager/destination/airport");
+	var apt = airportinfo(dest);
+	if(dest != ""){
+		var allAppr = apt.getApproachList();
+		var defaultNum = size(keys(apt.runways));
+		var echoedAppr = [];
+		var i = 0;
+		var apprNum = size(allAppr);
+		if(apprNum != 0){
+			var countStart = (page - 1) * 5;
+			if(countStart > apprNum){
+				setprop("/instrumentation/cdu/appr/page", page - 1);
+			}
+			count = countStart;
+			while(i <= 5){
+				if(count <= apprNum-1){
+					append(echoedAppr, allAppr[count]);
+					i = i + 1;
+					count = count + 1;
+				}else{
+					append(echoedAppr, "");
+					i = i + 1;
+				}
+			}
+		}else{
+			var countStart = (page - 1) * 5;
+			if(countStart > apprNum){
+				setprop("/instrumentation/cdu/appr/page", page - 1);
+			}
+			count = countStart;
+			while(i <= 5){
+				if(count < defaultNum){
+					append(echoedAppr, "DEFAULT");
+					i = i + 1;
+					count = count + 1;
+				}else{
+					append(echoedAppr, "");
+					i = i + 1;
+				}
+			}
+		}
+				return echoedAppr;
+			}else{
+				return ["", "", "", "", ""];
+			}
+}
+
+
+
+###########################################################
+
 var getRwyOfSids = func(sidID){
 	var apt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
 	var allRwys = keys(apt.runways);
@@ -156,6 +208,9 @@ var getLastPos = func(){
 
 var execPushed = func(){
 	if (getprop("/autopilot/route-manager/isArmed") == 1){
+		if(getprop("/autopilot/route-manager/destination/newApproach") != nil){
+			setprop("/autopilot/route-manager/destination/approach", getprop("/autopilot/route-manager/destination/newApproach"));
+		}
 		setprop("/autopilot/route-manager/isChanged",0);
 		setprop("/autopilot/route-manager/input","@ACTIVATE");
 		setprop("/autopilot/route-manager/isArmed", -1);
