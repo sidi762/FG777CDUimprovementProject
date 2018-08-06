@@ -14,8 +14,12 @@ var echoAppr = func(page,selectedRwy = ""){
 		var allAppr = apt.getApproachList();
 		var defaultNum = size(keys(apt.runways));
 		var echoedAppr = [];
+		var allRwys = keys(apt.runways);
+		var echoedRwys = [];
+		var rwysTotal = size(allRwys);
 		var i = 0;
 		var apprNum = size(allAppr);
+		var countEnd = 0;
 		if(apprNum != 0){
 			var countStart = (page - 1) * 5;
 			if(countStart > apprNum){
@@ -28,8 +32,14 @@ var echoAppr = func(page,selectedRwy = ""){
 					i = i + 1;
 					count = count + 1;
 				}else{
-					append(echoedAppr, "");
-					i = i + 1;
+					countEnd = i + 1;
+					setprop("/instrumentation/cdu/appr/apprCountEndPage", page);
+					var j = i;
+					while(j <= 5){
+						append(echoedAppr, "");
+						j+=1;
+					}
+					i = 6;
 				}
 			}
 		}else{
@@ -44,17 +54,57 @@ var echoAppr = func(page,selectedRwy = ""){
 					i = i + 1;
 					count = count + 1;
 				}else{
-					append(echoedAppr, "");
-					i = i + 1;
+					countEnd = i + 1;
+					setprop("/instrumentation/cdu/appr/apprCountEndPage", page);
+					var j = i;
+					while(j <= 5){
+						append(echoedAppr, "");
+						j+=1;
+					}
+					i = 6;
 				}
 			}
 		}
-				return echoedAppr;
-			}else{
-				return ["", "", "", "", ""];
-			}
+				
+				
+		setprop("/instrumentation/cdu/appr/apprCountEnd", countEnd);		
+				
+		return echoedAppr;			
+			
+	}else{
+		return ["", "", "", "", ""];
+	}
 }
-
+var echoRwysAppr = func(pageRwys){
+	if(getprop("/autopilot/route-manager/destination/airport") != ""){
+		var apt = airportinfo(getprop("/autopilot/route-manager/destination/airport"));
+		var allRwys = keys(apt.runways);
+		var echoedRwys = [];
+		var rwysCount = size(allRwys);
+		var listStart = getprop("/instrumentation/cdu/appr/apprCountEnd");
+		pageRwys = (pageRwys - getprop("/instrumentation/cdu/appr/apprCountEndPage"))+1;
+		var countStart = (pageRwys - 1) * 5;
+		var count = countStart;
+		var i = 0;
+		var tag = 5 - listStart;
+		if(countStart != 0){
+			tag = 5;
+		}
+		while(i <= tag){
+			if(count < rwysCount){
+				append(echoedRwys, allRwys[count]);
+				i = i + 1;
+				count = count + 1;
+			}else{
+				append(echoedRwys, "");
+				i = i + 1;
+			}
+		}
+		return echoedRwys;
+	}else{
+		return ["", "", "", "", ""];
+	}
+}
 
 
 ###########################################################

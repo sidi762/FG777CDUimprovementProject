@@ -12,6 +12,8 @@ setprop("/autopilot/route-manager/cruise/altitude-ft",0);
 setprop("/instrumentation/cdu/sids/rwyIsSelected", 0);
 setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 setprop("/instrumentation/cdu/appr/apprIsSelected", 0);
+setprop("/instrumentation/cdu/appr/apprCountEnd", 0);
+setprop("/instrumentation/cdu/appr/apprCountEndPage", 0);
 setprop("/instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");
@@ -1298,6 +1300,7 @@ var cdu = func{
 			line1lt = "STARS";
 			line1l = "WIP"; # WORK IN PROGRESS
 			line1rt = "APPROACHES";
+			
 			if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 0){
 				line1r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[0];
 				line2r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[1];
@@ -1307,9 +1310,45 @@ var cdu = func{
 			}else if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 1){
 				line1r = getprop("/autopilot/route-manager/destination/newApproach");
 				line1cr = selOrAct;
-				line2lt = "TRANS";
+				line2rt = "TRANS";
 				line2 = "WIP";# WORK IN PROGRESS
 			}
+			
+			if(getprop("/instrumentation/cdu/appr/apprCountEnd") != 0 and getprop("/instrumentation/cdu/appr/apprIsSelected") == 0){
+				var rwyTitle = getprop("/instrumentation/cdu/appr/apprCountEnd");
+				if(rwyTitle == 1){
+					line1rt = "RUNWAYS";
+					line1r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+					line2r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
+					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
+					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[3];
+					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[4];
+				}
+				if(rwyTitle == 2){
+					line2rt = "RUNWAYS";
+					line2r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
+					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
+					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[3];
+				}
+				if(rwyTitle == 3){
+					line3rt = "RUNWAYS";
+					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
+					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
+				}
+				if(rwyTitle == 4){
+					line4rt = "RUNWAYS";
+					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
+				}
+				if(rwyTitle == 5){
+					line5rt = "RUNWAYS";
+					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
+				}
+			}
+			
+			
 			#if (getprop("/autopilot/route-manager/destination/runway") != nil){
 			#	line1r = getprop("/autopilot/route-manager/destination/runway");
 			#}
