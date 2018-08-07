@@ -14,6 +14,7 @@ setprop("/instrumentation/cdu/sids/sidIsSelected", 0);
 setprop("/instrumentation/cdu/appr/apprIsSelected", 0);
 setprop("/instrumentation/cdu/appr/apprCountEnd", 0);
 setprop("/instrumentation/cdu/appr/apprCountEndPage", 0);
+setprop("/instrumentation/cdu/appr/rwyCountLastPage", 1000);
 setprop("/instrumentation/cdu/StepSize","RVSM");
 setprop("/instrumentation/fmc/THRLIM","TOGA");
 setprop("/instrumentation/fmc/CLB_LIM","CLB");

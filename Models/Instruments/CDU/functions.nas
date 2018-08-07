@@ -23,7 +23,7 @@ var echoAppr = func(page,selectedRwy = ""){
 		if(apprNum != 0){
 			var countStart = (page - 1) * 5;
 			if(countStart > apprNum){
-				setprop("/instrumentation/cdu/appr/page", page - 1);
+				#setprop("/instrumentation/cdu/appr/page", page - 1);
 			}
 			count = countStart;
 			while(i <= 5){
@@ -85,6 +85,7 @@ var echoRwysAppr = func(pageRwys){
 		pageRwys = (pageRwys - getprop("/instrumentation/cdu/appr/apprCountEndPage"))+1;
 		var countStart = (pageRwys - 1) * 5;
 		var count = countStart;
+		
 		var i = 0;
 		var tag = 5 - listStart;
 		if(countStart != 0){
@@ -98,14 +99,30 @@ var echoRwysAppr = func(pageRwys){
 			}else{
 				append(echoedRwys, "");
 				i = i + 1;
+				setprop("/instrumentation/cdu/appr/rwyCountLastPage", pageRwys);
 			}
 		}
+		
 		return echoedRwys;
 	}else{
 		return ["", "", "", "", ""];
 	}
 }
 
+var arrNextPge = func(){
+	var tmp = getprop("/instrumentation/cdu/appr/page");
+	if(tmp + 1 <= getprop("/instrumentation/cdu/appr/rwyCountLastPage")){
+		tmp = tmp + 1;
+		setprop("/instrumentation/cdu/appr/page", tmp);
+	}
+}
+var arrPrevPge = func(){
+	var tmp = getprop("/instrumentation/cdu/appr/page");
+	if(tmp - 1 >= 1){
+		tmp = tmp - 1;
+	}
+	setprop("/instrumentation/cdu/appr/page", tmp);
+}
 
 ###########################################################
 
