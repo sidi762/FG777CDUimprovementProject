@@ -127,7 +127,7 @@
             <max-lb type="double">154000</max-lb>
             <min-lb type="double">0</min-lb>
         </weight>
-        <aircraft-operator>JAL</aircraft-operator>
+        <aircraft-operator>CCA</aircraft-operator>
     </sim>
 
     <instrumentation n="0">
