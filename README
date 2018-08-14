@@ -19,25 +19,23 @@ We sincerely welcome any form of contribution to this project!
 我们诚心欢迎对本项目的任何形式的贡献！
 
 ======Requirement======
-This project is tested on FlightGear 2018.1.1, FlightGear 2017.3.1 and 
-FlightGear 2017.2.1, so it will work correctly on those version, and
-it may also works on higher version of FlightGear.
-This project is tested on the latest Boeing 777 seattle(until 10/27/2017) in 
+This project is tested on FlightGear 2018.3.1, so it will work correctly on this version, and it may also works on higher version of FlightGear.
+This project is tested on the latest Boeing 777 seattle(until 8/14/2018) in 
 the FlightGear official hanger, so it will work correctly on this version
-of 777 addon.
+of 777 aircraft.
 
 ========运行环境=======
-这个项目使用FlightGear 2018.1.1, FlightGear 2017.3.1 与 FlightGear 2017.2.1进
-行测试，所以它可以在以上版本的FlightGear中正常运行，并且它有可能支持更高版本
-的FlightGear。
-这个项目使用FlightGear官方机库中最新（截止2017年10月17日）的Seattle波音777进行测
+这个项目使用FlightGear 2018.3.1进行测试，所以它可以在该版本的FlightGear中正常运行，并且它有可能支持更高版本的FlightGear。
+这个项目使用FlightGear官方机库中最新（截止2018年8月14日）的Seattle波音777进行测
 试，所以它可以在该版本的波音777插件中正常运行。
 
 ========Install========
-Pull all the files in this git and install it as a aircraft addon in FlightGear.
+Pull all the files in this git and install it as a aircraft add-on in FlightGear.
+For better experiences, copy the BoeingCDU.ttf font into FGDATA/Fonts, otherwise delete the display-text-value.xml in Models/Instruments/CDU and rename the display-text-value_default_font.xml to display-text-value.xml.
 Then Enjoy!
 =========安装=========
 直接拉取本项目中所有文件作为机模安装至FlightGear后即可使用。
+为了更好的使用体验，我们建议您将BoeingCDU.ttf字体文件复制进入FGDATA/Fonts中。如果您不愿意这样做，那么删除Models/Instruments/CDU内的display-text-value.xml，并将display-text-value_default_font.xml重命名为display-text-value.xml即可。
 
 Hope you Enjoy this project and happy landings!
 希望您能够享受本插件带来的乐趣，起降安妥！

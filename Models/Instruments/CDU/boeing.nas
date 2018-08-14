@@ -1015,7 +1015,7 @@ var cdu = func{
 			if (getprop("/instrumentation/cdu/ident/engines") != nil){
 				line1r = getprop("/instrumentation/cdu/ident/engines");
 			}
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1079,7 +1079,7 @@ var cdu = func{
 			line4rt = "CRZ CG";	
 			line5rt = "STEP SIZE";
 			line5r =  getprop("instrumentation/cdu/StepSize");
-			line6ct = "------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";	
 			if (getprop("/autopilot/route-manager/cruise/altitude-ft") != nil){
@@ -1175,7 +1175,7 @@ var cdu = func{
 				line5r = "   *  .    *  . ";
 			}
 
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = "ROUTE>";
 		}
@@ -1205,7 +1205,7 @@ var cdu = func{
 			line2r = echoUpdateArmed();
 			line3r = echoUpdateArmed();
 			line4r = echoUpdateArmed();
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = DisplayLATorBRG();
 			
@@ -1229,7 +1229,7 @@ var cdu = func{
 			line4r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
 			line3l = echoLatBrg();
 			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
-			line6ct = "------------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = DisplayLATorBRG();
 		}
@@ -1358,7 +1358,7 @@ var cdu = func{
 			#line3rt = "RUNWAYS";
 			#line6l = "<INDEX";
 			line6r = "ROUTE>";
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 		}
 		
 		if (display == "RTE1_DEP") {
@@ -1438,7 +1438,7 @@ var cdu = func{
 				line4r = "";
 				line5r = "";
 			}
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line1rt = "RUNWAYS";
 			#if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
 			#	line1r = getprop("/autopilot/route-manager/departure/newrunway");
@@ -1568,7 +1568,7 @@ var cdu = func{
 			else{
 				line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" #will add the runway status at sooooooooooooon	
 			}
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1588,7 +1588,7 @@ var cdu = func{
 			line4rt = "LIM TOGW";
 			line5lt = "SLOPE";
 			line5rt = "REF OAT";
-			line6ct = "----------------------------------------";
+			line6ct = "------------------------------";
 			line6l = "<INDEX";
 			if (getprop("/instrumentation/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/instrumentation/fmc/ref-temperature-degc")}
 		}
