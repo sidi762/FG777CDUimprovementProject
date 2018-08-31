@@ -204,8 +204,7 @@ var key = func(v) {
 				{
 					setprop("/instrumentation/fmc/sltd-ALTN",1);
 				}
-			}#end of LSK1L
-			
+			}#end of LSK1L	
 			
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -715,6 +714,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 				if (cduDisplay == "RTE1_LEGS"){
 					if (cduInput == "DELETE"){
@@ -796,6 +796,7 @@ var key = func(v) {
 			if (v == "LSK6L"){
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 				if(cduDisplay == "ALTN"){
 					if(datalink.allAircrafts[0].requestState == "<REQUEST" or datalink.allAircrafts[0].requestState == "<REQUEST SENT"){
