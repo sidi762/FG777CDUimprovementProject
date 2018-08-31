@@ -6,7 +6,7 @@ Best Regards，
 Sidi Liang, Founder of FGPRC 
 ---------------------------
 
-First of all,Thanks for download and install this Project.
+First of all,Thanks for download and install this Project.This is the stable branch of the project.
 It based on SEATTLE's Boeing 777 Model.
 首先，感谢您浏览下载本项目！
 本项目基于Seattle开发团队的波音777插件。
@@ -18,22 +18,51 @@ It based on SEATTLE's Boeing 777 Model.
 We sincerely welcome any form of contribution to this project!
 我们诚心欢迎对本项目的任何形式的贡献！
 
+
+=====Installation for only CDU=====
+Add the following lines into the nasal part of 777-set-common.xml, then replace the entire Models/Instruments/CDU folder. Also check the NOTE part of this readme for font installation.
+
+<cdu>
+	<file>Aircraft/777/Models/Instruments/CDU/boeing.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/library.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/functions.nas</file>
+</cdu>
+<fmc>
+	<file>Aircraft/777/Models/Instruments/CDU/vspeedscalculation.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/calculations.nas</file>
+</fmc>
+<datalink>
+	<file>Aircraft/777/Models/Instruments/CDU/datalink.nas</file>
+</datalink>
+
+=====将CDU加入您的777中=====
+在777-set-common.xml的nasal部分中加入如下代码，并将Models/Instruments/CDU文件夹替换。另外请参阅本文件中“提示”部分来完成字体安装。
+<cdu>
+	<file>Aircraft/777/Models/Instruments/CDU/boeing.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/library.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/functions.nas</file>
+</cdu>
+<fmc>
+	<file>Aircraft/777/Models/Instruments/CDU/vspeedscalculation.nas</file>
+	<file>Aircraft/777/Models/Instruments/CDU/calculations.nas</file>
+</fmc>
+<datalink>
+	<file>Aircraft/777/Models/Instruments/CDU/datalink.nas</file>
+</datalink>
+
+
+
 ======Requirement======
 This project is tested on FlightGear 2018.3.1, so it will work correctly on this version, and it may also works on higher version of FlightGear.
-This project is tested on the latest Boeing 777 seattle(until 8/14/2018) in 
-the FlightGear official hanger, so it will work correctly on this version
-of 777 aircraft.
 
 ========运行环境=======
 这个项目使用FlightGear 2018.3.1进行测试，所以它可以在该版本的FlightGear中正常运行，并且它有可能支持更高版本的FlightGear。
-这个项目使用FlightGear官方机库中最新（截止2018年8月14日）的Seattle波音777进行测
-试，所以它可以在该版本的波音777插件中正常运行。
 
-========Install========
+========NOTE========
 Pull all the files in this git and install it as a aircraft add-on in FlightGear.
 For better experiences, copy the BoeingCDU.ttf font into FGDATA/Fonts, otherwise delete the display-text-value.xml in Models/Instruments/CDU and rename the display-text-value_default_font.xml to display-text-value.xml.
 Then Enjoy!
-=========安装=========
+=========提示=========
 直接拉取本项目中所有文件作为机模安装至FlightGear后即可使用。
 为了更好的使用体验，我们建议您将BoeingCDU.ttf字体文件复制进入FGDATA/Fonts中。如果您不愿意这样做，那么删除Models/Instruments/CDU内的display-text-value.xml，并将display-text-value_default_font.xml重命名为display-text-value.xml即可。
 
