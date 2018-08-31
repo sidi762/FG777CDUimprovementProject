@@ -1651,77 +1651,76 @@ var cdu = func{
 			
 		    
 		}
-		if (display == "ALTN")
-			{		nApts = findAirportsWithinNumber(4);
+		if (display == "ALTN"){	
+			nApts = findAirportsWithinNumber(4);
 					
-		            title   = "ALTN";
-		            page    = "1/2";
-		            line1l  = nApts[0].id;
-		            line2l  = nApts[1].id;
-		            line3l  = nApts[2].id;
-		            line4l  = nApts[3].id;	
+		    title   = "ALTN";
+		    page    = "1/2";
+		    line1l  = nApts[0].id;
+		    line2l  = nApts[1].id;
+		    line3l  = nApts[2].id;
+		    line4l  = nApts[3].id;	
+		
+			if (getprop("/instrumentation/fmc/sltd-ALTN") == 1)
+			{line1cl = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/sltd-ALTN") == 2)
+			{line2cl = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/sltd-ALTN") == 3)
+			{line3cl = "<SEL>";}
+			else if (getprop("/instrumentation/fmc/sltd-ALTN") == 4)
+			{line4cl = "<SEL>";}
 					
-					if (getprop("/instrumentation/fmc/sltd-ALTN") == 1)
-						{line1cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 2)
-						{line2cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 3)
-						{line3cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 4)
-						{line4cl = "<SEL>";}
-					
-					
-					for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
-						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id){
-							datalink.allAircrafts[0].data[i] = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
-							AltnHaveSaved2Datalink = 1;
-							print("ALTN SAVED 1 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						}
-					}
-					if(AltnHaveSaved2Datalink == 0){
-						append(datalink.allAircrafts[0].data, nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						append(datalink.allAircrafts[0].dataName, "ALTN");
-						datalink.allAircrafts[0].dataNum+=1;
-						print("ALTN SAVED 2 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						AltnHaveSaved2Datalink = 1;
-					}
-		            line5lt = "ALTN";
-		            line5l  = "<REQUEST";
-		            line6lt = "WXR";
-		            line6l  = datalink.allAircrafts[0].requestState;
-		            line5rt = "ALTN INHIBIT";
-		            line5r  = "----/----";
-		            line6rt = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
-		            line6r  = "DIVERT NOW>";
-		    }
-		if(display == "ALTN_LIST")
-			{
-				altnApts = findAirportsWithinNumber(16);
-                
-                title = "ALTN LIST";
-				page = "2/2";
-                line1l      = altnApts[0].id;
-                line1cl     = altnApts[1].id;
-                line1cr     = altnApts[2].id;
-                line1r      = altnApts[3].id;
-                line2l      = altnApts[4].id;
-                line2cl     = altnApts[5].id;
-                line2cr     = altnApts[6].id;
-                line2r      = altnApts[7].id;
-                line3l      = altnApts[8].id;
-                line3cl     = altnApts[9].id;
-                line3cr     = altnApts[10].id;
-                line3r      = altnApts[11].id;
-                line4l      = altnApts[12].id;
-                line4cl     = altnApts[13].id;
-                line4cr     = altnApts[14].id;
-                line4r      = altnApts[15].id;
-				line5lt     = "ALTN LIST";
-				line5l		= "<REQUEST";
-				line5rt		= "ALTN LIST";
-				line5r		= "PURGE>";
-				line6l		= "<INDEX";
+			for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
+				if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id){
+					datalink.allAircrafts[0].data[i] = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
+					AltnHaveSaved2Datalink = 1;
+					print("ALTN SAVED 1 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
+				}
 			}
+			if(AltnHaveSaved2Datalink == 0){
+				append(datalink.allAircrafts[0].data, nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
+				append(datalink.allAircrafts[0].dataName, "ALTN");
+				datalink.allAircrafts[0].dataNum+=1;
+				print("ALTN SAVED 2 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
+				AltnHaveSaved2Datalink = 1;
+			}
+		    line5lt = "ALTN";
+		    line5l  = "<REQUEST";
+		    line6lt = "WXR";
+		    line6l  = datalink.allAircrafts[0].requestState;
+		    line5rt = "ALTN INHIBIT";
+		    line5r  = "----/----";
+		    line6rt = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
+		    line6r  = "DIVERT NOW>";
+		}
+		if(display == "ALTN_LIST"){
+			altnApts = findAirportsWithinNumber(16);
+            
+            title = "ALTN LIST";
+			page = "2/2";
+			
+            line1l      = altnApts[0].id;
+            line1cl     = altnApts[1].id;
+            line1cr     = altnApts[2].id;
+            line1r      = altnApts[3].id;
+            line2l      = altnApts[4].id;
+            line2cl     = altnApts[5].id;
+            line2cr     = altnApts[6].id;
+            line2r      = altnApts[7].id;
+            line3l      = altnApts[8].id;
+            line3cl     = altnApts[9].id;
+            line3cr     = altnApts[10].id;
+            line3r      = altnApts[11].id;
+            line4l      = altnApts[12].id;
+            line4cl     = altnApts[13].id;
+            line4cr     = altnApts[14].id;
+            line4r      = altnApts[15].id;
+			line5lt     = "ALTN LIST";
+			line5l		= "<REQUEST";
+			line5rt		= "ALTN LIST";
+			line5r		= "PURGE>";
+			line6l		= "<INDEX";
+		}
 		
 		if (serviceable != 1){
 			title    = "";	page    = "";
