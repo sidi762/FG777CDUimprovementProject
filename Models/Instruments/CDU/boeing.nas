@@ -195,18 +195,15 @@ var key = func(v) {
 					cduInput = crzAltCDUInput();
 					if(cduInput != "INVALID ENTRY"){
 						VNAVChanges();	
-					}				
+					}
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "RTE1_1";
 				}
-				if (cduDisplay == "ALTN")
-				{
+				if (cduDisplay == "ALTN"){
 					setprop("/instrumentation/fmc/sltd-ALTN",1);
 				}
-			}#end of LSK1L
-			
-			
+			}
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
@@ -217,11 +214,6 @@ var key = func(v) {
 					}
 				}
 				if (cduDisplay == "RTE1_ARR"){
-					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
-						setprop("/autopilot/route-manager/isArmed",1);
-						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line1/right"));
-						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
-					}
 				}
 				if (cduDisplay == "EICAS_MODES"){
 					eicasDisplay = "FUEL";
@@ -278,7 +270,7 @@ var key = func(v) {
 						setprop("/instrumentation/fmc/V1checked",1);
 					}
 				}#end of TO_REF
-			}#end of LSK1R
+			}
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line2/left") != ""){
@@ -342,18 +334,12 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "ALTN";
 				}
-				if (cduDisplay == "ALTN")
-				{
+				if (cduDisplay == "ALTN"){
 					setprop("/instrumentation/fmc/sltd-ALTN",2);
 				}
 			}
 			if (v == "LSK2R"){
 				if (cduDisplay == "RTE1_ARR"){
-					if (getprop("/instrumentation/cdu/output/line2/right") != ""){
-						setprop("/autopilot/route-manager/isArmed",1);
-						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line2/right"));
-						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
-					}
 				}
 				if (cduDisplay == "RTE1_DEP"){
 					setprop("/autopilot/route-manager/isChanged",1);
@@ -361,7 +347,8 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line2/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 					}
-				}else if (cduDisplay == "DEP_ARR_INDEX")
+				}
+				else if (cduDisplay == "DEP_ARR_INDEX")
 				{
 					cduDisplay = "RTE1_ARR";
 					setprop("/instrumentation/cdu/appr/page", 1);
@@ -371,7 +358,8 @@ var key = func(v) {
 				}
 				else if (cduDisplay == "EICAS_SYN"){
 					eicasDisplay = "DRS";
-				}else if (cduDisplay == "POS_INIT"){
+				}
+				else if (cduDisplay == "POS_INIT"){
 					if(getprop("/instrumentation/fmc/ref-airport") != ""){
 						cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/ref-airport-poslat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/ref-airport-poslon"));
 					}
@@ -395,7 +383,8 @@ var key = func(v) {
 				else if (cduDisplay == "RTE1_1"){
 					setprop("/instrumentation/fmc/flight-number",cduInput);
 					cduInput = "";
-				}else if (cduDisplay == "PERF_INIT"){
+				}
+				else if (cduDisplay == "PERF_INIT"){
 					
 					if (num(cduInput) != nil){
 						if(cduInput >= 0){
@@ -411,12 +400,15 @@ var key = func(v) {
 					setprop("/instrumentation/fmc/CLB_LIM","CLB");
 				}
 				else if (cduDisplay == "TO_REF"){
-					if(cduInput == ""){setprop("/instrumentation/fmc/VRchecked",1);}
+					if(cduInput == ""){
+						setprop("/instrumentation/fmc/VRchecked",1);
+					}
 					else if(num(cduInput) != nil){
 							setprop("/instrumentation/fmc/vspeeds/VR");
 							setprop("/instrumentation/fmc/VRchecked",1);
 							cduInput = "";
-					}else{setprop("/instrumentation/fmc/VRchecked",1);}
+					}
+					else{setprop("/instrumentation/fmc/VRchecked",1);}
 				}
 			}
 			if (v == "LSK3L"){
@@ -476,8 +468,7 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "PERF_INIT";
 				}
-				if (cduDisplay == "VNAV")
-				{
+				if (cduDisplay == "VNAV"){
 					#LSK3L，TransALT/SPD
 					if(num(cduInput) != nil)
 					{
@@ -519,18 +510,12 @@ var key = func(v) {
 
 					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
-				if (cduDisplay == "ALTN")
-				{
+				if (cduDisplay == "ALTN"){
 					setprop("/instrumentation/fmc/sltd-ALTN",3);
 				}
 			}
 			if (v == "LSK3R"){
 				if (cduDisplay == "RTE1_ARR"){
-					if (getprop("/instrumentation/cdu/output/line3/right") != ""){
-						setprop("/autopilot/route-manager/isArmed",1);
-						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line3/right"));
-						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
-					}
 				}
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line3") != ""){
@@ -538,7 +523,7 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line3/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						}
-					}
+				}
 				if (cduDisplay == "NAV_RAD"){
 					if (int(cduInput) > 189 and int(cduInput) < 1751) {
 						setprop("/instrumentation/adf[1]/frequencies/selected-khz",cduInput);
@@ -563,8 +548,7 @@ var key = func(v) {
 							cduInput = "";
 					}else{setprop("/instrumentation/fmc/V2checked",1);}
 				}
-				if (cduDisplay == "VNAV")
-				{
+				if (cduDisplay == "VNAV"){
 					if (num(cduInput) != nil)
 					{
 						setprop("/instrumentation/fmc/VNAV/TransALT",cduInput);
@@ -601,7 +585,8 @@ var key = func(v) {
 				}
 				if (cduDisplay == "POS_REF_0"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
-				}if (cduDisplay == "POS_REF"){
+				}
+				if (cduDisplay == "POS_REF"){
 					cduInput = LatDMMunsignal(getprop("/position/latitude-deg"))~LonDmmUnsignal(getprop("/position/longitude-deg"));
 				}
 				if (cduDisplay == "PERF_INIT"){
@@ -614,8 +599,7 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "TO_REF";
 				}
-				if (cduDisplay == "VNAV")
-				{
+				if (cduDisplay == "VNAV"){
 					#LSK4L，TransALT/SPD
 					if(num(cduInput) != nil)
 					{
@@ -657,18 +641,13 @@ var key = func(v) {
 
 					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
-				if (cduDisplay == "ALTN")
-				{
+				if (cduDisplay == "ALTN"){
 					setprop("/instrumentation/fmc/sltd-ALTN",4);
 				}
 			}
 			if (v == "LSK4R"){
 				if (cduDisplay == "RTE1_ARR"){
-					if (getprop("/instrumentation/cdu/output/line4/right") != ""){
-						setprop("/autopilot/route-manager/isArmed",1);
-						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line4/right"));
-						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
-					}
+					
 				}
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line4") != ""){
@@ -676,7 +655,7 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line4/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						}
-					}
+				}
 				if (cduDisplay == "POS_INIT"){
 					cduInput = LatDMMunsignal(getprop("/instrumentation/fmc/gpsposlat"))~LonDmmUnsignal(getprop("/instrumentation/fmc/gpsposlon"));
 				}
@@ -715,6 +694,7 @@ var key = func(v) {
 				}
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 				if (cduDisplay == "RTE1_LEGS"){
 					if (cduInput == "DELETE"){
@@ -728,11 +708,7 @@ var key = func(v) {
 			}
 			if (v == "LSK5R"){
 				if (cduDisplay == "RTE1_ARR"){
-					if (getprop("/instrumentation/cdu/output/line5/right") != ""){
-						setprop("/autopilot/route-manager/isArmed",1);
-						setprop("/autopilot/route-manager/destination/newApproach", getprop("/instrumentation/cdu/output/line5/right"));
-						setprop("/instrumentation/cdu/appr/apprIsSelected", 1);
-					}
+					
 				}
 				if (cduDisplay == "RTE1_DEP"){
 					setprop("/autopilot/route-manager/isChanged",1);
@@ -740,7 +716,7 @@ var key = func(v) {
 						setprop("/autopilot/route-manager/departure/newrunway", getprop("/instrumentation/cdu/output/line5/right"));
 						setprop("/instrumentation/cdu/sids/rwyIsSelected", 1);
 						}
-					}
+				}
 				if (cduDisplay == "RTE1_LEGS"){
 					setprop("/autopilot/route-manager/route/wp[5]/altitude-ft",cduInput);
 					if (substr(cduInput,0,2) == "FL"){
@@ -759,13 +735,11 @@ var key = func(v) {
 						cduInput = "";
 					}
 				}
-				if (cduDisplay == "TO_REF_2")
-				{
+				if (cduDisplay == "TO_REF_2"){
 					setprop("/instrumentation/fmc/ref-temperature-degc",cduInput);
 					cduInput = "";
 				}
-				if (cduDisplay == "PERF_INIT")
-				{
+				if (cduDisplay == "PERF_INIT"){
 					if (cduInput == "0")
 					{
 						setprop("/instrumentation/cdu/StepSize","INHIBIT");
@@ -796,17 +770,17 @@ var key = func(v) {
 			if (v == "LSK6L"){
 				if (cduDisplay == "FMC_COMM"){
 					cduInput = "IN DEVELOPMENT";
+					msg = 1;
 				}
 				if(cduDisplay == "ALTN"){
-					if(datalink.allAircrafts[0].requestState == "<REQUEST" or datalink.allAircrafts[0].requestState == "<REQUEST SENT"){
-						datalink.allAircrafts[0].request("ALTNWXR",datalink.allGrounds[0]);
-					}
 				}
 				if (cduDisplay == "INIT_REF"){
 					cduDisplay = "APP_REF";
-				}else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF") or (cduDisplay == "ALTN_LIST")){
+				}
+				else if ((cduDisplay == "APP_REF") or (cduDisplay == "IDENT") or (cduDisplay == "MAINT") or (cduDisplay == "PERF_INIT") or (cduDisplay == "POS_INIT") or (cduDisplay == "POS_REF") or (cduDisplay == "THR_LIM") or (cduDisplay == "TO_REF") or (cduDisplay == "ALTN_LIST")){
 					cduDisplay = "INIT_REF";
-				}else if (cduDisplay == "RTE1_DEP"){
+				}
+				else if (cduDisplay == "RTE1_DEP"){
 					if(getprop("/autopilot/route-manager/isChanged") != 0){
 						if (getprop("/autopilot/route-manager/departure/sid") != nil){
 							setprop("/autopilot/route-manager/departure/newsid", getprop("/autopilot/route-manager/departure/sid"));
@@ -827,8 +801,6 @@ var key = func(v) {
 				if(cduDisplay == "ABOUT_PROJECT"){
 					cduDisplay = "MAINT";
 				}
-			
-				
 			}
 			if (v == "LSK6R"){
 				if (cduDisplay == "MAINT") {
@@ -1039,7 +1011,7 @@ var cdu = func{
 			line6l = "<INDEX";
 			line6r = "READ ME>";
 		}
-		if(display == "ABOUT_PROJECT"){
+		if (display == "ABOUT_PROJECT"){
 			title = "FG777CDU IMPROVEMENT PROJECT";
 			line1lt = "BROUGHT TO YOU BY";
 			line2lt = " ________ _______ _______  _______   _______ ";
@@ -1284,81 +1256,11 @@ var cdu = func{
 		}
 		
 		if (display == "RTE1_ARR") {
-			if (getprop("/autopilot/route-manager/destination/airport") != nil){
-				title = getprop("/autopilot/route-manager/destination/airport")~" ARRIVALS";
-			}
-			else{
-				title = "ARRIVALS";
-			}
-			if(getprop("/autopilot/route-manager/isChanged") == 0){
-				var selOrAct = "<ACT>";
-			    line6l = "<INDEX";
-			}else{
-				var selOrAct = "<SEL>";
-				line6l = "<ERASE(WIP)";# WORK IN PROGRESS
-			}
-			line1ctl = "RTE 1";
-			line1lt = "STARS";
-			line1l = "WIP"; # WORK IN PROGRESS
-			line1rt = "APPROACHES";
-			
-			if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 0){
-				line1r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-				line2r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[1];
-				line3r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[2];
-				line4r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[3];
-				line5r = echoAppr(getprop("/instrumentation/cdu/appr/page"))[4];
-			}else if(getprop("/instrumentation/cdu/appr/apprIsSelected") == 1){
-				line1r = getprop("/autopilot/route-manager/destination/newApproach");
-				line1cr = selOrAct;
-				line2rt = "TRANS";
-				line2 = "WIP";# WORK IN PROGRESS
-			}
-			
-			if(getprop("/instrumentation/cdu/appr/apprCountEnd") != 0 and getprop("/instrumentation/cdu/appr/apprIsSelected") == 0){
-				var rwyTitle = getprop("/instrumentation/cdu/appr/apprCountEnd");
-				if(rwyTitle == 1){
-					line1rt = "RUNWAYS";
-					line1r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-					line2r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
-					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
-					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[3];
-					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[4];
-				}
-				if(rwyTitle == 2){
-					line2rt = "RUNWAYS";
-					line2r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
-					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
-					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[3];
-				}
-				if(rwyTitle == 3){
-					line3rt = "RUNWAYS";
-					line3r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
-					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[2];
-				}
-				if(rwyTitle == 4){
-					line4rt = "RUNWAYS";
-					line4r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[1];
-				}
-				if(rwyTitle == 5){
-					line5rt = "RUNWAYS";
-					line5r = echoRwysAppr(getprop("/instrumentation/cdu/appr/page"))[0];
-				}
-			}
-			
-			
-			#if (getprop("/autopilot/route-manager/destination/runway") != nil){
-			#	line1r = getprop("/autopilot/route-manager/destination/runway");
-			#}
-			
-			#line2lt = "TRANS";
-			#line3rt = "RUNWAYS";
-			#line6l = "<INDEX";
-			line6r = "ROUTE>";
-			line6ct = "---------------------------";
+			#Page WIP
+			#-------------------title------------------
+			title = "ARRIVALS";
+			#------------------------------------------
+			line1c = "This page is working in progress";
 		}
 		
 		if (display == "RTE1_DEP") {
@@ -1650,77 +1552,15 @@ var cdu = func{
 			
 		    
 		}
-		if (display == "ALTN")
-			{		nApts = findAirportsWithinNumber(4);
-					
-		            title   = "ALTN";
-		            page    = "1/2";
-		            line1l  = nApts[0].id;
-		            line2l  = nApts[1].id;
-		            line3l  = nApts[2].id;
-		            line4l  = nApts[3].id;	
-					
-					if (getprop("/instrumentation/fmc/sltd-ALTN") == 1)
-						{line1cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 2)
-						{line2cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 3)
-						{line3cl = "<SEL>";}
-					else if (getprop("/instrumentation/fmc/sltd-ALTN") == 4)
-						{line4cl = "<SEL>";}
-					
-					
-					for(var i = 0; i < datalink.allAircrafts[0].dataNum; i = i + 1){
-						if(datalink.allAircrafts[0].dataName[i] == "ALTN" and datalink.allAircrafts[0].data[i]!=nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id){
-							datalink.allAircrafts[0].data[i] = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
-							AltnHaveSaved2Datalink = 1;
-							print("ALTN SAVED 1 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						}
-					}
-					if(AltnHaveSaved2Datalink == 0){
-						append(datalink.allAircrafts[0].data, nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						append(datalink.allAircrafts[0].dataName, "ALTN");
-						datalink.allAircrafts[0].dataNum+=1;
-						print("ALTN SAVED 2 "~nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id);
-						AltnHaveSaved2Datalink = 1;
-					}
-		            line5lt = "ALTN";
-		            line5l  = "<REQUEST";
-		            line6lt = "WXR";
-		            line6l  = datalink.allAircrafts[0].requestState;
-		            line5rt = "ALTN INHIBIT";
-		            line5r  = "----/----";
-		            line6rt = nApts[getprop("/instrumentation/fmc/sltd-ALTN")-1].id;
-		            line6r  = "DIVERT NOW>";
-		    }
-		if(display == "ALTN_LIST")
-			{
-				altnApts = findAirportsWithinNumber(16);
-                
-                title = "ALTN LIST";
-				page = "2/2";
-                line1l      = altnApts[0].id;
-                line1cl     = altnApts[1].id;
-                line1cr     = altnApts[2].id;
-                line1r      = altnApts[3].id;
-                line2l      = altnApts[4].id;
-                line2cl     = altnApts[5].id;
-                line2cr     = altnApts[6].id;
-                line2r      = altnApts[7].id;
-                line3l      = altnApts[8].id;
-                line3cl     = altnApts[9].id;
-                line3cr     = altnApts[10].id;
-                line3r      = altnApts[11].id;
-                line4l      = altnApts[12].id;
-                line4cl     = altnApts[13].id;
-                line4cr     = altnApts[14].id;
-                line4r      = altnApts[15].id;
-				line5lt     = "ALTN LIST";
-				line5l		= "<REQUEST";
-				line5rt		= "ALTN LIST";
-				line5r		= "PURGE>";
-				line6l		= "<INDEX";
-			}
+		if (display == "ALTN"){
+			#Page WIP
+			title  = "ALTN";
+			line1c = "This page is working in progress";
+		}
+		if (display == "ALTN_LIST"){
+			line1c = "This page is working in progress";#Page WIP    
+        	title = "ALTN LIST";
+		}
 		
 		if (serviceable != 1){
 			title    = "";	page    = "";
