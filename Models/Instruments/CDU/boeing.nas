@@ -58,8 +58,7 @@ var input = func(v) {
 		setprop("/instrumentation/cdu/input",getprop("/instrumentation/cdu/input")~v);
 }
 
-var isFLinit = func()
-{
+var isFLinit = func(){
 	if (getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL") != nil)
 		return getprop("/instrumentation/fmc/VNAV/cruise/altitude-FL");
 	else
@@ -83,8 +82,7 @@ var VNAVChanges = func(){
 }
 
 	
-var del = func()
-{
+var del = func(){
 	var isMsg = getprop("/instrumentation/fmc/isMsg");
 	if(isMsg == 1)
 	{
@@ -135,7 +133,9 @@ var key = func(v) {
 		var eicasDisplay = getprop("/instrumentation/eicas/display");
 		var cduInput     = getprop("/instrumentation/cdu/input");
 		var msg          = getprop("/instrumentation/fmc/isMsg"); 
+		
 		datalink.allAircrafts[0].requestState = "<REQUEST";
+		
 		if (serviceable == 1){
 			if (v == "LSK1L"){
 				if (cduDisplay == "RTE1_DEP"){
@@ -204,8 +204,7 @@ var key = func(v) {
 				{
 					setprop("/instrumentation/fmc/sltd-ALTN",1);
 				}
-			}#end of LSK1L	
-			
+			}
 			if (v == "LSK1R"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line1/right") != ""){
@@ -277,7 +276,7 @@ var key = func(v) {
 						setprop("/instrumentation/fmc/V1checked",1);
 					}
 				}#end of TO_REF
-			}#end of LSK1R
+			}
 			if (v == "LSK2L"){
 				if (cduDisplay == "RTE1_DEP"){
 					if (getprop("/instrumentation/cdu/output/line2/left") != ""){
@@ -475,8 +474,7 @@ var key = func(v) {
 				if (cduDisplay == "FMC_COMM"){
 					cduDisplay = "PERF_INIT";
 				}
-				if (cduDisplay == "VNAV")
-				{
+				if (cduDisplay == "VNAV"){
 					#LSK3L，TransALT/SPD
 					if(num(cduInput) != nil)
 					{
@@ -518,8 +516,7 @@ var key = func(v) {
 
 					else{cduInput = "INVALID ENTRY";msg = 1;}
 				}
-				if (cduDisplay == "ALTN")
-				{
+				if (cduDisplay == "ALTN"){
 					setprop("/instrumentation/fmc/sltd-ALTN",3);
 				}
 			}
@@ -892,13 +889,14 @@ var key = func(v) {
 				}
 			}
 		}
-			setprop("/instrumentation/cdu/display",cduDisplay);
-			if (eicasDisplay != nil){
-				setprop("/instrumentation/eicas/display",eicasDisplay);
-			}
-			
+		
+		setprop("/instrumentation/cdu/display",cduDisplay);
 		setprop("/instrumentation/cdu/input",cduInput);
 		setprop("/instrumentation/fmc/isMsg",msg);
+		
+		if (eicasDisplay != nil){
+			setprop("/instrumentation/eicas/display",eicasDisplay);
+		}
 }
 
 var cdu = func{
@@ -1601,16 +1599,16 @@ var cdu = func{
 			}else{
 				ACTorMOD = "ACT";
 			}
-			
+	
 			var climbSpdMode = "ECON";
-			
+	
 			#TODO:To make it actually work._by 0762
 			#• ACT ECON CLB      —速度以成本指数为依据
 			#• ACT MCP SPD CLB   —表示选择了MCP 速度干预
 			#• ACT XXXKT CLB     –选择了固定CAS 爬升速度
 			#• ACT M.XXX CLB     –选择了固定马赫爬升速度
 			#• ACT LIM SPD CLB   –速度基于包线限制速度
-			
+	
 			title   = ACTorMOD~" "~climbSpdMode~" "~"CLB"; 
 			page = "1/3";
 			line1lt = "CRZ ALT";
@@ -1621,7 +1619,7 @@ var cdu = func{
 			line3l  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/XTransSPD"))~"/"~sprintf("%.0f",getprop("/instrumentation/fmc/VNAV/XTransALT"));
 			line4lt = "SPD RESTR";#低于此巡航高度的高度速度限制
 			line4l  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/RestrSPD"))~"/"~sprintf("%.0f",getprop("/instrumentation/fmc/VNAV/RestrALT"));
-						
+				
 			line1rt = "AT"~"";#下一个航点的限高、限速
 			line1r  = "";
 			line2rt = "ERROR";#误差，如果没有误差的话是没有显示的，所以我懒得做233
@@ -1630,12 +1628,13 @@ var cdu = func{
 			line3r  = sprintf("%2.0f",getprop("/instrumentation/fmc/VNAV/TransALT"));#Todo:未制作输入_by 0762
 			line4rt = "MAX ANGLE";#显示爬升速度的最大角度,不允许输入.
 			line4r  = "215";  #算法不明，先留着以后做
-			
+	
 			line5ct = "---------------------------";
-			
+	
 			line5l  = "<ECON";
 			line5r  = "ENG OUT>"; 
-			line6r  = "CLB DIR>"
+			line6r  = "CLB DIR>";
+	
 		}
 		if (display == "FMC_COMM") {
 			title  = "FMC COMM";
@@ -1745,7 +1744,7 @@ var cdu = func{
 			line6cr = "";
 			line6cl = "";
 		}
-		 
+		
 		setprop("/instrumentation/cdu/output/title",title);
 		setprop("/instrumentation/cdu/output/page",page);
 		setprop("/instrumentation/cdu/output/line1/left",line1l);
