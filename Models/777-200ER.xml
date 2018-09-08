@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 777-200
 Justin Smithies
 Syd Adams
 -->
-
 <PropertyList>
 
     <path>Aircraft/777/Models/777-200ER.ac</path>
@@ -1522,8 +1522,8 @@ Syd Adams
                     <atan>
                         <div>
                             <difference>
-                                <property>/sim/multiplay/generic/float[3]</property>
-                                <property>/sim/multiplay/generic/float[1]</property>
+                                <property>sim/multiplay/generic/float[3]</property>
+                                <property>sim/multiplay/generic/float[1]</property>
                             </difference>
                             <value>1.49</value>
                         </div>
@@ -1823,8 +1823,8 @@ Syd Adams
                     <atan>
                         <div>
                             <difference>
-                                <property>/sim/multiplay/generic/float[4]</property>
-                                <property>/sim/multiplay/generic/float[2]</property>
+                                <property>sim/multiplay/generic/float[4]</property>
+                                <property>sim/multiplay/generic/float[2]</property>
                             </difference>
                             <value>1.49</value>
                         </div>
@@ -2164,7 +2164,7 @@ Syd Adams
 
 <model>
  <name>Pushback</name>
- <path>Models/Airport/Pushback/Douglas.xml</path>
+ <path>Autopush/Goldhofert.xml</path>
  <offsets>
   <x-m>-19.284</x-m>
   <y-m>0.0</y-m>

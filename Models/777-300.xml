@@ -3,7 +3,6 @@
 Justin Smithies
 Syd Adams
 -->
-
 <PropertyList>
 
     <path>Aircraft/777/Models/777-300.ac</path>
@@ -1580,8 +1579,8 @@ Outboard Aileron Lockout Schedule
                     <atan>
                         <div>
                             <difference>
-                                <property>/sim/multiplay/generic/float[3]</property>
-                                <property>/sim/multiplay/generic/float[1]</property>
+                                <property>sim/multiplay/generic/float[3]</property>
+                                <property>sim/multiplay/generic/float[1]</property>
                             </difference>
                             <value>1.49</value>
                         </div>
@@ -1881,8 +1880,8 @@ Outboard Aileron Lockout Schedule
                     <atan>
                         <div>
                             <difference>
-                                <property>/sim/multiplay/generic/float[4]</property>
-                                <property>/sim/multiplay/generic/float[2]</property>
+                                <property>sim/multiplay/generic/float[4]</property>
+                                <property>sim/multiplay/generic/float[2]</property>
                             </difference>
                             <value>1.49</value>
                         </div>
@@ -2222,7 +2221,7 @@ Outboard Aileron Lockout Schedule
 
 <model>
  <name>Pushback</name>
- <path>Models/Airport/Pushback/Douglas.xml</path>
+ <path>Autopush/Goldhofert.xml</path>
  <offsets>
   <x-m>-24.5181</x-m>
   <y-m>0.0</y-m>
