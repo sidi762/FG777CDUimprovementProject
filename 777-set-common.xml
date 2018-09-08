@@ -2,7 +2,7 @@
 <PropertyList>
 
     <sim n="0">
-        <author>Justin Smithies, Syd Adams, Thorsten Brehm, Arminair, Hyde Yamakawa, Juigi Zollo, Jean-Yves Lebleu, Isaak Dieleman, FlightGear China(DEV BRANCH)</author>
+        <author>Justin Smithies, Syd Adams, Thorsten Brehm, Arminair, Hyde Yamakawa, Juigi Zollo, Jean-Yves Lebleu, Isaak Dieleman, FlightGear China</author>
         <status>production</status>
         <rating>
             <FDM type="int">4</FDM>
@@ -1258,7 +1258,7 @@ Service Ceiling: 43,100ft
             <file>Aircraft/777/Models/Instruments/CDU/boeing.nas</file>
 			<file>Aircraft/777/Models/Instruments/CDU/library.nas</file>
 			<file>Aircraft/777/Models/Instruments/CDU/functions.nas</file>
-			<file>Aircraft/777/Models/Instruments/CDU/VNAV_display.nas</file>
+			<!--<file>Aircraft/777/Models/Instruments/CDU/VNAV_display.nas</file>-->
         </cdu>
 		<fmc>
 			<file>Aircraft/777/Models/Instruments/CDU/vspeedscalculation.nas</file>
