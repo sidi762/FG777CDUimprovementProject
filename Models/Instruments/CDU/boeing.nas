@@ -1012,7 +1012,7 @@ var cdu = func{
 			line1rt = "ENGINES";
 			line2lt = "NAV DATA";
 			if (getprop("/instrumentation/cdu/ident/engines") != nil){
-				line1r = getprop("/instrumentation/cdu/ident/engines");
+				line1r = string.uc(getprop("/instrumentation/cdu/ident/engines"));
 			}
 			line6ct = "---------------------------";
 			line6l = "<INDEX";
