@@ -313,10 +313,10 @@ var DisplayLATorBRG = func(){
 }
 var echoLatBrg = func(){
 	if(getprop("/instrumentation/cdu/LATorBRG") == 1){
-		return "000*/0.0NM";
+		return getGpsPos();
 	}
 	else if(getprop("/instrumentation/cdu/LATorBRG") == 0){
-		return getGpsPos();
+		return "000*/0.0NM";
 	}
 }
 
