@@ -1225,6 +1225,7 @@ var cdu = func{
 			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
 			line4lt = "FMC R";
 			line4rt = "GS";	
+			line4l = echoLatBrg();
 			line4r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
 			line3l = echoLatBrg();
 			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
@@ -1457,6 +1458,10 @@ var cdu = func{
 			else {
 				title = "RTE 1 LEGS";
 				}
+				
+				points = getprop("/autopilot/route-manager/route/num");
+				page = points/5;
+				
 			if (getprop("/autopilot/route-manager/route/wp[1]/id") != nil){
 				line1lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[1]/leg-bearing-true-deg"));
 				line1l = getprop("/autopilot/route-manager/route/wp[1]/id");

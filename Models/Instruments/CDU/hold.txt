@@ -1,0 +1,25 @@
+#var fp = flightplan();
+var pos = geo.aircraft_position().apply_course_distance(getprop("/orientation/heading-deg"), 100000);
+var wp = createWP(pos.lat(), pos.lon(), "EPICA");
+wp.type = "Hold";
+
+setprop("/autopilot/hold/Name","PPOS");
+setprop("/autopilot/hold/Latitude",pos.lat());
+setprop("/autopilot/hold/Longitude",pos.lon());
+setprop("/autopilot/hold/Speed",0);
+setprop("/autopilot/hold/Altitude",10000);
+setprop("/autopilot/hold/AltitudeCons",0);
+setprop("/autopilot/hold/AltitudeRestriction","at");
+setprop("/autopilot/hold/Flytype","Fly-by");
+setprop("/autopilot/hold/BankLimit",25);
+setprop("/autopilot/hold/Hld_rad_or_Inbd","Inbd");
+setprop("/autopilot/hold/Hld_Rad_value",179);
+setprop("/autopilot/hold/Hld_Turn","Left");
+setprop("/autopilot/hold/Hld_Time_or_Dist","Time");
+setprop("/autopilot/hold/Hld_td_value",1.0);
+setprop("/autopilot/hold/Sp_Turn","Right");
+
+
+var loc = "/autopilot/hold";
+var filename = "hold.xml";
+io.write_properties(filename,loc);

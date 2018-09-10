@@ -997,7 +997,7 @@
     <overlay>
         <params>
             <property type="string">/instrumentation/cdu/output/line5/center-title</property>
-            <character-size type="double">0.009</character-size>
+            <character-size type="double">0.004</character-size>
             <color>
                 <red   type="double">0.8</red>
                 <green type="double">0.8</green>
