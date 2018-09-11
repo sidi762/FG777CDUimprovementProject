@@ -43,15 +43,16 @@ setprop("/instrumentation/fmc/gate-pos-lon-noformat","");
 setprop("/instrumentation/fmc/sltd-ALTN",1);
 setprop("/instrumentation/fmc/outputUIContent","");
 setprop("/instrumentation/fmc/lastOutputUITime",0);
+setprop("/autopilot/route-manager/route/crtPageNum",1);
 var AltnHaveSaved2Datalink = 0;
 #Initialize aera end
 
 print("Thanks for using FlightGear 777 CDU Improvement project!");
 print(" _____ ____ ____  ____   ____ ");
-print("|  ___/ ___|  _ \|  _ \ / ___|");
-print("| |_ | |  _| |_) | |_) | |    ");
-print("|  _|| |_| |  __/|  _ <| |___ ");
-print("|_|   \____|_|   |_| \_\\____|");
+print("|  ___/ ___ |  _ \|  _ \  / ___|");
+print("|  |_  | |  _| |_)   | |_) | |    ");
+print("|  _|  | |_|   | __/|  _ < | |___ ");
+print("|_|     \___ |_|   |_| \_\ \____|");
 print("Enjoy your flight and happy landings!");
 
 var input = func(v) {
@@ -1458,69 +1459,8 @@ var cdu = func{
 			else {
 				title = "RTE 1 LEGS";
 				}
-				
-				points = getprop("/autopilot/route-manager/route/num");
-				page = points/5;
-				
-			if (getprop("/autopilot/route-manager/route/wp[1]/id") != nil){
-				line1lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[1]/leg-bearing-true-deg"));
-				line1l = getprop("/autopilot/route-manager/route/wp[1]/id");
-				line2ct = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[1]/leg-distance-nm"))~" NM";
-				line1r = sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[1]/altitude-ft"));
-				if (getprop("/autopilot/route-manager/route/wp[1]/speed-kts") != nil){
-					line4r = getprop("/autopilot/route-manager/route/wp[1]/speed-kts")~"/"~sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[1]/altitude-ft"));
-					}
-				}
-			if (getprop("/autopilot/route-manager/route/wp[2]/id") != nil){
-				if (getprop("/autopilot/route-manager/route/wp[2]/leg-bearing-true-deg") != nil){
-					line2lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[2]/leg-bearing-true-deg"));
-				}
-				line2l = getprop("/autopilot/route-manager/route/wp[2]/id");
-				if (getprop("/autopilot/route-manager/route/wp[2]/leg-distance-nm") != nil){
-					line3ct = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[2]/leg-distance-nm"))~" NM";
-				}
-				line2r = sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[2]/altitude-ft"));
-				if (getprop("/autopilot/route-manager/route/wp[2]/speed-kts") != nil){
-					line4r = getprop("/autopilot/route-manager/route/wp[2]/speed-kts")~"/"~sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[2]/altitude-ft"));
-					}
-				}
-			if (getprop("/autopilot/route-manager/route/wp[3]/id") != nil){
-				if (getprop("/autopilot/route-manager/route/wp[3]/leg-bearing-true-deg") != nil){
-					line3lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[3]/leg-bearing-true-deg"));
-				}
-				line3l = getprop("/autopilot/route-manager/route/wp[3]/id");
-				if (getprop("/autopilot/route-manager/route/wp[3]/leg-distance-nm") != nil){
-					line4ct = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[3]/leg-distance-nm"))~" NM";
-				}
-				line3r = sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[3]/altitude-ft"));
-				if (getprop("/autopilot/route-manager/route/wp[3]/speed-kts") != nil){
-					line3r = getprop("/autopilot/route-manager/route/wp[3]/speed-kts")~"/"~sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[3]/altitude-ft"));;
-					}
-				}
-			if (getprop("/autopilot/route-manager/route/wp[4]/id") != nil){
-				if (getprop("/autopilot/route-manager/route/wp[4]/leg-bearing-true-deg") != nil){
-					line4lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[4]/leg-bearing-true-deg"));
-				}
-				line4l = getprop("/autopilot/route-manager/route/wp[4]/id");
-				if (getprop("/autopilot/route-manager/route/wp[4]/leg-distance-nm") != nil){
-					line5ct = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[4]/leg-distance-nm"))~" NM";
-				}
-				line4r = sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[4]/altitude-ft"));
-				if (getprop("/autopilot/route-manager/route/wp[4]/speed-kts") != nil){
-					line4r = getprop("/autopilot/route-manager/route/wp[4]/speed-kts")~"/"~sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[4]/altitude-ft"));
-					}
-				}
-			if (getprop("/autopilot/route-manager/route/wp[5]/id") != nil){
-				if (getprop("/autopilot/route-manager/route/wp[5]/leg-bearing-true-deg") != nil){
-					line5lt = sprintf("%3.0f", getprop("/autopilot/route-manager/route/wp[5]/leg-bearing-true-deg"));
-				}
-				line5l = getprop("/autopilot/route-manager/route/wp[5]/id");
-				line5r = sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[5]/altitude-ft"));
-				if (getprop("/autopilot/route-manager/route/wp[5]/speed-kts") != nil){
-					line4r = getprop("/autopilot/route-manager/route/wp[5]/speed-kts")~"/"~sprintf("%5.0f", getprop("/autopilot/route-manager/route/wp[5]/altitude-ft"));
-					}
-				}
 			line6l = "<RTE 2 LEGS";
+			
 			if (getprop("/autopilot/route-manager/active") == 1){
 				line6r = "RTE DATA>";
 				}

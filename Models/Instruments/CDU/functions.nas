@@ -75,6 +75,19 @@ var echoAppr = func(page,selectedRwy = ""){
 		return ["", "", "", "", ""];
 	}
 }
+
+var rounding = func(num)
+{
+	if (num % 1 != 0)
+	{
+		return num+1;
+	}
+	else
+	{
+		return num;
+	}
+}
+
 var echoRwysAppr = func(pageRwys){
 	if(getprop("/autopilot/route-manager/destination/airport") != ""){
 		var apt = airportinfo(getprop("/autopilot/route-manager/destination/airport"));
