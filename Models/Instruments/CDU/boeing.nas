@@ -1015,7 +1015,7 @@ var cdu = func{
 			if (getprop("/instrumentation/cdu/ident/engines") != nil){
 				line1r = string.uc(getprop("/instrumentation/cdu/ident/engines"));
 			}
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1079,7 +1079,7 @@ var cdu = func{
 			line4rt = "CRZ CG";	
 			line5rt = "STEP SIZE";
 			line5r =  getprop("instrumentation/cdu/StepSize");
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = "THRUST LIM>";	
 			if (getprop("/autopilot/route-manager/cruise/altitude-ft") != nil){
@@ -1175,7 +1175,7 @@ var cdu = func{
 				line5r = "   *  .    *  . ";
 			}
 
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = "ROUTE>";
 		}
@@ -1205,7 +1205,7 @@ var cdu = func{
 			line2r = echoUpdateArmed();
 			line3r = echoUpdateArmed();
 			line4r = echoUpdateArmed();
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = DisplayLATorBRG();
 			
@@ -1230,7 +1230,7 @@ var cdu = func{
 			line4r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
 			line3l = echoLatBrg();
 			line3r = sprintf("%3.0f", getprop("/velocities/groundspeed-kt"));
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = DisplayLATorBRG();
 		}
@@ -1359,7 +1359,7 @@ var cdu = func{
 			#line3rt = "RUNWAYS";
 			#line6l = "<INDEX";
 			line6r = "ROUTE>";
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 		}
 		
 		if (display == "RTE1_DEP") {
@@ -1439,7 +1439,7 @@ var cdu = func{
 				line4r = "";
 				line5r = "";
 			}
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line1rt = "RUNWAYS";
 			#if (getprop("/autopilot/route-manager/departure/newrunway") != nil){
 			#	line1r = getprop("/autopilot/route-manager/departure/newrunway");
@@ -1456,9 +1456,34 @@ var cdu = func{
 			if (getprop("/autopilot/route-manager/active") == 0){
 				title = "ACT RTE 1 LEGS";
 				}
-			else {
+			else { 
 				title = "RTE 1 LEGS";
-				}
+				}				
+				linel1lt = getLEGS.angle2Point(0);
+				linel2lt = getLEGS.angle2Point(1);
+				linel3lt = getLEGS.angle2Point(2);
+				linel4lt = getLEGS.angle2Point(3);
+				linel5lt = getLEGS.angle2Point(4);
+				
+				line1l   = getLEGS.id(0);
+				line2l   = getLEGS.id(1);
+				line3l   = getLEGS.id(2);
+				line4l   = getLEGS.id(3);
+				line5l   = getLEGS.id(4);
+				
+				line2ct = getLEGS.distance(0);
+				line3ct = getLEGS.distance(1);
+				line4ct = getLEGS.distance(2);
+				line5ct = getLEGS.distance(3);
+				line6ct = getLEGS.distance(4);
+				
+				line1r = getLEGS.altSpdLimit(0);
+				line2r = getLEGS.altSpdLimit(1);
+				line3r = getLEGS.altSpdLimit(2);
+				line4r = getLEGS.altSpdLimit(3);
+				line5r = getLEGS.altSpdLimit(4);
+				
+				#DisplayLEGS();
 			line6l = "<RTE 2 LEGS";
 			
 			if (getprop("/autopilot/route-manager/active") == 1){
@@ -1467,7 +1492,8 @@ var cdu = func{
 			else{
 				line6r = "ACTIVATE>";
 				}
-		}
+}	
+
 		if (display == "THR_LIM") {
 			title = "THRUST LIM";
 			line1lt = "SEL";
@@ -1512,7 +1538,7 @@ var cdu = func{
 			else{
 				line4l = getprop("/autopilot/route-manager/departure/runway") ~"/--" #will add the runway status at sooooooooooooon	
 			}
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			line6r = "POS INIT>";
 		}
@@ -1532,7 +1558,7 @@ var cdu = func{
 			line4rt = "LIM TOGW";
 			line5lt = "SLOPE";
 			line5rt = "REF OAT";
-			line6ct = "---------------------------";
+			line6ct = "------------------------------------------------------";
 			line6l = "<INDEX";
 			if (getprop("/instrumentation/fmc/ref-temperature-degc") == -999){line5r = "---*C";}else{line5r = getprop("/instrumentation/fmc/ref-temperature-degc")}
 		}
@@ -1574,7 +1600,7 @@ var cdu = func{
 			line4rt = "MAX ANGLE";#显示爬升速度的最大角度,不允许输入.
 			line4r  = "215";  #算法不明，先留着以后做
 	
-			line5ct = "---------------------------";
+			line5ct = "------------------------------------------------------";
 	
 			line5l  = "<ECON";
 			line5r  = "ENG OUT>"; 

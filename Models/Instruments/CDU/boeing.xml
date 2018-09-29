@@ -1123,7 +1123,7 @@
     <overlay>
         <params>
             <property type="string">/instrumentation/cdu/output/line6/center-title</property>
-            <character-size type="double">0.009</character-size>
+            <character-size type="double">0.004</character-size>
             <color>
                 <red   type="double">0.8</red>
                 <green type="double">0.8</green>
@@ -1882,6 +1882,20 @@
         </binding>
     </action>
 	<action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <condition>
+                <equals>
+                    <property>/instrumentation/cdu/display</property>
+                    <value>RTE1_LEGS</value>
+                </equals>
+            </condition>
+            <command>nasal</command>
+            <script>cdu.turnLEGS(0);</script>
+        </binding>
+    </action>
+	<action>
 	<button>0</button>
 	<repeatable>false</repeatable>
 	<binding>
@@ -2015,6 +2029,20 @@
 			<value>ALTN_LIST</value>
         </binding>
 	</action>
+	    <action>
+        <button>0</button>
+        <repeatable>false</repeatable>
+        <binding>
+            <condition>
+                <equals>
+                    <property>/instrumentation/cdu/display</property>
+                    <value>RTE1_LEGS</value>
+                </equals>
+            </condition>
+            <command>nasal</command>
+            <script>cdu.turnLEGS(1);</script>
+        </binding>
+    </action>
 </animation>
 
 <animation>
