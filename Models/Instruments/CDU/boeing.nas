@@ -44,6 +44,7 @@ setprop("/instrumentation/fmc/sltd-ALTN",1);
 setprop("/instrumentation/fmc/outputUIContent","");
 setprop("/instrumentation/fmc/lastOutputUITime",0);
 setprop("/autopilot/route-manager/route/crtPageNum",1);
+setprop("/autopilot/route-manager/route/num", 0);
 var AltnHaveSaved2Datalink = 0;
 #Initialize aera end
 

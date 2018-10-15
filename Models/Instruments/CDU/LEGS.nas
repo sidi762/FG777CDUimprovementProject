@@ -1,12 +1,24 @@
-points = getprop("/autopilot/route-manager/route/num");
-
 crtPageNum = getprop("/autopilot/route-manager/route/crtPageNum");
-
+var pageNum = print(math.ceil(int(getprop("/autopilot/route-manager/route/num"))/5));
+if(pageNum == 0)
+{
+	page = "1/1";
+}
+else
+{
+	page = crtPageNum ~ "/" ~ pageNum;
+}
+		
 var turnLEGS = func(move)
 {
-	if(move == 1 and crtPageNum <= pageNum){crtPageNum = crtPageNum + 1;}
-	else if(move == 0 and crtPageNum != 1){crtPageNum = crtPageNum - 1;}
-	
+	if((move == 1) and (crtPageNum <= pageNum))
+	{
+		crtPageNum = crtPageNum + 1;
+	}
+	else if((move == 0) and (crtPageNum > 1))
+	{
+		crtPageNum = crtPageNum - 1;
+	}
 	setprop("/autopilot/route-manager/route/crtPageNum",crtPageNum);
 }
 #Display phase
@@ -55,13 +67,7 @@ var getLEGS = {
 				{return "";}
 			},
 	};
-	#var pageNum = math.ceil(points / 5);
-	#if(pageNum == nil)
-	#	{
-	#		page = "";
-	#	}
-	#	else
-	#	{page = crtPageNum ~ "/" ~ pageNum;}
+	
 	
 	#if (actName != nil)
 	#{
