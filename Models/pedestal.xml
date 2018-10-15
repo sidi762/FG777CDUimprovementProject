@@ -125,7 +125,7 @@ Sep 2013: Adjusted for the new Virtual Cokpit - I NEMO
 
     <model>
         <name>CDU1</name>
-        <path>Aircraft/777/Models/Instruments/CDU/boeing.xml</path>
+        <path>Aircraft/777/Models/Instruments/cdu2/boeing.xml</path>
         <offsets>
             <x-m>-0.393</x-m>
             <y-m>-0.184</y-m>
