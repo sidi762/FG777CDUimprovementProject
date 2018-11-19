@@ -1168,11 +1168,23 @@ Service Ceiling: 43,100ft
         <encoder>
             <serviceable>true</serviceable>
         </encoder>
-        <cdu n="0">
-            <serviceable type="bool">true</serviceable>
-            <display>IDENT</display>
-            <input type="string"></input>
-        </cdu>
+		<cdu>
+			<serviceable type="bool">true</serviceable>
+	        <brightness-norm type="float">1</brightness-norm>
+	        <display-brightness-norm type="float">1</display-brightness-norm>
+	        <settings>
+	            <!-- pick display settings, use 'lcd' or 'crt' -->
+	            <display type="string">lcd</display>
+	            <page type="string">Models/Instruments/cdu2/CDUPages/root.nas</page>
+	            <page type="string" n="1">Models/Instruments/cdu2/CDUPages/navdata.nas</page>
+	            <page type="string" n="2">Models/Instruments/cdu2/CDUPages/preflight.nas</page>
+	            <page type="string" n="3">Models/Instruments/cdu2/CDUPages/flight.nas</page>
+	            <page type="string" n="4">Models/Instruments/cdu2/CDUPages/progress.nas</page>
+	            <page type="string" n="5">Models/Instruments/cdu2/CDUPages/performance.nas</page>
+	            <page type="string" n="6">Models/Instruments/cdu2/CDUPages/maintenance.nas</page>
+	            <boot-page type="string">ident</boot-page>
+	        </settings>
+	    </cdu>
         <fmc>
             <to-flap type="double">15</to-flap>
         </fmc>
