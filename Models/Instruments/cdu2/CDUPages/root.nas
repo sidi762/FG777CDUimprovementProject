@@ -1,5 +1,5 @@
  var initRef = CDU.Page.new(cdu);
- initRef.baseTitle = "    INIT/REF INDEX";
+ initRef.baseTitle = "INIT/REF INDEX";
  initRef.addAction(CDU.Action.new('IDENT', 'L1', func {cdu.displayPageByTag("ident");} ));
  initRef.addAction(CDU.Action.new('POS', 'L2', func {cdu.displayPageByTag("pos-init");} ));
  initRef.addAction(CDU.Action.new('PERF', 'L3', func {cdu.displayPageByTag("performance");} ));
@@ -11,7 +11,7 @@
  initRef.addAction(CDU.Action.new('MAINT', 'R6', func {cdu.displayPageByTag("maintenance");} ));
  cdu.addPage(initRef, "index");
   
- var ident1 = CDU.Page.new(cdu, '      IDENT');
+ var ident1 = CDU.Page.new(cdu, 'IDENT');
  ident1.addAction(CDU.Action.new('INDEX', 'L6', func {cdu.displayPageByTag("index");} ));
  ident1.addAction(CDU.Action.new('POS INIT', 'R6', func {cdu.displayPageByTag("pos-init");} ));
   
@@ -20,7 +20,7 @@
   
  cdu.addPage(ident1, "ident");
   
- var menuPage = CDU.Page.new(cdu, '          MENU');
+ var menuPage = CDU.Page.new(cdu, 'MENU');
  menuPage.addAction(CDU.Action.new('FMC', 'L1', func {cdu.displayPageByTag("index");} ));
  menuPage.addAction(CDU.Action.new('CMC', 'L6', func {cdu.displayPageByTag("cmc-menu");} ));
  cdu.addPage(menuPage, "menu");
