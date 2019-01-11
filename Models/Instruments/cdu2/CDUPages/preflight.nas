@@ -150,19 +150,19 @@ var TakeoffModel =
     },
     
     dataForV1: func { 
-        var v1 = getprop('instrumentation/fmc/speeds/v1-kt');
+        var v1 = getprop("/instrumentation/fmc/vspeeds/V1");
 		if (v1 == 0) return '---';
         return sprintf('%3d', v1)~'~KT';
     },
 	
     dataForV2: func { 
-        var v2 = getprop('instrumentation/fmc/speeds/v2-kt');
+        var v2 = getprop("/instrumentation/fmc/vspeeds/V2");
 		if (v2 == 0) return '---';
         return sprintf('%3d', v2)~'~KT';
     },
 	
     dataForVr: func { 
-        var vr = getprop('instrumentation/fmc/speeds/vr-kt');
+        var vr = getprop("/instrumentation/fmc/vspeeds/VR");
 		if (vr == 0) return '---';;
         return sprintf('%3d', vr)~'~KT';
     },

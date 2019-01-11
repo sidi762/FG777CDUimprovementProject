@@ -1,5 +1,5 @@
 crtPageNum = getprop("/autopilot/route-manager/route/crtPageNum");
-var pageNum = print(math.ceil(int(getprop("/autopilot/route-manager/route/num"))/5));
+var pageNum = math.ceil(int(getprop("/autopilot/route-manager/route/num"))/5);
 if(pageNum == 0)
 {
 	page = "1/1";

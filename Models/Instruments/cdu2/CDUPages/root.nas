@@ -15,8 +15,8 @@
  ident1.addAction(CDU.Action.new('INDEX', 'L6', func {cdu.displayPageByTag("index");} ));
  ident1.addAction(CDU.Action.new('POS INIT', 'R6', func {cdu.displayPageByTag("pos-init");} ));
   
- ident1.addField(CDU.StaticField.new('L1', '~MODEL', getprop('instrumentation/fmc/settings/aircraft-model')));
- ident1.addField(CDU.StaticField.new('R1', '~ENGINES', getprop('instrumentation/fmc/settings/engine-model')));
+ ident1.addField(CDU.StaticField.new('L1', '~MODEL', getprop("/instrumentation/cdu/ident/model")));
+ ident1.addField(CDU.StaticField.new('R1', '~ENGINES', getprop("/instrumentation/cdu/ident/engines")));
   
  cdu.addPage(ident1, "ident");
   
