@@ -25,8 +25,13 @@
                 <position-z-m type="float"> -0.55</position-z-m>
                 <jetway-hood-deg type="float">3</jetway-hood-deg>
             </door>
+			<ramp>
+	            <x-m type="float">-24.5221</x-m>
+                <class type="string">0</class>
+            </ramp>
         </model>
-        <view n="0">
+        
+		<view n="0">
             <config n="0">
                 <z-offset-m type="double">-28.0781</z-offset-m>
             </config>
@@ -127,7 +132,7 @@
             <max-lb type="double">154000</max-lb>
             <min-lb type="double">0</min-lb>
         </weight>
-        <aircraft-operator>CCA</aircraft-operator>
+        <aircraft-operator>JAL</aircraft-operator>
     </sim>
 
     <instrumentation n="0">
@@ -149,5 +154,22 @@
             <descent-profile-low-rate type="double">-0.00026738</descent-profile-low-rate>
         </constant>
     </autopilot>
+    
+	<aircraft>
+	 <jetway-pos>
+      <x-tra>-1.8</x-tra>
+	  <y-rot>3.3</y-rot>
+	  <z-rot>18.3</z-rot>
+	  <hood-rot>-6</hood-rot>
+	  <!--z-entrance-rotation>26</z-entrance-rotation-->
+	 </jetway-pos>
+	 <jetway2-pos>
+	  <x-tra>2.8</x-tra>
+	  <y-rot>8.0</y-rot>
+	  <z-rot>48</z-rot>
+	  <hood-rot>-5</hood-rot>
+	  <!--z-entrance-rotation>49</z-entrance-rotation-->
+     </jetway2-pos>
+    </aircraft>
 
 </PropertyList>
