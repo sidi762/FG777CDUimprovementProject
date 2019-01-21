@@ -330,7 +330,7 @@ var RouteModel =
     posInit1.addField(CDU.Field.createWithLSKAndTag('R3', '', 'GatePos'));
     posInit1.addField(CDU.Field.new(pos:'L4', title:'~UTC(GPS)', tag:'GMTDate', dynamic:1));
     posInit1.addField(CDU.Field.createWithLSKAndTag('R4', '~GPS POS', 'GPSPos'));
-    posInit1.addField(CDU.Field.createWithLSKAndTag('R5', '~SET IRS POS', 'IRSPosInit'));
+    posInit1.addField(CDU.Field.createWithLSKAndTag('R5', '~SET INERTIAL POS', 'IRSPosInit'));
     
   
     var posInit2 = CDU.Page.new(cdu, "        POS REF");
