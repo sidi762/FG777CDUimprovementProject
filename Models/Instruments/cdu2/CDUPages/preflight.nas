@@ -15,8 +15,17 @@ var PosInitModel =
       return m;
     },
     
-    dataForRefAirport: func {(me._refAirport == nil) ? CDU.EMPTY_FIELD4 : me._refAirport.id;},
-    dataForGate: func { me._gate != nil ? me._gate.name : CDU.EMPTY_FIELD5; },
+    dataForRefAirport: func {
+		(me._refAirport == nil) ? CDU.EMPTY_FIELD4 : me._refAirport.id;
+	},
+    dataForGate: func { 
+		
+		if(me._refAirport == nil){
+			return "";
+		}else{
+			me._gate != nil ? me._gate.name : CDU.EMPTY_FIELD5; 
+		}
+	},
     
     dataForRefAirportPos: func { 
         if (me._refAirport == nil) return '';
@@ -61,11 +70,11 @@ var PosInitModel =
 		else {
 			var apt = airportinfo(scratch);
 			if (apt == nil) {
-				cdu.message('NOT IN DATA BASE');
+				cdu.message('NOT IN DATABASE');
 				return 0;
 			}
 		}
-        
+        me._gate = nil;
         me._refAirport = apt;
         return 1;
     },
@@ -82,7 +91,7 @@ var PosInitModel =
             }
         }
         
-		cdu.message('NOT IN DATA BASE');
+		cdu.message('NOT IN DATABASE');
         return 0;
     },
     
@@ -267,7 +276,7 @@ var RouteModel =
 			cdu.clearScratchpad();
 			return 1;
 		} else {
-			cdu.message('NOT IN DATA BASE');
+			cdu.message('NOT IN DATABASE');
 		}
 	},
     selectVia: func(index) { },
@@ -357,7 +366,7 @@ var RouteModel =
 			else {
 				var apt = airportinfo(data);
 				if (apt == nil) {
-					cdu.message('NOT IN DATA BASE');
+					cdu.message('NOT IN DATABASE');
 					return 0;
 				}
 			}
@@ -376,7 +385,7 @@ var RouteModel =
 			else {
 				var rwy = apt.runway(data);
 				if (rwy == nil) {
-					cdu.message('NOT IN DATA BASE');
+					cdu.message('NOT IN DATABASE');
 					return 0;
 				}
 			}
@@ -393,7 +402,7 @@ var RouteModel =
 			else {
 				var apt = airportinfo(data);
 				if (apt == nil) {
-					cdu.message('NOT IN DATA BASE');
+					cdu.message('NOT IN DATABASE');
 					return 0;
 				}
 			}
