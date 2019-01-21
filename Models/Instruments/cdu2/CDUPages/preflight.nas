@@ -47,7 +47,7 @@ var PosInitModel =
     dataForIRSPosInit: func {
         var posInitDone = getprop('instrumentation/fmc/pos-init-complete');
         if (!posInitDone) return CDU.BOX3 ~ 'g' ~ CDU.BOX2_1 ~ ' ' ~ CDU.BOX4 ~ 'g' ~ CDU.BOX2_1;
-        return CDU.formatLatLonString(geo.aircraft_position());
+        return "";
     },
     
     editIRSPosInit: func(scratch) {        
