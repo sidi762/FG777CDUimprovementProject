@@ -11,13 +11,16 @@
  initRef.addAction(CDU.Action.new('MAINT', 'R6', func {cdu.displayPageByTag("maintenance");} ));
  cdu.addPage(initRef, "index");
   
- var ident1 = CDU.Page.new(cdu, 'IDENT');
+ var ident1 = CDU.Page.new(cdu, '          IDENT');
  ident1.addAction(CDU.Action.new('INDEX', 'L6', func {cdu.displayPageByTag("index");} ));
  ident1.addAction(CDU.Action.new('POS INIT', 'R6', func {cdu.displayPageByTag("pos-init");} ));
   
  ident1.addField(CDU.StaticField.new('L1', '~MODEL', getprop("/instrumentation/cdu/ident/model")));
- ident1.addField(CDU.StaticField.new('R1', '~ENGINES', getprop("/instrumentation/cdu/ident/engines")));
-  
+ ident1.addField(CDU.StaticField.new('R1', '~ENG RATING', getprop("/instrumentation/cdu/ident/engines")));
+ ident1.addField(CDU.StaticField.new('L2', '~NAV DATA', 'FLIGHTGEAR'));
+ ident1.addField(CDU.StaticField.new('R2', '~ACTIVE', ''));
+ ident1.addField(CDU.StaticField.new('R5', '~DRAG/FF', '+0.0/+0.0'));#WIP
+ 
  cdu.addPage(ident1, "ident");
   
  var menuPage = CDU.Page.new(cdu, 'MENU');

@@ -302,7 +302,7 @@ var RouteModel =
 };
 
 ###########
-    var posInit1 = CDU.Page.new(cdu, "      POS INIT");
+    var posInit1 = CDU.Page.new(cdu, "        POS INIT");
     var positionModel = PosInitModel.new();
     
     posInit1.setModel(positionModel);
@@ -322,20 +322,20 @@ var RouteModel =
     posInit1.addField(CDU.Field.new(pos:'L4', title:'~UTC(GPS)', tag:'GMTDate', dynamic:1));
     posInit1.addField(CDU.Field.createWithLSKAndTag('R4', '~GPS POS', 'GPSPos'));
     posInit1.addField(CDU.Field.createWithLSKAndTag('R5', '~SET IRS POS', 'IRSPosInit'));
-    posInit1.addField(CDU.StaticField.new('L5', '~SET HDG', '---g'));
+    
   
-    var posInit2 = CDU.Page.new(cdu, "      POS REF");
+    var posInit2 = CDU.Page.new(cdu, "        POS REF");
     posInit2.setModel(positionModel);
     
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L1', '~FMC POS', 'FMCPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L2', '~IRS L', 'IRSPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L3', '~IRS R', 'IRSPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L4', '~GPS L', 'GPSPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L5', '~GPS R', 'GPSPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('L6', '~RADIO', 'RadioPos'));
-    posInit2.addField(CDU.Field.createWithLSKAndTag('R1', '~GS', 'FMCG'));
+    posInit2.addField(CDU.Field.createWithLSKAndTag('L1', '~FMC', 'FMCPos'));
+    posInit2.addField(CDU.Field.createWithLSKAndTag('L2', '~INERTIAL', 'IRSPos'));
+    posInit2.addField(CDU.Field.createWithLSKAndTag('L3', '~GPS', 'GPSPos'));
+    posInit2.addField(CDU.Field.createWithLSKAndTag('L4', '~RADIO', 'RadioPos'));
+	posInit2.addField(CDU.StaticField.new('L5', '~RNP/ACTUAL', ''));#WIP
+	#posInit2.addField(CDU.Field.createWithLSKAndTag('R1', '~GS', 'FMCG')); #Should be UPDATE ARM>
   
-    var posInit3 = CDU.Page.new(cdu, "POS SHIFT");
+    var posInit3 = CDU.Page.new(cdu, "        POS REF");
+	posInit3.addField(CDU.StaticField.new('L1', '', 'WORK IN PROGRESS'));#WIP
   
   
     CDU.linkPages([posInit1, posInit2, posInit3]);
@@ -402,7 +402,7 @@ var RouteModel =
             return 1; 
         }));
       
-      route1.addField(CDU.EditablePropField.new('R2', 'instrumentation/fmc/inputs/flight-number', '~FLT NO.'));
+      route1.addField(CDU.EditablePropField.new('R2', 'instrumentation/fmc/inputs/flight-number', '~FLT NO'));
       route1.fixedSeparator = [3, 3];
 	  
       route1.addField(CDU.Field.new(pos:'R3', title:'~CO ROUTE', tag:'CompanyRoute', selectable:1));
