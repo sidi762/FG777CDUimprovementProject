@@ -125,7 +125,7 @@ Sep 2013: Adjusted for the new Virtual Cokpit - I NEMO
 
     <model>
         <name>CDU1</name>
-        <path>Aircraft/777/Models/Instruments/cdu2/boeing.xml</path>
+        <path>Aircraft/777/Models/Instruments/CDU/boeing.xml</path>
         <offsets>
             <x-m>-0.393</x-m>
             <y-m>-0.184</y-m>
@@ -681,8 +681,9 @@ Sep 2013: Adjusted for the new Virtual Cokpit - I NEMO
             <repeatable>true</repeatable>
             <button>0</button>
             <binding>
-                <command>nasal</command>
-                <script>controls.elevatorTrim(1);</script>
+                <command>property-adjust</command>
+                <property>controls/flight/elevator-trim</property>
+				<step type="double">0.001</step>
             </binding>
         </action>
     </animation>
@@ -694,8 +695,9 @@ Sep 2013: Adjusted for the new Virtual Cokpit - I NEMO
             <repeatable>true</repeatable>
             <button>1</button>
             <binding>
-                <command>nasal</command>
-                <script>controls.elevatorTrim(-1);</script>
+                <command>property-adjust</command>
+                <property>controls/flight/elevator-trim</property>
+				<step type="double">-0.001</step>
             </binding>
         </action>
     </animation>
