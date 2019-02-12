@@ -270,7 +270,7 @@ var key = func(v) {
 					if (cduInput == ""){
 						setprop("/instrumentation/fmc/V1checked",1);
 					} else if (num(cduInput) != nil){
-						setprop("/instrumentation/fmc/vspeeds/V1");
+						setprop("/instrumentation/fmc/vspeeds/V1", cduInput);
 						setprop("/instrumentation/fmc/V1checked",1);
 						cduInput = "";
 					}else{
@@ -412,7 +412,7 @@ var key = func(v) {
 				else if (cduDisplay == "TO_REF"){
 					if(cduInput == ""){setprop("/instrumentation/fmc/VRchecked",1);}
 					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/VR");
+							setprop("/instrumentation/fmc/vspeeds/VR", cduInput);
 							setprop("/instrumentation/fmc/VRchecked",1);
 							cduInput = "";
 					}else{setprop("/instrumentation/fmc/VRchecked",1);}
@@ -555,7 +555,7 @@ var key = func(v) {
 				if (cduDisplay == "TO_REF"){
 					if(cduInput == ""){setprop("/instrumentation/fmc/V2checked",1);}
 					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/V2");
+							setprop("/instrumentation/fmc/vspeeds/V2", cduInput);
 							setprop("/instrumentation/fmc/V2checked",1);
 							cduInput = "";
 					}else{setprop("/instrumentation/fmc/V2checked",1);}
@@ -690,7 +690,7 @@ var key = func(v) {
 				if (cduDisplay == "TO_REF"){
 					if(cduInput == ""){setprop("/instrumentation/fmc/V2checked",1);}
 					else if(num(cduInput) != nil){
-							setprop("/instrumentation/fmc/vspeeds/V2");
+							setprop("/instrumentation/fmc/vspeeds/V2", cduInput);
 							setprop("/instrumentation/fmc/V1checked",2);
 							cduInput = "";
 					}else{setprop("/instrumentation/fmc/V1checked",1);}
