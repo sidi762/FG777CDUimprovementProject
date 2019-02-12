@@ -281,7 +281,6 @@ var WEU =
 	# 1000kg = 4409.25lbs
 	if ((me.fuel_l_qty<4409) or (me.fuel_r_qty<4409))
 	    append(me.msgs_caution,"FUEL QTY LOW");
-	}
 	
 	# Activates if airspeed below minimum maneuvering speed
 	# but will use stall speed + 5 for now
@@ -678,7 +677,7 @@ var WEU =
 
         # be nice: updates every 0.5 seconds is enough
         settimer(weu_update_feeder,0.5);
-    },
+	},
 };
 
 # interpolates a value
