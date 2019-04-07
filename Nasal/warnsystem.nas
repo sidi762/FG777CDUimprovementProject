@@ -275,16 +275,9 @@ var WEU =
 			append(me.msgs_caution,"SPEEDBRAKE EXTENDED");
 		}
 
-<<<<<<< HEAD
-	# Pilot sources state that any main tank
-	# with less than 1000kg of fuel is low
-	# 1000kg = 4409.25lbs
-	if ((me.fuel_l_qty<4409) or (me.fuel_r_qty<4409))
-=======
+
 	# FCOM states that FUEL QTY LOW occurs at 4500 lbs exactly
 	if ((me.fuel_l_qty<4500) or (me.fuel_r_qty<4500))
->>>>>>> 38e2b44... 777: Sync with FGAddon(Improve flight controls, remove faulty autotrim. Update cockpit bindings, checklists... accordingly. Main flight controls now require hydraulic pressure to operate. Main modifications by it0uchpods)
-	{
 	    append(me.msgs_caution,"FUEL QTY LOW");
 	}
 	
