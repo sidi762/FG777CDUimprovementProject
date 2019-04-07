@@ -279,7 +279,6 @@ var WEU =
 	# FCOM states that FUEL QTY LOW occurs at 4500 lbs exactly
 	if ((me.fuel_l_qty<4500) or (me.fuel_r_qty<4500))
 	    append(me.msgs_caution,"FUEL QTY LOW");
-	}
 	
 	# Activates if airspeed below minimum maneuvering speed
 	# but will use stall speed + 5 for now
@@ -326,19 +325,11 @@ var WEU =
 	# Advisory messages for electrical & fuel systems
 	if (!me.battery)
 	    append(me.msgs_advisory," ELEC BATTERY OFF");
-<<<<<<< HEAD
-	if ((me.fuel_c_qty >= 10582) and ((!me.fuel_c_pump1) or (!me.fuel_c_pump2)))
-	    append(me.msgs_advisory," FUEL CENTER");
-	if ((me.fuel_c_qty < 10582) and ((me.fuel_c_pump1) or (me.fuel_c_pump2)))
-	    append(me.msgs_advisory," FUEL LOW CENTER");
-	if (((me.fuel_l_qty - me.fuel_r_qty) > 1000) or ((me.fuel_r_qty - me.fuel_l_qty) > 1000))
-=======
 	if ((me.fuel_c_qty >= 2400) and ((!me.fuel_c_pump1) or (!me.fuel_c_pump2)))
 	    append(me.msgs_advisory," FUEL IN CENTER");
 	if ((me.fuel_c_qty < 2400) and ((me.fuel_c_pump1) or (me.fuel_c_pump2)))
 	    append(me.msgs_advisory," FUEL LOW CENTER");
 	if (((me.fuel_l_qty - me.fuel_r_qty) > 3000) or ((me.fuel_r_qty - me.fuel_l_qty) > 3000))
->>>>>>> 38e2b44... 777: Sync with FGAddon(Improve flight controls, remove faulty autotrim. Update cockpit bindings, checklists... accordingly. Main flight controls now require hydraulic pressure to operate. Main modifications by it0uchpods)
 	    append(me.msgs_advisory," FUEL IMBALANCE");
 
 	# Advisory messages for heating and anti-ice systems
@@ -684,7 +675,7 @@ var WEU =
 
         # be nice: updates every 0.5 seconds is enough
         settimer(weu_update_feeder,0.5);
-    },
+	},
 };
 
 # interpolates a value
