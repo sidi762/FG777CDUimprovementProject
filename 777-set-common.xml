@@ -1153,11 +1153,11 @@ Service Ceiling: 43,100ft
 	            <page type="string" n="1">Models/Instruments/cdu2/CDUPages/navdata.nas</page>
 	            <page type="string" n="2">Models/Instruments/cdu2/CDUPages/preflight.nas</page>
 	            <page type="string" n="3">Models/Instruments/cdu2/CDUPages/flight.nas</page>
-			    <page type="string" n="4">Systems/CDUPages/legs.nas</page>
-			   	<page type="string" n="5">Systems/CDUPages/progress.nas</page>
-			   	<page type="string" n="6">Systems/CDUPages/performance.nas</page>
-			   	<page type="string" n="7">Systems/CDUPages/maintenance.nas</page>
-			   	<page type="string" n="8">Systems/CDUPages/departure-arrival.nas</page>
+			    <page type="string" n="4">Models/Instruments/cdu2/CDUPages/legs.nas</page>
+			   	<page type="string" n="5">Models/Instruments/cdu2/CDUPages/progress.nas</page>
+			   	<page type="string" n="6">Models/Instruments/cdu2/CDUPages/performance.nas</page>
+			   	<page type="string" n="7">Models/Instruments/cdu2/CDUPages/maintenance.nas</page>
+			   	<page type="string" n="8">Models/Instruments/cdu2/CDUPages/departure-arrival.nas</page>
 	            <boot-page type="string">ident</boot-page>
 	        </settings>
 	    </cdu>

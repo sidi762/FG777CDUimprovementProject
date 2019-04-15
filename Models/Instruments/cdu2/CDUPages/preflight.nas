@@ -344,8 +344,8 @@ var RouteModel =
 	#posInit2.addField(CDU.Field.createWithLSKAndTag('R1', '~GS', 'FMCG')); #Should be UPDATE ARM>
   
     var posInit3 = CDU.Page.new(cdu, "        POS REF");
-	posInit3.addField(CDU.StaticField.new('L1', '', 'WORK IN PROGRESS'));#WIP
-  
+	posInit3.addField(CDU.StaticField.new('L2', '', 'WORK IN PROGRESS'));#WIP
+    posInit3.addField(CDU.Field.createWithLSKAndTag('L1', '~GPS L', 'GPSPos'));
   
     CDU.linkPages([posInit1, posInit2, posInit3]);
     cdu.addPage(posInit1, "pos-init");
