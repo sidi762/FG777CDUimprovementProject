@@ -166,8 +166,8 @@ var TakeoffModel =
         }
 
         setprop('instrumentation/fmc/inputs/takeoff-flaps', f);
-        boeing737.vspeed.updateFromFMC();
-        boeing737.fmc.updateTakeoffTrim();
+        #boeing737.vspeed.updateFromFMC();#WIP
+        #boeing737.fmc.updateTakeoffTrim();
         return 1;
     },
 	
