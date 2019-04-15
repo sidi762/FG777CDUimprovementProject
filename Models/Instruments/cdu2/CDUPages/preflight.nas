@@ -150,7 +150,7 @@ var TakeoffModel =
         return sprintf('%2d', f)~'g';
     },
     
-    permittedTakeoffFlaps: [1, 2, 5, 10, 15, 25],
+    permittedTakeoffFlaps: [5, 15, 20],
 
     editFlaps: func(scratch) {
         var f = num(scratch);
